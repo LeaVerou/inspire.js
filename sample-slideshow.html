@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>CSSS: A brief introduction</title>
+	
+	<link href="slideshow.css" rel="stylesheet" type="text/css" />
+	<link href="theme.css" rel="stylesheet" type="text/css" />
+	<link href="sample-slideshow.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<header id="intro" class="slide">
+	<h1>
+		<object data="logo.svg" width="100%" type="image/svg+xml">
+			<img src="logo.png" alt="CSSS: CSS-based SlideShow System" />
+		</object>
+	</h1>
+	<p class="attribution">By Lea Verou</p>
+</header>
+
+<div class="slide">
+	<h2>What is it?</h2>
+	<p>A simple framework for building presentations with modern web standards</p>
+	<ul>
+		<li class="delayed">An HTML file contains the whole presentation</li>
+		<li class="delayed">Themes as CSS files</li>
+		<li class="delayed">JavaScript handles what CSS can't (keyboard shortcuts etc)</li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h2>History</h2>
+	<ul>
+		<li class="delayed">I had to create a presentation for my talk at <a href="http://front-trends.com">Front Trends 2010</a></li>
+		<li class="delayed">The only web-based presentation system I knew of was the <a href="http://slides.html5rocks.com/">HTML5 presentation by Marcin Wichary</a> which didn't fit my needs</li>
+		<li class="delayed">&hellip;so I rolled up my own</li>
+		<li class="delayed">FT2010 attendees asked me to release it</li>
+		<li class="delayed">and here it is! ;-)</li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h2>What about S5?</h2>
+	<ul>
+		<li class="delayed">I found out about <a href="http://meyerweb.com/eric/tools/s5/">S5</a> afterwards, via <a href="http://tantek.com">Tantek Çelik</a></li>
+		<li class="delayed">Seems to follow a similar approach to CSSS&hellip;</li>
+		<li class="delayed">&hellip;but does a few things differently</li>
+		<li class="delayed">So I guess even if I knew, I would still make my own</li>
+		<li class="delayed">but take a look at it too, it's really good!</li>
+	</ul>
+</div>
+
+<div class="slide" id="navigation">
+	<h2>Navigation</h2>
+	<ul>
+		<li>→ or ↓ to advance to the next slide or incrementally displayed item</li>
+		<li>← or ↑ to go to the previous slide or incrementally displayed item</li>
+		<li>Ctrl+→ or Ctrl+↓ to jump to the next slide</li>
+		<li>Ctrl+← or Ctrl+↑ to jump to the previous slide</li>
+		<li>Home to go to the first slide, End to go to the last</li>
+		<li>Ctrl+G to jump to an arbitrary slide (by slide number or identifier)</li>
+		<li>Ctrl+H to see thumbnails of the slides and jump to one of them (really slow in every browser except Safari)</li>
+	</ul>
+</div>
+
+<div class="slide" id="features">
+	<h2>Features</h2>
+	<ul>
+		<li class="delayed">IDs are dynamically assigned by JavaScript&hellip;</li>
+		<li class="delayed">&hellip;but you can also assign your own, bringing the best of both worlds</li>
+		<li class="delayed">Incremental display of slide contents (just add <code>class="delayed"</code>)</li>
+		<li class="delayed">Slide scaling based on window size (size everything you want to be scalable in ems)</li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h2>Drawbacks</h2>
+	<ul>
+		<li>Only supports Firefox 3.6+, the latest Chrome/Safari or Opera 10.60+. Why?
+			<ul>
+				<li>More lightweight</li>
+				<li>Easier to understand code</li>	
+				<li>It's a presentation, so the environment is controlled anyway</li>
+			</ul>
+		</li>
+		<li>No mouse click to advance to the next slide. I consider it annoying.</li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h2>Thank you!</h2>
+	<p>Credits:</p>
+	<ul>
+		<li>Colored wood background by Luke Roberts (http://lukeroberts.us/2008/12/wallpaper-colourful-wood/)</li>
+		<li>The name CSSS is actually inspired by S5, as you could probably guess ;-)</li>
+	</ul>
+</div>
+
+<script src="classList.js"></script>
+<script src="slideshow.js"></script>
+<script>
+var slideshow = new SlideShow(document.getElementById('presentation'));
+</script>
+	
+</body>
+</html>
