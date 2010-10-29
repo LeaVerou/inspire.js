@@ -57,7 +57,7 @@ window.SlideShow = function(container, slide) {
 		Ctrl+G : Go to slide...
 	*/
 	document.addEventListener('keyup', function(evt) {
-		if(evt.ctrlKey) {
+		if(evt.ctrlKey || evt.shiftKey) {
 			switch(evt.keyCode) {
 				case 71:
 					var slide = prompt('Which slide?');
@@ -79,6 +79,7 @@ window.SlideShow = function(container, slide) {
 							
 							if(slide) {
 								me.goto(slide.id);
+								setTimeout(function() { me.adjustFontSize(); }, 1000); // for Opera
 							}
 							
 							document.body.classList.remove('show-thumbnails');
@@ -102,11 +103,11 @@ window.SlideShow = function(container, slide) {
 					break;
 				case 37: // <-
 				case 38: // up arrow
-					me.previous(evt.ctrlKey);
+					me.previous(evt.ctrlKey || evt.shiftKey);
 					break;
 				case 39: // ->
 				case 40: // down arrow
-					me.next(evt.ctrlKey);
+					me.next(evt.ctrlKey || evt.shiftKey);
 					break;
 			}
 		}
