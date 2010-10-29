@@ -1,7 +1,7 @@
 /**
- * HTML slideshow script
+ * CSSS javascript code
  * @author Lea Verou (http://leaverou.me)
- * Only works in modern, standards-compliant browsers
+ * @version 1.0
  */
  
 (function(){
@@ -13,7 +13,7 @@ window.SlideShow = function(container, slide) {
 	// Current slide
 	this.slide = slide || 0;
 	
-	// Current item in the slide (bullet etc)
+	// Current .delayed item in the slide
 	this.item = 0;
 	
 	// Get the slide elements into an array
@@ -33,7 +33,6 @@ window.SlideShow = function(container, slide) {
 	this.onhashchange = function() {
 		me.goto(location.hash.substr(1) || 0);
 	};
-	
 	window.addEventListener('hashchange', this.onhashchange, false);
 	
 	// Adjust the font-size when the window is resized
@@ -55,6 +54,8 @@ window.SlideShow = function(container, slide) {
 		Down/Left arrow : Previous item/slide
 		Ctrl + Down/Left arrow : Previous slide 
 		Ctrl+G : Go to slide...
+		Ctrl+H : Show thumbnails and go to slide
+		(Shift instead of Ctrl works too)
 	*/
 	document.addEventListener('keyup', function(evt) {
 		if(evt.ctrlKey || evt.shiftKey) {
