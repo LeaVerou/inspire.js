@@ -221,7 +221,7 @@ SlideShow.prototype = {
 			
 			slide = this.slides[this.slide];
 			location.hash = '#' + slide.id;
-			
+			document.title = slide.title;
 		}
 		// Argument is a slide id
 		else if(which + '' === which) {
@@ -230,6 +230,7 @@ SlideShow.prototype = {
 			if(slide) {
 				this.slide = this.slides.indexOf(slide);
 				location.hash = '#' + which;
+        document.title = slide.title;
 			}
 		}
 		
