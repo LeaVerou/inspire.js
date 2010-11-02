@@ -5,6 +5,9 @@
  */
  
 (function(){
+// Cache <title> element, we may need it for slides that don't have titles
+var documentTitle = document.getElementsByTagName('title')[0].textContent;
+
 window.SlideShow = function(container, slide) {
 	var me = this;
 	
@@ -19,10 +22,27 @@ window.SlideShow = function(container, slide) {
 	// Get the slide elements into an array
 	this.slides = Array.prototype.slice.apply(container.querySelectorAll('.slide'));
 	
-	// Asign ids to slides that don't have one
 	for(var i=0; i<this.slides.length; i++) {
-		if(!this.slides[i].id) {
-			this.slides[i].id = 'slide' + (i+1);
+		var slide = this.slides[i]; // to speed up references
+		
+		// Asign ids to slides that don't have one
+		if(!slide.id) {
+			slide.id = 'slide' + (i+1);
+		}
+		
+		// Set data-title attribute to the title of the slide
+		if(!slide.title) {
+			// no title attribute, fetch title from heading(s)
+			var heading = slide.querySelector('hgroup') || slide.querySelector('h1,h2,h3,h4,h5,h6');
+			
+			if(heading && heading.textContent.trim()) {
+				slide.setAttribute('data-title', heading.textContent);
+			}
+		}
+		else {
+			// The title attribute is set, use that
+			slide.setAttribute('data-title', slide.title);
+			slide.removeAttribute('title');
 		}
 	}
 	
@@ -62,7 +82,7 @@ window.SlideShow = function(container, slide) {
 			switch(evt.keyCode) {
 				case 71:
 					var slide = prompt('Which slide?');
-					me.goto(slide + 0 === slide? slide - 1 : slide);
+					me.goto(+slide? slide - 1 : slide);
 					break;
 				case 72:
 					if(document.body.classList.contains('show-thumbnails')) {
@@ -215,30 +235,30 @@ SlideShow.prototype = {
 		// our current item (and there's no point either, so we save on performance)
 		window.removeEventListener('hashchange', this.onhashchange, false);
 		
-		// Argument is a valid slide number
-		if(which + 0 === which && which in this.slides) {
+		if(which + 0 === which && which in this.slides) { // Argument is a valid slide number
 			this.slide = which;
 			
 			slide = this.slides[this.slide];
 			location.hash = '#' + slide.id;
-			document.title = slide.title;
 		}
-		// Argument is a slide id
-		else if(which + '' === which) {
+		else if(which + '' === which) { // Argument is a slide id
 			slide = document.getElementById(which);
 			
 			if(slide) {
 				this.slide = this.slides.indexOf(slide);
-				location.hash = '#' + which;
-        document.title = slide.title;
+				location.hash = '#' + which;	
 			}
 		}
 		
-		this.adjustFontSize();
-		
-		// Update items collection
-		this.items = this.slides[this.slide].querySelectorAll('.delayed');
-		this.item = 0;
+		if(slide) { // Slide actually changed, perform any other tasks needed
+			document.title = slide.getAttribute('data-title') || documentTitle;
+			
+			this.adjustFontSize();
+			
+			// Update items collection
+			this.items = this.slides[this.slide].querySelectorAll('.delayed');
+			this.item = 0;
+		}
 		
 		// If you attach the listener immediately again then it will catch the event
 		// We have to do it asynchronously

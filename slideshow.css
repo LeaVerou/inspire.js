@@ -90,7 +90,11 @@
 /**
 	Show thumbnails
  */
- 
+
+.show-thumbnails {
+	overflow-x: hidden;	
+} 
+
 .show-thumbnails .slide {
 	width: 1024px;
 	height: 768px;
@@ -120,11 +124,35 @@
 	opacity: 1;
 }
 
-.show-thumbnails .slide:hover {
+.show-thumbnails .slide:hover,
+.show-thumbnails .slide:target {
 	outline: 20px solid rgba(255, 255, 255, .6);
 	-moz-outline-radius:5px;
 	
 	box-shadow: 5px 5px 10px black;
+}
+
+.show-thumbnails .slide:target {
+	outline-color: rgba(255, 255, 255, .3);
+}
+
+.show-thumbnails .slide:target:hover {
+	outline-color: rgba(255, 255, 255, .9);
+}
+
+/* Display titles */
+.show-thumbnails .slide[data-title]:after {
+	content: attr(data-title);
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: .1em 0;
+	background: rgba(0,0,0,.5);
+	color: white;
+	font-size: 250%;
+	text-align: center;
+	text-shadow: .05em .05em .1em black;
 }
 
 /* Mark slides as incomplete to spot them easier */
