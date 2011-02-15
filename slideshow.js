@@ -280,7 +280,8 @@ SlideShow.prototype = {
 		var bodyStyle = document.body.style,
 			scrollRoot = document[document.documentElement.scrollHeight? 'documentElement' : 'body'],
 			innerHeight = window.innerHeight,
-			innerWidth = window.innerWidth;
+			innerWidth = window.innerWidth,
+			slide = this.slides[this.slide];
 			
 		// Clear previous styles
 		bodyStyle.fontSize = '';
@@ -299,7 +300,6 @@ SlideShow.prototype = {
 		}
 		
 		// Individual slide
-		var slide = this.slides[this.slide];
 
 		if(slide.clientHeight && slide.clientWidth) {
 			// Strange FF bug: scrollHeight doesn't work properly with overflow:hidden
