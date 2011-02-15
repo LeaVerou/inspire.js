@@ -285,7 +285,8 @@ SlideShow.prototype = {
 		// Clear previous styles
 		bodyStyle.fontSize = '';
 		
-		if(document.body.classList.contains('show-thumbnails')) {
+		if(document.body.classList.contains('show-thumbnails') 
+			|| slide.classList.contains('dont-resize')) {
 			return;
 		}
 
@@ -299,11 +300,6 @@ SlideShow.prototype = {
 		
 		// Individual slide
 		var slide = this.slides[this.slide];
-		
-		// If the slide has the class "dont-resize" then don't do anything
-		if(slide.classList.contains('dont-resize')) {
-			return;
-		}
 
 		if(slide.clientHeight && slide.clientWidth) {
 			// Strange FF bug: scrollHeight doesn't work properly with overflow:hidden
