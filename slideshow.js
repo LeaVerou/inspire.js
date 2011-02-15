@@ -80,11 +80,11 @@ window.SlideShow = function(container, slide) {
 	document.addEventListener('keyup', function(evt) {
 		if(evt.ctrlKey || evt.shiftKey) {
 			switch(evt.keyCode) {
-				case 71:
+				case 71: // G
 					var slide = prompt('Which slide?');
 					me.goto(+slide? slide - 1 : slide);
 					break;
-				case 72:
+				case 72: // H
 					if(document.body.classList.contains('show-thumbnails')) {
 						document.body.classList.remove('show-thumbnails');
 					}
@@ -106,9 +106,16 @@ window.SlideShow = function(container, slide) {
 							document.body.classList.remove('show-thumbnails');
 						}, false);
 					}
+					break;
+				case 74: // J
+					if(document.body.classList.contains('hide-elements')) {
+						document.body.classList.remove('hide-elements');
+					}
+					else {
+						document.body.classList.add('hide-elements');
+					}
 			}
 		}
-		
 		
 		if(evt.target === document.body || evt.target === document.body.parentNode) {
 			if(evt.keyCode >= 35 && evt.keyCode <= 40) {

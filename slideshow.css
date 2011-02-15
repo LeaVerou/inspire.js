@@ -159,6 +159,16 @@
 	text-shadow: .05em .05em .1em black;
 }
 
+/* Hide all elements in slide by hitting Ctrl + J or Shift + J */
+.hide-elements .slide:target > * {
+	opacity: 0;
+	
+	-moz-transition:.5s;
+	-webkit-transition:.5s;
+	-o-transition:.5s;
+	transition:.5s;
+}
+
 /* Mark slides as incomplete to spot them easier */
 .incomplete.slide::after {
 	content: 'INCOMPLETE';
