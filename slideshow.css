@@ -4,6 +4,10 @@
 	@version 1.0
  */
  
+ html, body {
+ 	height: 100%;
+ }
+ 
  body {
  	counter-reset: slide;
  }
@@ -62,9 +66,9 @@
   	-webkit-box-sizing: border-box;
   	box-sizing: border-box;
   	
-  	-moz-border-radius: 50%;
-  	-webkit-border-radius: 50%;
-  	border-radius: 50%;
+  	-moz-border-radius: 999px;
+  	-webkit-border-radius: 999px;
+  	border-radius: 999px;
 }
 
 /* If there's nothing selected, show the first */
