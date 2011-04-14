@@ -175,9 +175,9 @@ strong, b {
 	font-family: inherit;
 	text-shadow: none;
 	
-	-moz-border-radius:50%;
-	-webkit-border-radius:50%;
-	border-radius:50%;
+	-moz-border-radius:999px;
+	-webkit-border-radius:999px;
+	border-radius:999px;
 	
 	-moz-transform: rotate(45deg);
 	-o-transform: rotate(45deg);
