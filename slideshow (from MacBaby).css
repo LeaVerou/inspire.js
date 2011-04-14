@@ -1,0 +1,196 @@
+/**
+	Basic CSS so that the slideshow script functions as a slideshow
+	@author Lea Verou
+	@version 1.0
+ */
+ 
+ html, body {
+ 	height: 100%;
+ }
+ 
+ body {
+ 	counter-reset: slide;
+ }
+ 
+ .slide {
+ 	position:absolute;
+ 	top:0;
+ 	right:0;
+ 	bottom:0;
+ 	left:0;
+ 	z-index:1;
+ 	
+ 	font-size:250%;
+ 	line-height:1.6;
+ 	 	
+ 	opacity:0;
+ 	height:0;
+ 	width:0;
+ 	overflow:hidden;
+ 	
+ 	counter-increment: slide;
+ 	
+ 	-webkit-transition:1s opacity, 1s -webkit-transform;
+ 	-moz-transition:1s opacity, 1s -moz-transform;
+ 	-o-transition:1s opacity, 1s -o-transform;
+ 	transition:1s opacity, 1s transform;
+ }
+ 
+ .slide:target {
+ 	z-index:100;
+ 	opacity:1;
+ 	height:auto;
+ 	width: auto;
+ 	overflow: visible;
+}
+
+/**
+	Slide numbers
+ */ 
+.slide:target::before {
+  	content: counter(slide);
+  	position: absolute;
+  	top: .05in;
+  	right: .5em;
+  	z-index: 1010;
+  	
+  	font-size: .15in;
+  	color: white;
+  	background: rgba(0,0,0,.25);
+  	font-weight: 900;
+  	text-shadow: .05em .05em .1em black;
+  	text-align: center;
+  	padding: .1em .3em 0;
+  	min-width: 1.6em;
+  	-moz-box-sizing: border-box;
+  	-webkit-box-sizing: border-box;
+  	box-sizing: border-box;
+  	
+  	-moz-border-radius: 999px;
+  	-webkit-border-radius: 999px;
+  	border-radius: 999px;
+}
+
+/* If there's nothing selected, show the first */
+.slide:first-child {
+	z-index:2;
+}
+
+/* Delayed items that are shown incrementally after the slide is */
+.slide .delayed {
+	opacity: 0;
+	
+	-webkit-transition:.7s opacity;
+	-moz-transition:.7s opacity;
+	-o-transition:.7s opacity;
+	transition:.7s opacity;
+}
+
+.slide .delayed.displayed {
+	opacity: .3;
+}
+
+.slide .delayed.current,
+.slide .delayed.displayed.non-dismissable {
+	opacity: 1;
+}
+
+/**
+	Show thumbnails
+ */
+
+.show-thumbnails {
+	overflow-x: hidden;	
+} 
+
+.show-thumbnails .slide {
+	width: 1024px;
+	height: 768px;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	
+	float: left;
+	overflow: hidden;
+	position: static;
+	opacity: 1;
+	margin:-292px -395px;
+	cursor: pointer;
+	
+	-moz-transform: scale(.2, .2);
+	-o-transform: scale(.2, .2);
+	-webkit-transform: scale(.2, .2);
+	transform: scale(.2, .2);
+	
+	-webkit-transition:1s -webkit-transform;
+	-moz-transition:1s -moz-transform;
+	-o-transition:1s -o-transform;
+	transition:1s transform;
+}
+
+.show-thumbnails .slide .delayed {
+	opacity: 1;
+}
+
+.show-thumbnails .slide:hover,
+.show-thumbnails .slide:target {
+	outline: 20px solid rgba(255, 255, 255, .6);
+	-moz-outline-radius:5px;
+	
+	box-shadow: 5px 5px 10px black;
+}
+
+.show-thumbnails .slide:target {
+	outline-color: rgba(255, 255, 255, .3);
+}
+
+.show-thumbnails .slide:target:hover {
+	outline-color: rgba(255, 255, 255, .9);
+}
+
+/* Display titles */
+.show-thumbnails .slide[data-title]:after {
+	content: attr(data-title);
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: .1em 0;
+	background: rgba(0,0,0,.5);
+	color: white;
+	font-size: 250%;
+	text-align: center;
+	text-shadow: .05em .05em .1em black;
+}
+
+/* Hide all elements in slide by hitting Ctrl + J or Shift + J */
+.hide-elements .slide:target > * {
+	opacity: 0;
+	
+	-moz-transition:.5s;
+	-webkit-transition:.5s;
+	-o-transition:.5s;
+	transition:.5s;
+}
+
+/* Mark slides as incomplete to spot them easier */
+.incomplete.slide::after {
+	content: 'INCOMPLETE';
+	font-weight: bold;
+	position: absolute;
+	top: 40%;
+	left: 30%;
+	padding: .1em .4em 0;
+	border: .1em solid;
+	color: rgba(255, 0, 0, .8);
+	font-size: 140%;
+	
+	-moz-border-radius: .2em;
+	-webkit-border-radius: .2em;
+	border-radius: .2em;
+	
+	-moz-transform: rotate(30deg);
+	-o-transform: rotate(30deg);
+	-webkit-transform: rotate(30deg);
+	transform: rotate(30deg);
+}
