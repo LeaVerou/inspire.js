@@ -7,9 +7,10 @@
 (function(head, body){
 // Check for classList support and include the polyfill if it's not supported
 if(!('classList' in body)) {
-	var script = document.createElement('script');
-	    script.src = 'classList.js';
-	head.appendChild(script);
+	var thisScript = document.querySelector('script[src$="slideshow.js"]'),
+	    script = document.createElement('script');
+	    script.src = thisScript.src.replace(/\bslideshow\.js/, 'classList.js');
+	thisScript.parentNode.insertBefore(script, thisScript);
 }
 
 // Cache <title> element, we may need it for slides that don't have titles
