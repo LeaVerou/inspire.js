@@ -4,14 +4,21 @@
  * @version 1.0
  */
  
-(function(){
+(function(head, body){
+// Check for classList support and include the polyfill if it's not supported
+if(!('classList' in body)) {
+	var script = document.createElement('script');
+	    script.src = 'classList.js';
+	head.appendChild(script);
+}
+
 // Cache <title> element, we may need it for slides that don't have titles
-var documentTitle = document.getElementsByTagName('title')[0].textContent;
+var documentTitle = document.title + '';
 
 window.SlideShow = function(container, slide) {
 	var me = this;
 	
-	container = container || document.body;
+	container = container || body;
 	
 	// Current slide
 	this.slide = slide || 0;
@@ -85,13 +92,13 @@ window.SlideShow = function(container, slide) {
 					me.goto(+slide? slide - 1 : slide);
 					break;
 				case 72: // H
-					if(document.body.classList.contains('show-thumbnails')) {
-						document.body.classList.remove('show-thumbnails');
+					if(body.classList.contains('show-thumbnails')) {
+						body.classList.remove('show-thumbnails');
 					}
 					else {
-						document.body.classList.add('show-thumbnails');
+						body.classList.add('show-thumbnails');
 
-						document.body.addEventListener('click', function(evt) {
+						body.addEventListener('click', function(evt) {
 							var slide = evt.target;
 							
 							while(slide && !slide.classList.contains('slide')) {
@@ -103,21 +110,21 @@ window.SlideShow = function(container, slide) {
 								setTimeout(function() { me.adjustFontSize(); }, 1000); // for Opera
 							}
 							
-							document.body.classList.remove('show-thumbnails');
+							body.classList.remove('show-thumbnails');
 						}, false);
 					}
 					break;
 				case 74: // J
-					if(document.body.classList.contains('hide-elements')) {
-						document.body.classList.remove('hide-elements');
+					if(body.classList.contains('hide-elements')) {
+						body.classList.remove('hide-elements');
 					}
 					else {
-						document.body.classList.add('hide-elements');
+						body.classList.add('hide-elements');
 					}
 			}
 		}
 		
-		if(evt.target === document.body || evt.target === document.body.parentNode) {
+		if(evt.target === body || evt.target === body.parentNode) {
 			if(evt.keyCode >= 35 && evt.keyCode <= 40) {
 				evt.preventDefault();
 			}
@@ -277,7 +284,7 @@ SlideShow.prototype = {
 	
 	adjustFontSize: function() {
 		// Cache long lookup chains, for performance
-		var bodyStyle = document.body.style,
+		var bodyStyle = body.style,
 			scrollRoot = document[document.documentElement.scrollHeight? 'documentElement' : 'body'],
 			innerHeight = window.innerHeight,
 			innerWidth = window.innerWidth,
@@ -286,7 +293,7 @@ SlideShow.prototype = {
 		// Clear previous styles
 		bodyStyle.fontSize = '';
 		
-		if(document.body.classList.contains('show-thumbnails') 
+		if(body.classList.contains('show-thumbnails') 
 			|| slide.classList.contains('dont-resize')) {
 			return;
 		}
@@ -318,4 +325,4 @@ SlideShow.prototype = {
 	}
 };
 
-})();
+})(document.head = document.getElementsByTagName('head')[0], document.body);
