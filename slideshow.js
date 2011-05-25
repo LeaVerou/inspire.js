@@ -311,6 +311,7 @@ SlideShow.prototype = {
 
 		if(slide.clientHeight && slide.clientWidth) {
 			// Strange FF bug: scrollHeight doesn't work properly with overflow:hidden
+			var previousStyle = slide.getAttribute('style');
 			slide.style.overflow = 'auto';
 			
 			for(
@@ -321,7 +322,7 @@ SlideShow.prototype = {
 				bodyStyle.fontSize = percent + '%';
 			}
 			
-			slide.style.overflow = '';
+			slide.setAttribute('style', previousStyle);
 		}
 	}
 };
