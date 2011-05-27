@@ -9,7 +9,7 @@
 	<link href="theme.css" rel="stylesheet" />
 	<link href="sample-slideshow.css" rel="stylesheet" />
 </head>
-<body>
+<body data-duration="10">
 
 <header id="intro" class="slide">
 	<h1>
@@ -88,6 +88,15 @@
 			</ul>
 		</li>
 		<li>No mouse click to advance to the next slide. I consider it annoying.</li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h2>Timer</h2>
+	<ul>
+		<li>Timer in the form of a progress bar on the top</li>
+		<li>Define the talk duration with the attribute <code>data-duration</code> on the <code>body</code></li>
+		<li>Style the timer and the end state with the selectors <code>#timer</code> and <code>#timer.end</code> respectively.</li>
 	</ul>
 </div>
 

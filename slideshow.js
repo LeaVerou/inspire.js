@@ -5,6 +5,7 @@
  */
  
 (function(head, body){
+
 // Check for classList support and include the polyfill if it's not supported
 if(!('classList' in body)) {
 	var thisScript = document.querySelector('script[src$="slideshow.js"]'),
@@ -26,6 +27,22 @@ window.SlideShow = function(container, slide) {
 	
 	// Current .delayed item in the slide
 	this.item = 0;
+	
+	// Do we need to add a timer?
+	this.duration = container.getAttribute('data-duration');
+	
+	if(this.duration > 0) {
+		var timer = document.createElement('div'),
+		    declaration = 'transition: ' + this.duration * 60 + 's; ';
+		    
+		timer.id = 'timer';
+		timer.setAttribute('style', '-moz-' + declaration + '-webkit-' + declaration + '-o-' + declaration + '-ms-' + declaration + declaration);
+		container.appendChild(timer);
+		
+		setTimeout(function() {
+			timer.className = 'end';
+		}, 1);
+	}
 	
 	// Get the slide elements into an array
 	this.slides = Array.prototype.slice.apply(container.querySelectorAll('.slide'));

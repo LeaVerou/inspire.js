@@ -194,3 +194,33 @@
 	-webkit-transform: rotate(30deg);
 	transform: rotate(30deg);
 }
+
+
+#timer {
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:101;
+	width:0%;
+	height:16px;
+	line-height: 16px;
+	padding: 0 5px;
+	background:gray;
+	overflow: hidden;
+	text-align: right;
+	
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+#timer:before {
+	content: 'Progress ';
+	text-transform: uppercase;
+	color: white;
+	font-size: 9px;
+}
+
+#timer.end {
+	width: 100%;
+}
