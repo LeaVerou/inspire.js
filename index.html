@@ -91,6 +91,29 @@
 	</ul>
 </div>
 
+<div class="slide">
+	<h2>Plugin: CSS Snippets</h2>
+	<pre>new CSSSnippet(document.getElementById('snippet'));</pre>
+	<ul>
+		<li>Dynamically edit CSS and reflect the results in any element's style
+			<ul>
+				<li>Which one? Specify a selector with the <code>data-subject</code> attribute or leave blank for the slide to be the subject</li>
+			</ul>
+		<li>Automatically prefixes CSS3 properties/values, when needed
+			<ul>
+				<li>Also does it with the style attribute (statically) if the element is not a text field (doesn't work in IE and Firefox 3.6)</li>
+			</ul>
+		</li>
+		<li>Textarea automatically adjusts rows/font-size on line break</li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h2>CSS Snippets demo</h2>
+	<p>Edit the following CSS code:</p>
+	<textarea id="snippet">background-color:red;</textarea>
+</div>
+
 <div class="slide" title="The End">
 	<h2>Thank you!</h2>
 	<p>Get it or contribute at <a href="http://github.com/LeaVerou/CSSS">http://github.com/LeaVerou/CSSS</a>
@@ -103,8 +126,11 @@
 </div>
 
 <script src="slideshow.js"></script>
+<script src="plugins/css-snippets.js"></script>
 <script>
 var slideshow = new SlideShow();
+
+new CSSSnippet(document.getElementById('snippet'));
 </script>
 	
 </body>
