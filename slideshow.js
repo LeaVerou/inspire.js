@@ -350,4 +350,4 @@ SlideShow.prototype = {
 	}
 };
 
-})(document.head = document.getElementsByTagName('head')[0], document.body);
+})(document.head || document.getElementsByTagName('head')[0], document.body);
