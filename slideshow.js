@@ -112,9 +112,14 @@ window.SlideShow = function(container, slide) {
 				case 72: // H
 					if(body.classList.contains('show-thumbnails')) {
 						body.classList.remove('show-thumbnails');
+						body.classList.remove('headers-only');
 					}
 					else {
 						body.classList.add('show-thumbnails');
+						
+						if(!evt.shiftKey || !evt.ctrlKey) {
+							body.classList.add('headers-only');
+						}
 
 						body.addEventListener('click', function(evt) {
 							var slide = evt.target;
@@ -129,6 +134,7 @@ window.SlideShow = function(container, slide) {
 							}
 							
 							body.classList.remove('show-thumbnails');
+							body.classList.remove('headers-only');
 						}, false);
 					}
 					break;

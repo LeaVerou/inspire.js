@@ -107,6 +107,7 @@
 .show-thumbnails .slide {
 	width: 1024px;
 	height: 768px;
+	
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
@@ -127,6 +128,14 @@
 	-moz-transition:1s -moz-transform;
 	-o-transition:1s -o-transform;
 	transition:1s transform;
+}
+
+.show-thumbnails.headers-only .slide {
+	display: none;
+}
+
+.show-thumbnails.headers-only header.slide {
+	display: block;
 }
 
 .show-thumbnails .slide .delayed {
@@ -162,6 +171,12 @@
 	font-size: 250%;
 	text-align: center;
 	text-shadow: .05em .05em .1em black;
+	
+	-moz-transform: none;
+	-ms-transform: none;
+	-o-transform: none;
+	-webkit-transform: none;
+	transform: none;
 }
 
 /* Hide all elements in slide by hitting Ctrl + J or Shift + J */
