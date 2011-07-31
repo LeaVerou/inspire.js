@@ -104,7 +104,8 @@
 	overflow-x: hidden;	
 } 
 
-.show-thumbnails .slide {
+.show-thumbnails .slide,
+.presenter .slide:target + .slide {
 	width: 1024px;
 	height: 768px;
 	
@@ -138,12 +139,14 @@
 	display: block;
 }
 
-.show-thumbnails .slide .delayed {
+.show-thumbnails .slide .delayed,
+.presenter .slide:target + .slide .delayed {
 	opacity: 1;
 }
 
 .show-thumbnails .slide:hover,
-.show-thumbnails .slide:target {
+.show-thumbnails .slide:target,
+.presenter .slide:target + .slide {
 	outline: 20px solid rgba(255, 255, 255, .6);
 	-moz-outline-radius:5px;
 	
@@ -239,4 +242,45 @@
 
 #timer.end {
 	width: 100%;
+}
+
+/* Presenter & projector views */
+
+.projector #timer {
+	display: none;
+}
+
+.presenter-notes {
+	display: none;
+	position: fixed;
+	right: 230px;
+	bottom: 0;
+	left: 0;
+	max-height: 6em;
+	overflow: auto;
+	padding: .6em 1em;
+	font-size: 60%;
+	line-height: 1.3;
+	font-weight: normal;
+	resize:vertical;
+	background: rgba(255, 255, 255, .5);
+	color: black;
+	text-shadow: 0 1px white;
+	
+	-moz-box-shadow: .1em .1em .3em rgba(0,0,0,.5) inset;
+	-webkit-box-shadow: .1em .1em .3em rgba(0,0,0,.5) inset;
+	box-shadow: .1em .1em .3em rgba(0,0,0,.5) inset;
+}
+
+.presenter .slide:target + .slide {
+	position: fixed;
+	top: auto;
+	right: 0;
+	bottom: 0;
+	left: auto;
+	z-index: 100;
+}
+
+.presenter .slide:target > .presenter-notes {
+	display: block;
 }

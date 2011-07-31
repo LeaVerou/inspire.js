@@ -1,7 +1,7 @@
 /**
  * CSSS javascript code
  * @author Lea Verou (http://leaverou.me)
- * @version 1.0
+ * @version 2.0
  */
  
 (function(head, body){
@@ -19,6 +19,10 @@ var documentTitle = document.title + '';
 
 window.SlideShow = function(container, slide) {
 	var me = this;
+	
+	if(!window.slideshow) {
+		window.slideshow = this;
+	}
 	
 	container = container || body;
 	
@@ -80,13 +84,17 @@ window.SlideShow = function(container, slide) {
 	};
 	window.addEventListener('hashchange', this.onhashchange, false);
 	
+	if(window.name === 'projector') {
+		document.body.classList.add('projector');
+	}
+	
 	// Adjust the font-size when the window is resized
-	window.addEventListener('resize', function() {
+	addEventListener('resize', function() {
 		me.adjustFontSize();
 	}, false);
 	
 	// In some browsers DOMContentLoaded is too early, so try again onload
-	window.addEventListener('load', function() {
+	addEventListener('load', function() {
 		me.adjustFontSize();
 	}, false);
 	
@@ -100,6 +108,7 @@ window.SlideShow = function(container, slide) {
 		Ctrl + Down/Left arrow : Previous slide 
 		Ctrl+G : Go to slide...
 		Ctrl+H : Show thumbnails and go to slide
+		Ctrl+P : Presenter view
 		(Shift instead of Ctrl works too)
 	*/
 	document.addEventListener('keyup', function(evt) {
@@ -145,6 +154,16 @@ window.SlideShow = function(container, slide) {
 					else {
 						body.classList.add('hide-elements');
 					}
+					break;
+				case 80: // P
+					// Open new window for attendee view
+					me.projector = window.open(location, 'projector', 'menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes');
+					
+					// Get the focus back
+					window.focus();
+					
+					// Switch this one to presenter view
+					body.classList.add('presenter');
 			}
 		}
 		
@@ -296,6 +315,15 @@ SlideShow.prototype = {
 			// Update items collection
 			this.items = this.slides[this.slide].querySelectorAll('.delayed');
 			this.item = 0;
+			
+			// Tell other windows
+			if(this.projector && this.projector.slideshow && this.projector.slideshow.slide != this.slide) {
+				this.projector.slideshow.goto(this.slide);
+			}
+			
+			if(window.opener && opener.slideshow && opener.slideshow.slide != this.slide) {
+				opener.slideshow.goto(this.slide);
+			}
 		}
 		
 		// If you attach the listener immediately again then it will catch the event
