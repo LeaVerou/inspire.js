@@ -63,7 +63,7 @@ self.prototype = {
 		// If it's a text field, test if style is valid first to avoid applying 
 		// random stuff in between valid keystrokes
 		if(this.textField) {
-			if (self.isCSSValid(supportedStyle)) {
+			if (!self.isCSSValid(supportedStyle)) {
 				this.textField.classList && this.textField.classList.add('error');
 				return;
 			}
@@ -241,7 +241,7 @@ self.isCSSValid = function(code) {
 	guineaPig.removeAttribute('style');
 	guineaPig.setAttribute('style', code);
 	
-	return guineaPig.style.length < declarationCount;
+	return guineaPig.style.length >= declarationCount;
 };
 
 /**********************************************
