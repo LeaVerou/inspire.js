@@ -29,7 +29,11 @@ a:hover {
 	text-shadow: 0 0 .5em white, 0 0 1em white;
 }
 
-code, pre, style, textarea {
+select {
+	color: black;
+}
+
+code, pre, style, textarea, input {
 	font-family: Consolas, 'Andale Mono', 'Courier New', monospace;	
 	background:rgba(0,0,0,.4);
 }

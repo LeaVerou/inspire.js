@@ -130,6 +130,38 @@
 background-image: linear-gradient(red, #600)</textarea>
 </div>
 
+<div class="slide">
+	<h2>Plugin: CSS Controls</h2>
+	<ul>
+		<li>Use sliders and other controls to adjust CSS values
+			<ul>
+				<li>Which one? Specify a selector with the <code>data-subject</code> attribute or leave blank for the slide to be the subject</li>
+				<li>Specify style with <code>data-style</code> (use <code>{value}</code> where the result will be)</li>
+			</ul>
+		<li>Automatically prefixes CSS3 properties/values, when needed (requires CSS Snippets)</li>
+	</ul>
+</div>
+
+<div class="slide" id="css-controls-demo">
+	<h2>CSS Controls demo</h2>
+	<label>Slide lightness: 
+		<input type="range" min="0" max="255" value="128" data-style="background-color:rgb({value}, {value}, {value});" class="css-control" />
+	</label>
+	<label>
+		border-width:
+		<input type="number" min="0" max="60" value="30" data-style="border-width: {value}px;" class="css-control" size="5" />
+	</label>
+	<label>
+		font-family:
+		<select data-style="font-family: {value};" class="css-control">
+			<option selected>sans-serif</option>
+			<option>Georgia, serif</option>
+			<option>Consolas, monospace</option>
+			<option>'Trebuchet MS', sans-serif</option>
+		</select>
+	</label>
+</div>
+
 <div class="slide" title="The End">
 	<h2>Thank you!</h2>
 	<p>Get it or contribute at <a href="http://github.com/LeaVerou/CSSS">http://github.com/LeaVerou/CSSS</a></p>
@@ -143,10 +175,16 @@ background-image: linear-gradient(red, #600)</textarea>
 
 <script src="slideshow.js"></script>
 <script src="plugins/css-snippets.js"></script>
+<script src="plugins/css-controls.js"></script>
 <script>
 var slideshow = new SlideShow();
 
 new CSSSnippet(document.getElementById('snippet'));
+
+var cssControls = document.querySelectorAll('.css-control');
+for(var i=0; i<cssControls.length; i++) {
+	new CSSControl(cssControls[i]);
+}
 </script>
 	
 </body>
