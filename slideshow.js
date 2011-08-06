@@ -378,4 +378,19 @@ SlideShow.prototype = {
 	}
 };
 
+/**********************************************
+ * Static methods 
+ **********************************************/
+ 
+// Helper method for plugins
+SlideShow.getSlide = function(element) {
+	var slide = element;
+	
+	while (slide && slide.classList && !slide.classList.contains('slide')) {
+		slide = slide.parentNode;
+	}
+	
+	return slide;
+}
+
 })(document.head || document.getElementsByTagName('head')[0], document.body);

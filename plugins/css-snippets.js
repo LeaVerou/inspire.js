@@ -23,11 +23,7 @@ var self = window.CSSSnippet = function(element) {
 		// If no subject specified, it will be the slide
 		if(!this.subjects.length) {
 			// Find containing slide
-			this.slide = this.textField.parentNode;
-			
-			while (this.slide && this.slide.classList && !this.slide.classList.contains('slide')) {
-				this.slide = this.slide.parentNode;
-			}
+			this.slide = SlideShow.getSlide(this.textField.parentNode);
 			
 			if(this.slide) {		
 				this.subjects = [this.slide];
