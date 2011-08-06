@@ -63,13 +63,7 @@ self.prototype = {
 		// If it's a text field, test if style is valid first to avoid applying 
 		// random stuff in between valid keystrokes
 		if(this.textField) {
-			var guineaPig = self.guineaPig,
-				declarationCount = supportedStyle.split(':').length - 1;
-				
-			guineaPig.removeAttribute('style');
-			guineaPig.setAttribute('style', supportedStyle);
-			
-			if (guineaPig.style.length < declarationCount) {
+			if (self.isCSSValid(supportedStyle)) {
 				this.textField.classList && this.textField.classList.add('error');
 				return;
 			}
@@ -238,6 +232,16 @@ self.prefixCSS = function(css) {
 	}
 	
 	return css;
+};
+
+self.isCSSValid = function(code) {
+	var guineaPig = self.guineaPig,
+		declarationCount = code.split(':').length - 1;
+		
+	guineaPig.removeAttribute('style');
+	guineaPig.setAttribute('style', code);
+	
+	return guineaPig.style.length < declarationCount;
 };
 
 /**********************************************
