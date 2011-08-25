@@ -11,7 +11,7 @@ var self = window.CSSSnippet = function(element) {
 	    selector = element.getAttribute('data-subject');
 	
 	// this holds the elements the CSS is gonna be applied to
-	this.subjects = selector? toArray(document.querySelectorAll(selector)) || [] : [];
+	this.subjects = selector? toArray(document.querySelectorAll(selector)) || [] : (element.hasAttribute('data-subject')? [element] : []);
 
 	// Test if its text field first
 	if(/^(input|textarea)$/i.test(element.nodeName)) {
@@ -81,7 +81,7 @@ self.prototype = {
 	},
 	
 	adjustHeight: function() {
-		if ('rows' in this.textField) {
+		if ('rows' in this.textField && !this.textField.classList.contains('dont-adjust')) {
 			this.textField.rows = this.textField.value.split(/\r\n?|\n/).length;
 			
 			this.textField.style.fontSize = Math.min(90, 100 - this.textField.rows * 5) + '%';
