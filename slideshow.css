@@ -78,7 +78,8 @@
 }
 
 /* Delayed items that are shown incrementally after the slide is */
-.slide .delayed {
+.delayed,
+.delayed-children > * {
 	opacity: 0;
 	
 	-webkit-transition:.7s opacity;
@@ -87,12 +88,15 @@
 	transition:.7s opacity;
 }
 
-.slide .delayed.displayed {
+.delayed.displayed,
+.delayed-children > .displayed {
 	opacity: .3;
 }
 
-.slide .delayed.current,
-.slide .delayed.displayed.non-dismissable {
+.delayed.current,
+.delayed-children > .current,
+.delayed.displayed.non-dismissable,
+.delayed-children > .displayed.non-dismissable {
 	opacity: 1;
 }
 
@@ -214,6 +218,7 @@
 	transform: rotate(30deg);
 }
 
+/* Timer */
 
 #timer {
 	position:absolute;
@@ -242,6 +247,35 @@
 
 #timer.end {
 	width: 100%;
+}
+
+/* Ribbon */
+[data-type].slide:not(.hide-ribbon):after {
+	content: attr(data-type);
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	font-size: 50%;
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: bold;
+	background: hsl(40,100%,50%);
+	background-image: -webkit-linear-gradient(rgba(255, 255, 255, .3), rgba(255, 255, 255, 0));
+	background-image: -moz-linear-gradient(rgba(255, 255, 255, .3), rgba(255, 255, 255, 0));
+	background-image: -o-linear-gradient(rgba(255, 255, 255, .3), rgba(255, 255, 255, 0));
+	line-height: 1.6;
+	min-width: 20em;
+	
+	-moz-box-shadow: 0 10px 5px -5px rgba(0,0,0,.3);
+	-webkit-box-shadow: 0 10px 5px -5px rgba(0,0,0,.3);
+	box-shadow: 0 10px 5px -5px rgba(0,0,0,.3);
+
+	-moz-transform: rotate(45deg) translate(6em, -2em);
+	-ms-transform: rotate(45deg) translate(6em, -2em);
+	-webkit-transform: rotate(45deg) translate(6em, -2em);
+	-o-transform: rotate(45deg) translate(6em, -2em);
+	transform: rotate(45deg) translate(6em, -2em);
 }
 
 /* Presenter & projector views */

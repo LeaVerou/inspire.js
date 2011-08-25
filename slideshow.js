@@ -313,7 +313,7 @@ SlideShow.prototype = {
 			this.adjustFontSize();
 			
 			// Update items collection
-			this.items = this.slides[this.slide].querySelectorAll('.delayed');
+			this.items = this.slides[this.slide].querySelectorAll('.delayed, .delayed-children > *');
 			this.item = 0;
 			
 			// Tell other windows
