@@ -9,9 +9,13 @@
 var guineaPig = document.createElement('div');
  
 var self = window.CSSEdit = {
-	setup: function(element) {
-		element.setAttribute('data-originalstyle', element.getAttribute('style'));
-		element.setAttribute('data-originalcssText', element.style.cssText);
+	setupSubjects: function(subjects) {
+		for (var i=0; i<subjects.length; i++) {
+			var subject = subjects[i];
+			
+			subject.setAttribute('data-originalstyle', subject.getAttribute('style'));
+			subject.setAttribute('data-originalcssText', subject.style.cssText);
+		}
 	},
 	
 	isCSSValid: function(code) {
@@ -20,7 +24,7 @@ var self = window.CSSEdit = {
 		guineaPig.removeAttribute('style');
 		guineaPig.setAttribute('style', code);
 		
-		return guineaPig.style.length >= declarationCount;
+		return declarationCount > 0 && guineaPig.style.length >= declarationCount;
 	},
 	
 	prefixCSS: function(css) {
@@ -66,14 +70,15 @@ var self = window.CSSEdit = {
 		return subjects;
 	},
 	
-	updateStyle: function(subjects, code) {
-		code = self.prefixCSS(code);
+	updateStyle: function(subjects, code, originalAttribute) {
+		code = self.prefixCSS(code.trim());
 		
-		if(self.isCSSValid(code)) {
+		if(code && self.isCSSValid(code)) {
 			guineaPig.setAttribute('style', code);
 			
-			var appliedCode = guineaPig.style.cssText,
-			    properties = appliedCode.match(/\b[a-z-]+(?=:)/gi), propRegex = [];
+			var appliedCode = guineaPig.style.cssText;
+			if(appliedCode.match(/\b[a-z-]+(?=:)/gi) === null) console.log('"' + appliedCode + '"');
+			var properties = appliedCode.match(/\b[a-z-]+(?=:)/gi), propRegex = [];
 			
 			for(var i=0; i<properties.length; i++) {
 				properties[i] = self.util.camelCase(properties[i]);
@@ -89,7 +94,7 @@ var self = window.CSSEdit = {
 						element.style[properties[i]] = null;
 					}
 					
-					element.setAttribute('style', element.getAttribute('data-originalstyle') + '; ' + code);
+					element.setAttribute('style', element.getAttribute(originalAttribute) + '; ' + code);
 				}
 				else {
 					element.setAttribute('style', code);

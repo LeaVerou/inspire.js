@@ -13,7 +13,7 @@ var self = window.CSSSnippet = function(element) {
 	// this holds the elements the CSS is gonna be applied to
 	this.subjects = CSSEdit.getSubjects(element);
 	
-	CSSEdit.setup(element);
+	CSSEdit.setupSubjects(this.subjects);
 
 	// Test if its text field first
 	if(/^(input|textarea)$/i.test(element.nodeName)) {
@@ -42,7 +42,7 @@ self.prototype = {
 	updateStyle: function() {
 		var supportedStyle = CSSEdit.prefixCSS(this.getCSS());
 		
-		var valid = CSSEdit.updateStyle(this.subjects, this.getCSS());
+		var valid = CSSEdit.updateStyle(this.subjects, this.getCSS(), 'data-originalstyle');
 		
 		if(this.textField && this.textField.classList) {
 			this.textField.classList[valid? 'remove' : 'add']('error');
