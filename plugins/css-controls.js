@@ -33,7 +33,7 @@ self.prototype = {
 		// Get code
 		var code = this.control.getAttribute('data-style').replace(/\{value\}/gi, this.control.value);
 		
-		CSSEdit.updateStyle(this.subjects, code);
+		CSSEdit.updateStyle(this.subjects, code, 'style');
 	}
 };
 
