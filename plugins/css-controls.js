@@ -15,7 +15,7 @@ var self = window.CSSControl = function(control) {
 	// this holds the elements the CSS is gonna be applied to
 	this.subjects = CSSEdit.getSubjects(control);
 	
-	CSSEdit.setup(control);
+	CSSEdit.setupSubjects(control);
 	
 	control.addEventListener('input', function() {
 		me.update();
