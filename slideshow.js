@@ -197,11 +197,14 @@ var self = window.SlideShow = function(container, slide) {
 	
 	for(var i=scoped.length; i--;) {
 		var style = scoped[i],
-			rules = style.sheet.cssRules,
+			rulez = style.sheet.cssRules,
 			parentid = style.parentNode.id || self.getSlide(style).id;
 		
-		for(var j=rules.length; j--;) {
-			rules[j].selectorText = '#' + parentid + ' ' + rules[j].selectorText;
+		for(var j=rulez.length; j--;) {
+			var cssText = rulez[j].cssText.replace(/^|,/g, function($0) { return '#' + parentid + ' ' + $0 });
+
+			style.sheet.deleteRule(0);
+			style.sheet.insertRule(cssText, 0);
 		}
 	}
 }

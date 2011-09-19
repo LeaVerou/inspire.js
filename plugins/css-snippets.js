@@ -22,12 +22,8 @@ var self = window.CSSSnippet = function(element) {
 		// Turn spellchecking off
 		this.textField.spellcheck = false;
 		
-		this.textField.addEventListener('keyup', function() {
+		this.textField.addEventListener('input', function() {
 			me.update();
-		}, false);
-		
-		this.textField.addEventListener('keydown', function() {
-			me.updateStyle();
 		}, false);
 		
 		this.update();
