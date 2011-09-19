@@ -26,6 +26,10 @@ var self = window.CSSSnippet = function(element) {
 			me.update();
 		}, false);
 		
+		this.textField.addEventListener('keyup', function() {
+			me.update();
+		}, false);
+		
 		this.update();
 	}
 	else {
