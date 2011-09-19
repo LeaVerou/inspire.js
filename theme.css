@@ -5,6 +5,19 @@
 	@version 1.0
 */
 
+/**
+ * Variables
+ */
+.slide h2,
+section > header.slide > h1 {
+	font-family: 'Helvetica Neue', Helvetica, sans-serif;
+	font-weight: 100;
+}
+ 
+/**
+ * Styles
+ */
+
 * {
 	padding:0;	
 	margin:0;
@@ -143,6 +156,21 @@ strong, b {
 				color: #28bcbc;
 				padding-right: .2em;
 			}
+			
+section > header.slide {
+	background-color: rgba(0,0,0,.8);
+}
+
+	section > header.slide > h1 {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		right: 0;
+		margin-top: -.6em;
+		font-size: 400%;
+		line-height: 1;
+		text-align: center;
+	}
 
 .slide .emphasis {
 	padding: .4em .5em .3em;

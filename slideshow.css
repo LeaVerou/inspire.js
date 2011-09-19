@@ -229,7 +229,7 @@
 	height:16px;
 	line-height: 16px;
 	padding: 0 5px;
-	background:gray;
+	background:rgba(0,0,0,.5);
 	overflow: hidden;
 	text-align: right;
 	

@@ -17,9 +17,10 @@ if(!('classList' in body)) {
 // Cache <title> element, we may need it for slides that don't have titles
 var documentTitle = document.title + '';
 
-window.SlideShow = function(container, slide) {
+var self = window.SlideShow = function(container, slide) {
 	var me = this;
 	
+	// Set instance
 	if(!window.slideshow) {
 		window.slideshow = this;
 	}
@@ -190,9 +191,22 @@ window.SlideShow = function(container, slide) {
 			}
 		}
 	}, false);
+	
+	// Rudimentary style[scoped] polyfill
+	var scoped = container.querySelectorAll('style[scoped]');
+	
+	for(var i=scoped.length; i--;) {
+		var style = scoped[i],
+			rules = style.sheet.cssRules,
+			parentid = style.parentNode.id || self.getSlide(style).id;
+		
+		for(var j=rules.length; j--;) {
+			rules[j].selectorText = '#' + parentid + ' ' + rules[j].selectorText;
+		}
+	}
 }
 
-SlideShow.prototype = {
+self.prototype = {
 	start: function() {
 		this.goto(0);
 	},
@@ -383,7 +397,7 @@ SlideShow.prototype = {
  **********************************************/
  
 // Helper method for plugins
-SlideShow.getSlide = function(element) {
+self.getSlide = function(element) {
 	var slide = element;
 	
 	while (slide && slide.classList && !slide.classList.contains('slide')) {
