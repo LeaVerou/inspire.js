@@ -101,12 +101,6 @@ var self = window.SlideShow = function(container, slide) {
 	
 	/**
 		Keyboard navigation
-		Home : First slide
-		End : Last slide
-		Up/Right arrow : Next item/slide
-		Ctrl + Up/Right arrow : Next slide
-		Down/Left arrow : Previous item/slide
-		Ctrl + Down/Left arrow : Previous slide 
 		Ctrl+G : Go to slide...
 		Ctrl+H : Show thumbnails and go to slide
 		Ctrl+P : Presenter view
@@ -167,8 +161,20 @@ var self = window.SlideShow = function(container, slide) {
 					body.classList.add('presenter');
 			}
 		}
-		
-		if(evt.target === body || evt.target === body.parentNode) {
+	}, false);
+	
+	/**
+		Keyboard navigation
+		Home : First slide
+		End : Last slide
+		Up/Right arrow : Next item/slide
+		Ctrl + Up/Right arrow : Next slide
+		Down/Left arrow : Previous item/slide
+		Ctrl + Down/Left arrow : Previous slide 
+		(Shift instead of Ctrl works too)
+	*/
+	document.addEventListener('keydown', function(evt) {
+		if(evt.target === body || evt.target === body.parentNode || evt.ctrlKey) {
 			if(evt.keyCode >= 35 && evt.keyCode <= 40) {
 				evt.preventDefault();
 			}
