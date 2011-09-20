@@ -38,7 +38,7 @@ var self = window.SlideShow = function(container, slide) {
 	
 	if(this.duration > 0) {
 		var timer = document.createElement('div'),
-		    declaration = 'transition: ' + this.duration * 60 + 's; ';
+		    declaration = 'transition: ' + this.duration * 60 + 's linear; ';
 		    
 		timer.id = 'timer';
 		timer.setAttribute('style', '-moz-' + declaration + '-webkit-' + declaration + '-o-' + declaration + '-ms-' + declaration + declaration);
