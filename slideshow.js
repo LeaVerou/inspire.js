@@ -174,7 +174,7 @@ var self = window.SlideShow = function(container, slide) {
 		(Shift instead of Ctrl works too)
 	*/
 	document.addEventListener('keydown', function(evt) {
-		if(evt.target === body || evt.target === body.parentNode || evt.ctrlKey) {
+		if(evt.target === body || evt.target === body.parentNode || evt.altKey) {
 			if(evt.keyCode >= 35 && evt.keyCode <= 40) {
 				evt.preventDefault();
 			}
