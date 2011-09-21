@@ -13,18 +13,22 @@ var self = window.CSSSnippet = function(element) {
 	this.raw = element.hasAttribute('data-raw');
 	
 	if(this.raw) {
-		this.style = head.appendChild(document.createElement('style'));
+		this.style = document.createElement('style');
 		
 		if(window.SlideShow) {
 			this.slide = SlideShow.getSlide(element);
 			
+			if(location.hash == '#' + me.slide.id) {
+				this.style = head.appendChild(this.style);
+			}
+			
 			// Remove it after we're done with it, to save on resources
 			addEventListener('hashchange', function() {
-				if(location.hash == '#' + me.slide.id && !me.style.parentNode) {
-					head.appendChild(me.style);
-				}
-				else if(me.style.parentNode) {
-					head.removeChild(me.style);
+				var relevant = location.hash == '#' + me.slide.id,
+					appended = !!me.style.parentNode;
+				
+				if(relevant != appended) {
+					me.style = head[(appended? 'remove' : 'append') + 'Child'](me.style);
 				}
 			}, false);
 		}
