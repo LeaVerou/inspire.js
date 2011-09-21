@@ -18,31 +18,6 @@ var self = window.CSSEdit = {
 		}
 	},
 	
-	isCSSValid: function(code) {
-		var declarationCount = code.split(':').length - 1;
-			
-		guineaPig.removeAttribute('style');
-		guineaPig.setAttribute('style', code);
-		
-		return declarationCount > 0 && guineaPig.style.length >= declarationCount;
-	},
-	
-	prefixCSS: function(css) {
-		if (self.values.length) {
-			var regex = RegExp('\\b(' + self.values.join('|') + ')\\b', 'gi');
-			
-			css = css.replace(regex, self.prefix + "$1");
-		}
-		
-		if (self.properties.length) {
-			var regex = RegExp('\\b(' + self.properties.join('|') + '):', 'gi');
-			
-			css = css.replace(regex, self.prefix + "$1:");
-		}
-		
-		return css;
-	},
-	
 	getSubjects: function(element) {
 		var selector = element.getAttribute('data-subject'),
 			subjects;
@@ -71,9 +46,9 @@ var self = window.CSSEdit = {
 	},
 	
 	updateStyle: function(subjects, code, originalAttribute) {
-		code = self.prefixCSS(code.trim());
+		code = CSSPrefix.prefixCSS(code.trim());
 		
-		if(code && self.isCSSValid(code)) {
+		if(code && CSSPrefix.isCSSValid(code)) {
 			guineaPig.setAttribute('style', code);
 			
 			var appliedCode = guineaPig.style.cssText;
@@ -118,123 +93,5 @@ var self = window.CSSEdit = {
 		}
 	}
  };
- 
-
- 
- self.prefix = (function() {
-	// Oldest prefixed properties that browsers still support
-	var props = {
-			'-moz-': 'MozOpacity',
-			'-webkit-': 'WebkitOpacity',
-			'-o-': 'OLink',
-			'-ms-': 'msFilter'
-		};
-	
-	// Determine which is the vendor prefix of the current browser
-	for (var prefix in props) {
-		var property = props[prefix];
-		
-		if (property in guineaPig.style) {
-			return prefix;
-		}
-	}
-	
-	return null;
- })();
- 
- // Properties that *might* need prefixing
- self.properties = [
-	'appearance',
-	'background-clip',
-	'background-origin',
-	'border-image',
-	'border-radius',
-	'box-decoration-break',
-	'box-shadow',
-	'box-sizing',
-	'column-count',
-	'column-rule',
-	'column-rule-width',
-	'column-rule-style',
-	'column-rule-color',
-	'column-span',
-	'tab-size',
-	'text-decoration-line',
-	'text-decoration-color',
-	'text-decoration-style',
-	'transform',
-	'transform-origin',
-	'transition',
-	'transition-duration',
-	'transition-property',
-	'transition-timing-function'
- ];
- 
- // Values that *might* need prefixing and support tests
- self.values = {
-	'repeating-linear-gradient': {
-		property: 'backgroundImage',
-		value: 'repeating-linear-gradient(white, black)'
-	},
-	'linear-gradient': {
-		property: 'backgroundImage',
-		value: 'linear-gradient(white, black)'
-	},
-	'repeating-radial-gradient': {
-		property: 'backgroundImage',
-		value: 'repeating-radial-gradient(white, black)'
-	},
-	'radial-gradient': {
-		property: 'backgroundImage',
-		value: 'radial-gradient(white, black)'
-	},
-	'calc': {
-		property: 'width',
-		value: 'calc(1px + 50%)'
-	},
-	'initial': {
-		property: 'color',
-		value: 'initial'
-	}
- };
- 
- // Eliminate the ones that are either supported prefix-less or not at all
- (function(properties, values, style) {
-	for (var i=0; i<properties.length; i++) {
-		var property = self.util.camelCase(properties[i]),
-			prefixedProperty = self.util.camelCase(self.prefix + properties[i]);
- 
-		if (property  in style || !(prefixedProperty in style)) {
-			properties.splice(i--, 1);
-		}
-	}
-	
-	self.values = [];
-	
-	for (var val in values) {
-		// Try if prefix-less version is supported
-		var property = values[val].property,
-			value = values[val].value;
-		
-		style[property] = '';
-		style[property] = value;
-		
-		if (style[property]) {
-			continue;
-		}
-		
-		// Now try with a prefix
-		style[property] = '';
-		style[property] = self.prefix + value;
-		
-		if (!style[property]) {
-			continue;
-		}
-		
-		// If we're here, it is supported, but with a prefix
-		self.values.push(val);
-	}
- })(self.properties, self.values, guineaPig.style);
-
- 
+  
  })()
