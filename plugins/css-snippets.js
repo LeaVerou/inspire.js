@@ -24,10 +24,9 @@ var self = window.CSSSnippet = function(element) {
 			
 			// Remove it after we're done with it, to save on resources
 			addEventListener('hashchange', function() {
-				var relevant = location.hash == '#' + me.slide.id,
-					appended = !!me.style.parentNode;
+				var appended = !!me.style.parentNode;
 				
-				if(relevant != appended) {
+				if(location.hash == '#' + me.slide.id != appended) {
 					me.style = head[(appended? 'remove' : 'append') + 'Child'](me.style);
 				}
 			}, false);
