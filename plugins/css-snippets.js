@@ -5,7 +5,7 @@
  * MIT License
  */
 
-(function() {
+(function(head) {
 
 var self = window.CSSSnippet = function(element) {
 	var me = this;
@@ -13,15 +13,18 @@ var self = window.CSSSnippet = function(element) {
 	this.raw = element.hasAttribute('data-raw');
 	
 	if(this.raw) {
-		this.style = document.head.appendChild(document.createElement('style'));
+		this.style = head.appendChild(document.createElement('style'));
 		
 		if(window.SlideShow) {
 			this.slide = SlideShow.getSlide(element);
 			
 			// Remove it after we're done with it, to save on resources
 			addEventListener('hashchange', function() {
-				if(location.hash !== '#' + me.slide.id) {
-					document.head.removeChild(me.style);
+				if(location.hash == '#' + me.slide.id && !me.style.parentNode) {
+					head.appendChild(me.style);
+				}
+				else if(me.style.parentNode) {
+					head.removeChild(me.style);
 				}
 			}, false);
 		}
@@ -91,4 +94,4 @@ self.prototype = {
 	}
 };
 
-})();
+})(document.head);
