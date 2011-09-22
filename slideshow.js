@@ -175,7 +175,7 @@ var self = window.SlideShow = function(container, slide) {
 	*/
 	document.addEventListener('keydown', function(evt) {
 		if(evt.target === body || evt.target === body.parentNode || evt.altKey) {
-			if(evt.keyCode >= 35 && evt.keyCode <= 40) {
+			if((evt.keyCode >= 35 && evt.keyCode <= 40) || evt.keyCode == 32) {
 				evt.preventDefault();
 			}
 
