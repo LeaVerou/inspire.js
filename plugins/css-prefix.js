@@ -206,7 +206,7 @@ self.atrules = {
 	
 	self.selectors = [];
 	
-	style = document.head.appendChild(document.createElement('style'));
+	style = (document.head || document.getElementsByTagName('head')[0]).appendChild(document.createElement('style'));
 	
 	for(var selector in selectors) {
 		var params = selectors[selector]? '(' + selectors[selector] + ')' : '',
@@ -239,7 +239,7 @@ self.atrules = {
 		}
 	}
 	
-	document.head.removeChild(style);
+	(document.head || document.getElementsByTagName('head')[0]).removeChild(style);
  })(self.properties, self.values, self.selectors, self.atrules);
 
  
