@@ -175,11 +175,17 @@ var self = window.SlideShow = function(container, slide) {
 	*/
 	document.addEventListener('keydown', function(evt) {
 		if(evt.target === body || evt.target === body.parentNode || evt.altKey) {
-			if((evt.keyCode >= 35 && evt.keyCode <= 40) || evt.keyCode == 32) {
+			if(evt.keyCode >= 32 && evt.keyCode <= 40) {
 				evt.preventDefault();
 			}
 
 			switch(evt.keyCode) {
+				case 33: //page up
+					me.previous();
+					break;
+				case 34: //page down
+					me.next();
+					break;
 				case 35: // end
 					me.end();
 					break;

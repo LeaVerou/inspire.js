@@ -5,15 +5,40 @@
  * MIT License
  */
 
-(function() {
+(function(head) {
 
 var self = window.CSSSnippet = function(element) {
 	var me = this;
 	
-	// this holds the elements the CSS is gonna be applied to
-	this.subjects = CSSEdit.getSubjects(element);
+	this.raw = element.hasAttribute('data-raw');
 	
-	CSSEdit.setupSubjects(this.subjects);
+	if(this.raw) {
+		this.style = document.createElement('style');
+		
+		if(window.SlideShow) {
+			this.slide = SlideShow.getSlide(element);
+			
+			if(location.hash == '#' + me.slide.id) {
+				this.style = head.appendChild(this.style);
+			}
+			
+			// Remove it after we're done with it, to save on resources
+			addEventListener('hashchange', function() {
+				var appended = !!me.style.parentNode;
+				
+				if(location.hash == '#' + me.slide.id != appended) {
+					me.style = head[(appended? 'remove' : 'append') + 'Child'](me.style);
+				}
+			}, false);
+		}
+	}
+	else {
+		
+		// this holds the elements the CSS is gonna be applied to
+		this.subjects = CSSEdit.getSubjects(element);
+		
+		CSSEdit.setupSubjects(this.subjects);
+	}
 
 	// Test if its text field first
 	if(/^(input|textarea)$/i.test(element.nodeName)) {
@@ -40,12 +65,17 @@ var self = window.CSSSnippet = function(element) {
 
 self.prototype = {
 	updateStyle: function() {
-		var supportedStyle = CSSEdit.prefixCSS(this.getCSS());
+		var supportedStyle = CSSPrefix.prefixCSS(this.getCSS(), this.raw);
 		
-		var valid = CSSEdit.updateStyle(this.subjects, this.getCSS(), 'data-originalstyle');
-		
-		if(this.textField && this.textField.classList) {
-			this.textField.classList[valid? 'remove' : 'add']('error');
+		if(this.raw) {
+			this.style.innerHTML = supportedStyle;
+		}
+		else {
+			var valid = CSSEdit.updateStyle(this.subjects, this.getCSS(), 'data-originalstyle');
+			
+			if(this.textField && this.textField.classList) {
+				this.textField.classList[valid? 'remove' : 'add']('error');
+			}
 		}
 	},
 	
@@ -67,4 +97,4 @@ self.prototype = {
 	}
 };
 
-})();
+})(document.head);

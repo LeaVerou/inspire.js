@@ -150,8 +150,22 @@
 	<section class="slide">
 		<h2>CSS Snippets demo</h2>
 		<p>Edit the following CSS code:</p>
-		<textarea id="snippet">background-color:red;
-	background-image: linear-gradient(red, #600)</textarea>
+		<textarea class="snippet">background-color:red;
+background-image: linear-gradient(red, #600)</textarea>
+	</section>
+	
+	<section class="slide" id="animation-demo">
+		<h2>CSS Snippets: raw CSS</h2>
+		<textarea class="snippet" data-raw>@keyframes rainbow {
+	from, to { background: red }
+	16% { background: yellow }
+	33% { background: green }
+	50% { background: aqua }
+	66% { background: blue }
+	83% { background: fuchsia }
+}
+
+#animation-demo { animation: 30s rainbow infinite; }</textarea>
 	</section>
 	
 	<section class="slide">
@@ -198,13 +212,17 @@
 </footer>
 
 <script src="slideshow.js"></script>
+<script src="plugins/css-prefix.js"></script>
 <script src="plugins/css-edit.js"></script>
 <script src="plugins/css-snippets.js"></script>
 <script src="plugins/css-controls.js"></script>
 <script>
 var slideshow = new SlideShow();
 
-new CSSSnippet(document.getElementById('snippet'));
+var snippets = document.querySelectorAll('.snippet');
+for(var i=0; i<snippets.length; i++) {
+	new CSSSnippet(snippets[i]);
+}
 
 var cssControls = document.querySelectorAll('.css-control');
 for(var i=0; i<cssControls.length; i++) {
