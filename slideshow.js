@@ -167,15 +167,15 @@ var self = window.SlideShow = function(container, slide) {
 		Keyboard navigation
 		Home : First slide
 		End : Last slide
-		Up/Right arrow : Next item/slide
-		Ctrl + Up/Right arrow : Next slide
+		Space/Up/Right arrow : Next item/slide
+		Ctrl + Space/Up/Right arrow : Next slide
 		Down/Left arrow : Previous item/slide
 		Ctrl + Down/Left arrow : Previous slide 
 		(Shift instead of Ctrl works too)
 	*/
 	document.addEventListener('keydown', function(evt) {
 		if(evt.target === body || evt.target === body.parentNode || evt.altKey) {
-			if(evt.keyCode >= 33 && evt.keyCode <= 40) {
+			if(evt.keyCode >= 32 && evt.keyCode <= 40) {
 				evt.preventDefault();
 			}
 
@@ -196,6 +196,7 @@ var self = window.SlideShow = function(container, slide) {
 				case 38: // up arrow
 					me.previous(evt.ctrlKey || evt.shiftKey);
 					break;
+				case 32: // space
 				case 39: // ->
 				case 40: // down arrow
 					me.next(evt.ctrlKey || evt.shiftKey);
