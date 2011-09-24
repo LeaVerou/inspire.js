@@ -405,6 +405,17 @@ self.prototype = {
 			
 			slide.setAttribute('style', previousStyle);
 		}
+	},
+	
+	// Is the element on the current slide?
+	onCurrent: function(element) {
+		var slide = self.getSlide(element);
+		
+		if(slide) {
+			return '#' + slide.id === location.hash;
+		}
+		
+		return false;
 	}
 };
 
