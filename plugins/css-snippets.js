@@ -47,6 +47,8 @@ var self = window.CSSSnippet = function(element) {
 		// Turn spellchecking off
 		this.textField.spellcheck = false;
 		
+		CSSEdit.elastic(this.textField);
+		
 		this.textField.addEventListener('input', function() {
 			me.update();
 		}, false);
@@ -59,12 +61,12 @@ var self = window.CSSSnippet = function(element) {
 	}
 	else {
 		// Update style, only once
-		this.updateStyle();
+		this.update();
 	}
 }
 
 self.prototype = {
-	updateStyle: function() {
+	update: function() {
 		var supportedStyle = CSSPrefix.prefixCSS(this.getCSS(), this.raw);
 		
 		if(this.raw) {
@@ -81,19 +83,6 @@ self.prototype = {
 	
 	getCSS: function() {
 		return this.textField ? this.textField.value : this.subjects[0].getAttribute('style');
-	},
-	
-	adjustHeight: function() {
-		if ('rows' in this.textField && !this.textField.classList.contains('dont-adjust')) {
-			this.textField.rows = this.textField.value.split(/\r\n?|\n/).length;
-			
-			this.textField.style.fontSize = Math.min(90, 100 - this.textField.rows * 5) + '%';
-		}
-	},
-	
-	update: function() {
-		this.updateStyle();
-		this.adjustHeight();
 	}
 };
 

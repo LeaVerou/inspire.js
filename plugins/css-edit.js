@@ -83,6 +83,26 @@ var self = window.CSSEdit = {
 		}
 	},
 	
+	elastic: function(textarea) {
+		if(!/^textarea$/i.test(textarea.nodeName) 
+			|| !('rows' in textarea)
+			|| textarea.classList.contains('dont-resize')) {
+			return;
+		}
+		
+		self.util.adjustHeight(textarea);
+		
+		textarea.addEventListener('keyup', function(evt) {
+			if(evt.keyCode == 13) {
+				self.util.adjustHeight(this);
+			}
+		}, false);
+		
+		textarea.addEventListener('input', function(evt) {
+			self.util.adjustHeight(this);
+		}, false);
+	},
+	
 	util: {
 		camelCase: function(str) {
 			return str.replace(/-(.)/g, function($0, $1) { return $1.toUpperCase() })
@@ -90,6 +110,12 @@ var self = window.CSSEdit = {
 		
 		toArray: function(collection) {
 			return Array.prototype.slice.apply(collection);
+		},
+		
+		adjustHeight: function(textarea) {
+			textarea.rows = textarea.value.split(/\r\n?|\n/).length;
+			
+			textarea.style.fontSize = Math.min(90, 100 - textarea.rows * 5) + '%';
 		}
 	}
  };
