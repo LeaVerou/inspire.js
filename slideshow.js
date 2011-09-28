@@ -4,11 +4,17 @@
  * @version 2.0
  */
  
+/**
+ * Make the environment a bit friendlier
+ */
+function $(expr, con) { return (con || document).querySelector(expr); }
+function $$(expr, con) { return [].slice.call((con || document).querySelectorAll(expr)); }
+ 
 (function(head, body){
 
 // Check for classList support and include the polyfill if it's not supported
 if(!('classList' in body)) {
-	var thisScript = document.querySelector('script[src$="slideshow.js"]'),
+	var thisScript = $('script[src$="slideshow.js"]'),
 	    script = document.createElement('script');
 	    script.src = thisScript.src.replace(/\bslideshow\.js/, 'classList.js');
 	thisScript.parentNode.insertBefore(script, thisScript);
@@ -50,7 +56,7 @@ var self = window.SlideShow = function(container, slide) {
 	}
 	
 	// Get the slide elements into an array
-	this.slides = Array.prototype.slice.apply(container.querySelectorAll('.slide'));
+	this.slides = Array.prototype.slice.apply($$('.slide', container));
 	
 	for(var i=0; i<this.slides.length; i++) {
 		var slide = this.slides[i]; // to speed up references
@@ -63,7 +69,7 @@ var self = window.SlideShow = function(container, slide) {
 		// Set data-title attribute to the title of the slide
 		if(!slide.title) {
 			// no title attribute, fetch title from heading(s)
-			var heading = slide.querySelector('hgroup') || slide.querySelector('h1,h2,h3,h4,h5,h6');
+			var heading = $('hgroup', screen) || $('h1,h2,h3,h4,h5,h6', slide);
 			
 			if(heading && heading.textContent.trim()) {
 				slide.setAttribute('data-title', heading.textContent);
@@ -206,7 +212,7 @@ var self = window.SlideShow = function(container, slide) {
 	}, false);
 	
 	// Rudimentary style[scoped] polyfill
-	var scoped = container.querySelectorAll('style[scoped]');
+	var scoped = $$('style[scoped]', container);
 	
 	for(var i=scoped.length; i--;) {
 		var style = scoped[i],
@@ -343,7 +349,7 @@ self.prototype = {
 			this.adjustFontSize();
 			
 			// Update items collection
-			this.items = this.slides[this.slide].querySelectorAll('.delayed, .delayed-children > *');
+			this.items = $$('.delayed, .delayed-children > *', this.slides[this.slide]);
 			this.item = 0;
 			
 			// Tell other windows
