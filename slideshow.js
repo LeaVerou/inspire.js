@@ -7,9 +7,10 @@
 /**
  * Make the environment a bit friendlier
  */
-function $(expr, con) { return (con || document).querySelector(expr); }
+function $(expr, con) { if(con && !con.querySelector) console.trace();
+return (con || document).querySelector(expr); }
 function $$(expr, con) { return [].slice.call((con || document).querySelectorAll(expr)); }
- 
+
 (function(head, body){
 
 // Check for classList support and include the polyfill if it's not supported
@@ -69,7 +70,7 @@ var self = window.SlideShow = function(container, slide) {
 		// Set data-title attribute to the title of the slide
 		if(!slide.title) {
 			// no title attribute, fetch title from heading(s)
-			var heading = $('hgroup', screen) || $('h1,h2,h3,h4,h5,h6', slide);
+			var heading = $('hgroup', slide) || $('h1,h2,h3,h4,h5,h6', slide);
 			
 			if(heading && heading.textContent.trim()) {
 				slide.setAttribute('data-title', heading.textContent);
