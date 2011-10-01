@@ -159,8 +159,8 @@ var self = window.SlideShow = function(container, slide) {
 					break;
 				case 80: // P
 					// Open new window for attendee view
-					me.projector = window.open(location, 'projector', 'menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes');
-					
+					me.projector = open(location, 'projector');
+
 					// Get the focus back
 					window.focus();
 					

@@ -117,7 +117,7 @@
 } 
 
 .show-thumbnails .slide,
-.presenter .slide:target + .slide {
+.presenter .slide.next {
 	width: 1024px;
 	height: 768px;
 	
@@ -314,7 +314,7 @@
 	box-shadow: .1em .1em .3em rgba(0,0,0,.5) inset;
 }
 
-.presenter .slide:target + .slide {
+.presenter .slide.next {
 	position: fixed;
 	top: auto;
 	right: 0;
