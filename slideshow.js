@@ -361,6 +361,18 @@ self.prototype = {
 			if(window.opener && opener.slideshow && opener.slideshow.slide != this.slide) {
 				opener.slideshow.goto(this.slide);
 			}
+			
+			// Update next/previous
+			for (var i=this.slides.length; i--;) {
+				this.slides[i].classList.remove('previous');
+				this.slides[i].classList.remove('next');
+			}
+			
+			this.slides.previous = this.slides[this.slide-1];
+			this.slides.next = this.slides[this.slide+1];
+			
+			this.slides.previous && this.slides.previous.classList.add('previous');
+			this.slides.next && this.slides.next.classList.add('next');
 		}
 		
 		// If you attach the listener immediately again then it will catch the event

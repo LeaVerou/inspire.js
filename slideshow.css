@@ -14,6 +14,7 @@
  }
  
  .slide {
+ 	display: none;
  	position:absolute;
  	top:0;
  	right:0;
@@ -35,6 +36,13 @@
  	-moz-transition:1s opacity, 1s -moz-transform;
  	-o-transition:1s opacity, 1s -o-transform;
  	transition:1s opacity, 1s transform;
+ }
+ 
+ .slide.previous,
+ .slide:target,
+ .slide:target + .slide, /* just in case, not really needed */
+ .slide.next {
+ 	display: block;
  }
  
  .slide:target {
