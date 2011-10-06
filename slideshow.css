@@ -3,6 +3,28 @@
 	@author Lea Verou
 	@version 1.0
  */
+
+/**
+ * "Variables"
+ */
+.slide,
+.delayed,
+.delayed-children > * {
+	-webkit-transition:1s;
+	-ms-transition:1s;
+	-moz-transition:1s;
+	-o-transition:1s;
+	transition:1s;
+	-moz-transition-property: -webkit-transform, opacity, left, top, right, bottom;
+	-ms-transition-property: -webkit-transform, opacity, left, top, right, bottom;
+	-o-transition-property: -webkit-transform, opacity, left, top, right, bottom;
+	-webkit-transition-property: -webkit-transform, opacity, left, top, right, bottom;
+	transition-property: -webkit-transform, opacity, left, top, right, bottom;
+}
+ 
+/**
+ * Styles
+ */
  
  html, body {
  	height: 100%;
@@ -14,7 +36,7 @@
  }
  
  .slide {
- 	display: none;
+ 	visibility: hidden;
  	position:absolute;
  	top:0;
  	right:0;
@@ -31,18 +53,13 @@
  	overflow:hidden;
  	
  	counter-increment: slide;
- 	
- 	-webkit-transition:1s opacity, 1s -webkit-transform;
- 	-moz-transition:1s opacity, 1s -moz-transform;
- 	-o-transition:1s opacity, 1s -o-transform;
- 	transition:1s opacity, 1s transform;
  }
  
  .slide.previous,
  .slide:target,
  .slide:target + .slide, /* just in case, not really needed */
  .slide.next {
- 	display: block;
+ 	visibility: visible;
  }
  
  .slide:target {
@@ -89,11 +106,6 @@
 .delayed,
 .delayed-children > * {
 	opacity: 0;
-	
-	-webkit-transition:.7s opacity;
-	-moz-transition:.7s opacity;
-	-o-transition:.7s opacity;
-	transition:.7s opacity;
 }
 
 .delayed.displayed,

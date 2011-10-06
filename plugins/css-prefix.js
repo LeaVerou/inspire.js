@@ -92,6 +92,7 @@ var self = window.CSSPrefix = {
 		'animation-name',
 		'animation-play-state',
 		'animation-timing-function',
+	'backface-visibility',
 	'background-clip',
 	'background-origin',
 	'border-image',
@@ -110,15 +111,18 @@ var self = window.CSSPrefix = {
 		'column-span',
 		'column-width',
 	'hyphens',
+	'perspective',
+	'perspective-origin',
 	'tab-size',
 	'text-decoration-line',
 	'text-decoration-color',
 	'text-decoration-style',
 	'transform',
 		'transform-origin',
-		'transition',
+		'transform-style',
+	'transition',
 		'transition-duration',
-		'transition-property',
+		'transition-property',	
 		'transition-timing-function'
  ];
  
