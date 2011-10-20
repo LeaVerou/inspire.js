@@ -389,6 +389,23 @@ self.prototype = {
 		}, 1000);
 	},
 	
+  binaryAdjustment: function(percent, min_value, fit_func) {
+  var up = percent;
+  var down = min_value;
+  var current = (up + down)/2;
+  var val;
+
+  while ( up - down > 1 ) {
+    if (fit_func(current)) {
+      down = current;
+    } else {
+      up = current;
+    }
+    current =( up + down ) / 2; 
+  }
+  return current;
+  },
+
 	adjustFontSize: function() {
 		// Cache long lookup chains, for performance
 		var bodyStyle = body.style,
@@ -414,20 +431,19 @@ self.prototype = {
 		}
 		
 		// Individual slide
+   var content_fits= function(p) {
+      bodyStyle.fontSize = p + '%';
+      return !(slide.scrollHeight > slide.clientHeight || slide.scrollWidth > slide.clientWidth);
+    };
 
-		if(slide.clientHeight && slide.clientWidth) {
+    var font_resizing_needed = (slide.className.indexOf("no-font-resizing") == -1) && !content_fits(percent);
+
+		if(slide.clientHeight && slide.clientWidth && font_resizing_needed) {
 			// Strange FF bug: scrollHeight doesn't work properly with overflow:hidden
 			var previousStyle = slide.getAttribute('style');
 			slide.style.overflow = 'auto';
-			
-			for(
-				;	
-				(slide.scrollHeight > slide.clientHeight || slide.scrollWidth > slide.clientWidth) && percent >= 35;
-				percent--
-			) {
-				bodyStyle.fontSize = percent + '%';
-			}
-			
+			percent = this.binaryAdjustment( percent, 35, content_fits);
+
 			slide.setAttribute('style', previousStyle);
 		}
 	},
