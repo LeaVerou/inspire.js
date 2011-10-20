@@ -67,7 +67,7 @@ var self = window.CSSSnippet = function(element) {
 
 self.prototype = {
 	update: function() {
-		var supportedStyle = CSSPrefix.prefixCSS(this.getCSS(), this.raw);
+		var supportedStyle = PrefixFree.prefixCSS(this.getCSS(), this.raw);
 		
 		if(this.raw) {
 			this.style.innerHTML = supportedStyle;

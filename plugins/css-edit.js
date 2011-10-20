@@ -6,9 +6,18 @@
  
 (function(){
 
-var guineaPig = document.createElement('div');
+var dummy = document.createElement('div');
  
 var self = window.CSSEdit = {
+	isCSSValid: function(code) {
+		var declarationCount = code.split(':').length - 1;
+			
+		dummy.removeAttribute('style');
+		dummy.setAttribute('style', code);
+		
+		return declarationCount > 0 && dummy.style.length >= declarationCount;
+	},
+	
 	setupSubjects: function(subjects) {
 		for (var i=0; i<subjects.length; i++) {
 			var subject = subjects[i];
@@ -46,12 +55,12 @@ var self = window.CSSEdit = {
 	},
 	
 	updateStyle: function(subjects, code, originalAttribute) {
-		code = CSSPrefix.prefixCSS(code.trim());
+		code = PrefixFree.prefixCSS(code.trim());
 		
-		if(code && CSSPrefix.isCSSValid(code)) {
-			guineaPig.setAttribute('style', code);
+		if(code && self.isCSSValid(code)) {
+			dummy.setAttribute('style', code);
 			
-			var appliedCode = guineaPig.style.cssText;
+			var appliedCode = dummy.style.cssText;
 			if(appliedCode.match(/\b[a-z-]+(?=:)/gi) === null) console.log('"' + appliedCode + '"');
 			var properties = appliedCode.match(/\b[a-z-]+(?=:)/gi), propRegex = [];
 			

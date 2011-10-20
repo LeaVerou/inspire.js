@@ -354,12 +354,18 @@ self.prototype = {
 			this.item = 0;
 			
 			// Tell other windows
-			if(this.projector && this.projector.slideshow && this.projector.slideshow.slide != this.slide) {
-				this.projector.slideshow.goto(this.slide);
-			}
-			
-			if(window.opener && opener.slideshow && opener.slideshow.slide != this.slide) {
-				opener.slideshow.goto(this.slide);
+			try {
+				if(this.projector && this.projector.slideshow && this.projector.slideshow.slide != this.slide) {
+					this.projector.slideshow.goto(this.slide);
+				}
+				
+				if(window.opener && opener.slideshow && opener.slideshow.slide != this.slide) {
+					opener.slideshow.goto(this.slide);
+				}
+			} catch(e) {
+				if(window.console && console.error) {
+					console.error(e);
+				}
 			}
 			
 			// Update next/previous

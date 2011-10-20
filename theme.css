@@ -54,20 +54,9 @@ code, pre, style, textarea, input {
 code {
 	padding:.2em .2em .1em;
 	white-space: nowrap;
-	
-	-moz-border-radius:.2em;
-	-webkit-border-radius:.2em;
 	border-radius:.2em;
-	
-	-moz-box-shadow:.05em .05em .3em black;
-	-webkit-box-shadow:.05em .05em .3em black;
-	box-shadow:.05em .05em .3em black;
-	
 	border: 1px solid rgba(0,0,0,0.5);
 	background: rgba(0,0,0,0.25);
-		
-	-webkit-box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 12px rgba(255,255,255,0.15), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
-	-moz-box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 12px rgba(255,255,255,0.15), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
 	box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px rgba(255,255,255,0.3), inset 0 12px rgba(255,255,255,0.15), inset 0 10px 20px rgba(255,255,255,0.25), inset 0 -15px 30px rgba(0,0,0,0.3);
 }
 
@@ -75,16 +64,11 @@ pre, style, textarea {
 	padding:.3em .5em;
 	margin-left: -.1em;
 	border:2px solid rgba(255, 255, 255, .1);
-		
-	-webkit-box-shadow:.1em .1em .5em black inset;
-	-moz-box-shadow:.1em .1em .5em black inset;
 	box-shadow:.1em .1em .5em black inset;
 }
 
 textarea {
 	width: 100%;
-	
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
@@ -100,7 +84,6 @@ strong, b {
 	padding:0 2.5% 2%;
 	background: rgba(0,0,0,.5);
 	background-clip: padding-box;
-	-moz-background-clip: padding-box;
 	text-shadow:.05em .05em .1em rgba(0,0,0,.4);
 	color: white;
 	border:30px solid transparent;
@@ -176,26 +159,17 @@ section > header.slide {
 	padding: .4em .5em .3em;
 	margin: .3em 0;
 	background: #f80;
-	background: -webkit-gradient(linear, left top, left bottom, from(#fa0), to(#f80));
-	background: -moz-linear-gradient(#fa0, #f80);
+	background: linear-gradient(#fa0, #f80);
 	color: white;
 	font-weight: bold;
 	letter-spacing: -.05em;
 	line-height: .85;
 	text-shadow: .05em .05em .1em rgba(0,0,0,.4);
-	
-	-moz-border-radius: .3em;
-	-webkit-border-radius: .3em;
 	border-radius: .3em;
-	
-	-moz-box-shadow:.1em .1em .5em black;
-	-webkit-box-shadow:.1em .1em .5em black;
 	box-shadow:.1em .1em .5em black;
 }
 
 .light.slide .emphasis {
-	-moz-box-shadow:.1em .1em .5em rgba(0,0,0,.4);
-	-webkit-box-shadow:.1em .1em .5em rgba(0,0,0,.4);
 	box-shadow:.1em .1em .5em rgba(0,0,0,.4);
 }
 
@@ -213,14 +187,7 @@ section > header.slide {
 	font-size: 120%;
 	font-family: inherit;
 	text-shadow: none;
-	
-	-moz-border-radius:999px;
-	-webkit-border-radius:999px;
 	border-radius:999px;
-	
-	-moz-transform: rotate(45deg);
-	-o-transform: rotate(45deg);
-	-webkit-transform: rotate(45deg);
 	transform: rotate(45deg);
 }
 
