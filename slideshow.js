@@ -411,20 +411,28 @@ self.prototype = {
 		}
 		
 		// Individual slide
+   var content_fits= function(p) {
+      bodyStyle.fontSize = p + '%';
+      return !(slide.scrollHeight > slide.clientHeight || slide.scrollWidth > slide.clientWidth);
+    };
 
-		if(slide.clientHeight && slide.clientWidth) {
+		if(slide.clientHeight && slide.clientWidth && !content_fits(percent)) {
 			// Strange FF bug: scrollHeight doesn't work properly with overflow:hidden
 			var previousStyle = slide.getAttribute('style');
+      var up = percent;
+      var down = min_value;
+      var current = (up + down)/2;
+
 			slide.style.overflow = 'auto';
-			
-			for(
-				;	
-				(slide.scrollHeight > slide.clientHeight || slide.scrollWidth > slide.clientWidth) && percent >= 35;
-				percent--
-			) {
-				bodyStyle.fontSize = percent + '%';
-			}
-			
+
+      while ( up - down > 1 ) {
+       if (content_fits(current)) {
+          down = current;
+        } else {
+          up = current;
+        }
+        current =( up + down ) / 2; 
+     }
 			slide.setAttribute('style', previousStyle);
 		}
 	},
