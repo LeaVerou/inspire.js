@@ -244,23 +244,7 @@ self.prototype = {
 	 */
 	next: function(hard) {
 		if(!hard && this.items.length) {
-			// If there's no current, then just mark the first one as such
-			if(!this.item) {
-				this.items[this.item++].classList.add('current');
-			}
-			// Add .current to current item if it exists, otherwise advance to next slide
-			else if(this.item < this.items.length) {
-				classes = this.items[this.item - 1].classList; // to speed up lookups
-				
-				classes.remove('current');
-				classes.add('displayed');
-				
-				this.items[this.item++].classList.add('current');
-			}
-			else {
-				this.item = 0;
-				this.next(true);
-			}
+			this.nextItem();
 		}
 		else {	
 			this.goto(this.slide + 1);
@@ -279,24 +263,26 @@ self.prototype = {
 		}
 	},
 	
+	nextItem: function() {
+		// If there's no current, then just mark the first one as such
+		if(!this.item) {
+			this.items[this.item++].classList.add('current');
+		}
+		// Add .current to current item if it exists, otherwise advance to next slide
+		else if(this.item < this.items.length) {
+			this.gotoItem(++this.item);
+		}
+		else {
+			this.item = 0;
+			this.next(true);
+		}
+	},
+	
 	previous: function(hard) {
 		if(!hard && this.item > 0) {
-			var classes = this.items[this.item - 1].classList; // to speed up lookups
-				
-			classes.remove('current');
-			
-			if(this.item > 1) {
-				classes = this.items[--this.item - 1].classList;
-				
-				classes.remove('displayed');
-				classes.add('current');
-			}
-			else {
-				this.item = 0;
-			}	
+			this.previousItem();
 		}
 		else {	
-			
 			this.goto(this.slide - 1);
 			
 			this.item = this.items.length;
@@ -316,6 +302,10 @@ self.prototype = {
 				lastItem.classList.add('current');
 			}
 		}
+	},
+	
+	previousItem: function() {
+		this.gotoItem(--this.item);
 	},
 	
 	/**
@@ -387,6 +377,25 @@ self.prototype = {
 		setTimeout(function() {
 			window.addEventListener('hashchange', me.onhashchange, false);
 		}, 1000);
+	},
+	
+	gotoItem: function(which) {
+		this.item = which;
+		
+		var items = this.items, classes;
+		
+		for(var i=items.length; i--;) {
+			classes = this.items[i].classList;
+			
+			classes.remove('current');
+			classes.remove('displayed');
+		}
+		
+		for(var i=this.item - 1; i--;) {
+			this.items[i].classList.add('displayed');
+		}
+		
+		this.items[this.item - 1].classList.add('current');
 	},
 	
 	adjustFontSize: function() {
