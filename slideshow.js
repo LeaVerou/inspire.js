@@ -7,8 +7,7 @@
 /**
  * Make the environment a bit friendlier
  */
-function $(expr, con) { if(con && !con.querySelector) console.trace();
-return (con || document).querySelector(expr); }
+function $(expr, con) { return (con || document).querySelector(expr); }
 function $$(expr, con) { return [].slice.call((con || document).querySelectorAll(expr)); }
 
 (function(head, body){
@@ -32,10 +31,10 @@ var self = window.SlideShow = function(container, slide) {
 		window.slideshow = this;
 	}
 	
-	container = container || body;
+	this.container = container = container || body;
 	
 	// Current slide
-	this.slide = slide || 0;
+	this.index = this.slide = slide || 0;
 	
 	// Current .delayed item in the slide
 	this.item = 0;
@@ -57,7 +56,10 @@ var self = window.SlideShow = function(container, slide) {
 	}
 	
 	// Get the slide elements into an array
-	this.slides = Array.prototype.slice.apply($$('.slide', container));
+	this.slides = $$('.slide', container);
+	
+	// Order of the slides
+	this.order = [];
 	
 	for(var i=0; i<this.slides.length; i++) {
 		var slide = this.slides[i]; // to speed up references
@@ -81,6 +83,13 @@ var self = window.SlideShow = function(container, slide) {
 			slide.setAttribute('data-title', slide.title);
 			slide.removeAttribute('title');
 		}
+		
+		slide.setAttribute('data-index', i);
+		
+		var imp = slide.getAttribute('data-import'),
+			imported = imp? this.getSlideById(imp) : null;
+		
+		this.order.push(imported? +imported.getAttribute('data-index') : i);
 	}
 	
 	// If there's already a hash, update current slide number...
@@ -249,7 +258,7 @@ self.prototype = {
 			this.nextItem();
 		}
 		else {	
-			this.goto(this.slide + 1);
+			this.goto(this.index + 1);
 			
 			this.item = 0;
 			
@@ -280,7 +289,7 @@ self.prototype = {
 			this.previousItem();
 		}
 		else {	
-			this.goto(this.slide - 1);
+			this.goto(this.index - 1);
 			
 			this.item = this.items.length;
 
@@ -305,6 +314,10 @@ self.prototype = {
 		this.gotoItem(--this.item);
 	},
 	
+	getSlideById: function(id) {
+		return $('.slide#' + id, this.container);
+	},
+	
 	/**
 		Go to an aribtary slide
 		@param which {String|Integer} Which slide (identifier or slide number)
@@ -316,17 +329,22 @@ self.prototype = {
 		// our current item (and there's no point either, so we save on performance)
 		window.removeEventListener('hashchange', this.onhashchange, false);
 		
-		if(which + 0 === which && which in this.slides) { // Argument is a valid slide number
-			this.slide = which;
+		var id;
+		
+		if(which + 0 === which && which in this.slides) { 
+			// Argument is a valid slide number
+			this.index = which;
+			this.slide = this.order[which]
 			
 			slide = this.slides[this.slide];
+			
 			location.hash = '#' + slide.id;
 		}
 		else if(which + '' === which) { // Argument is a slide id
-			slide = document.getElementById(which);
+			slide = this.getSlideById(which);
 			
 			if(slide) {
-				this.slide = this.slides.indexOf(slide);
+				this.slide = this.index = +slide.getAttribute('data-index');
 				location.hash = '#' + which;	
 			}
 		}
