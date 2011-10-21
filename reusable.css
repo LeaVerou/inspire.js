@@ -37,3 +37,82 @@
 	box-shadow: 0 10px 5px -5px rgba(0,0,0,.3);
 	transform: rotate(45deg) translate(6em, -2em);
 }
+
+/* Full image slides */
+
+@keyframes scroll {
+	from, to { background-position: 0 0; }
+	80%, 95% { background-position: 0 100%; }
+}
+	
+.image.slide {
+	padding: 0;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: black;
+}
+
+/* When you don't want to clip the image at all */
+.partial.image.slide {
+	background-size: contain;
+}
+
+/* An image that scrolls indefinitely */
+.scrolling.image.slide:target {
+	background-position: 0 0;
+	background-repeat: repeat-y;
+	animation: scroll 10s 1s infinite linear forwards;
+}
+
+.bottom-heavy.image.slide {
+	background-position: center bottom;
+}
+
+.top-heavy.image.slide {
+	background-position: center top;
+}
+
+	.image.slide > .caption,
+	.image.slide > h1:only-child {
+		position: absolute;
+		top: 50%;
+		right: 0;
+		left: 0;
+		margin-top: -.6em;
+		padding: .2em 0;
+		text-align: center;
+		font-size: 200%;
+		font-family: inherit;
+		font-weight: inherit;
+		line-height: 1.2;
+		color: white;
+		background: rgba(0,0,0,.4);
+		text-shadow: .03em .03em .05em black;
+		white-space: nowrap;
+	}
+	
+	.top-heavy.image.slide > .caption,
+	.top-heavy.image.slide > h1:only-child {
+		top: auto;
+		bottom: .5in;
+	}
+	
+	.bottom-heavy.image.slide > .caption,
+	.bottom-heavy.image.slide > h1:only-child {
+		position: static;
+		margin: .5in 0 0;
+	}
+	
+		.image.slide > .caption h1 {
+			font: inherit;
+			margin-bottom: 0;
+		}
+		
+		.image.slide > .caption h1 + a {
+			font-size: 30%;
+			display: block;
+			text-shadow: inherit;
+		}
+	
+/* END Full image slides */
