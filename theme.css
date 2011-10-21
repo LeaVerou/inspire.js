@@ -67,6 +67,14 @@ pre, style, textarea {
 	box-shadow:.1em .1em .5em black inset;
 }
 
+	pre > code {
+		padding: 0;
+		white-space: pre;
+		border: 0;
+		background: 0;
+		box-shadow: none;
+	}
+
 textarea {
 	width: 100%;
 	box-sizing: border-box;
@@ -212,3 +220,25 @@ section > header.slide {
 		content:  ' (' attr(href) ')';
 	}
 
+/* Syntax highlighting */
+
+.comment {
+	color: #999;
+}
+
+.string {
+	color: yellow;
+}
+
+.keyword {
+	font-weight: bold;
+	color: deeppink;
+}
+
+.number, .boolean {
+	color: #0cf;
+}
+
+.regex {
+	color: orange;
+}

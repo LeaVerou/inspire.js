@@ -199,6 +199,28 @@ background-image: linear-gradient(red, #600)</textarea>
 			</select>
 		</label>
 	</section>
+	
+	<section class="slide">
+		<h2>Plugin: Code highlight</h2>
+		<ul>
+			<li>Syntax highlighting for every <code>&lt;code&gt;</code> element with a <code>lang</code> attribute.</li>
+			<li>Only highlights when the slide becomes active, for performance</li>
+			<li>Currently only supports JavaScript, but it's easy to add any language</li>
+			<li>Styling done through easy to understand classes like <code>.string</code> or <code>.comment</code></li>
+		</ul>
+	</section>
+	
+	<section class="slide">
+		<h2>Code highlight example</h2>
+		<pre><code lang="javascript">// Comment
+document.addEventListener('DOMAttrModified',function(e) {
+  var node = e.target, attr = e.attrName;
+  if(/^input$/i.test(node.nodeName) 
+    &amp;&amp; (attr === 'placeholder' || attr === 'value')
+    || foo > 5)
+      Placeholder.update(node);
+}, false);</code></pre>
+	</section>
 </section>
 <footer class="slide" title="The End">
 	<h2>Thank you!</h2>
@@ -216,6 +238,7 @@ background-image: linear-gradient(red, #600)</textarea>
 <script src="plugins/css-edit.js"></script>
 <script src="plugins/css-snippets.js"></script>
 <script src="plugins/css-controls.js"></script>
+<script src="plugins/code-highlight.js"></script>
 <script>
 var slideshow = new SlideShow();
 
