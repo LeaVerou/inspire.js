@@ -92,15 +92,6 @@ var self = window.SlideShow = function(container, slide) {
 		this.order.push(imported? +imported.getAttribute('data-index') : i);
 	}
 	
-	// If there's already a hash, update current slide number...
-	this.goto(location.hash.substr(1) || 0);
-	
-	// ...and keep doing so every time the hash changes
-	this.onhashchange = function() {
-		me.goto(location.hash.substr(1) || 0);
-	};
-	window.addEventListener('hashchange', this.onhashchange, false);
-	
 	if(window.name === 'projector' && window.opener && opener.slideshow) {
 		document.body.classList.add('projector');
 		this.presenter = opener.slideshow;
@@ -108,120 +99,18 @@ var self = window.SlideShow = function(container, slide) {
 	}
 	
 	// Adjust the font-size when the window is resized
-	addEventListener('resize', function() {
-		me.adjustFontSize();
-	}, false);
+	addEventListener('resize', this, false);
 	
 	// In some browsers DOMContentLoaded is too early, so try again onload
-	addEventListener('load', function() {
-		me.adjustFontSize();
-	}, false);
+	addEventListener('load', this, false);
 	
-	/**
-		Keyboard navigation
-		Ctrl+G : Go to slide...
-		Ctrl+H : Show thumbnails and go to slide
-		Ctrl+P : Presenter view
-		(Shift instead of Ctrl works too)
-	*/
-	document.addEventListener('keyup', function(evt) {
-		if(evt.ctrlKey || evt.shiftKey) {
-			switch(evt.keyCode) {
-				case 71: // G
-					var slide = prompt('Which slide?');
-					me.goto(+slide? slide - 1 : slide);
-					break;
-				case 72: // H
-					if(body.classList.contains('show-thumbnails')) {
-						body.classList.remove('show-thumbnails');
-						body.classList.remove('headers-only');
-					}
-					else {
-						body.classList.add('show-thumbnails');
-						
-						if(!evt.shiftKey || !evt.ctrlKey) {
-							body.classList.add('headers-only');
-						}
-
-						body.addEventListener('click', function(evt) {
-							var slide = evt.target;
-							
-							while(slide && !slide.classList.contains('slide')) {
-								slide = slide.parentNode;
-							}
-							
-							if(slide) {
-								me.goto(slide.id);
-								setTimeout(function() { me.adjustFontSize(); }, 1000); // for Opera
-							}
-							
-							body.classList.remove('show-thumbnails');
-							body.classList.remove('headers-only');
-						}, false);
-					}
-					break;
-				case 74: // J
-					if(body.classList.contains('hide-elements')) {
-						body.classList.remove('hide-elements');
-					}
-					else {
-						body.classList.add('hide-elements');
-					}
-					break;
-				case 80: // P
-					// Open new window for attendee view
-					me.projector = open(location, 'projector');
-
-					// Get the focus back
-					window.focus();
-					
-					// Switch this one to presenter view
-					body.classList.add('presenter');
-			}
-		}
-	}, false);
+	addEventListener('hashchange', this, false);
 	
-	/**
-		Keyboard navigation
-		Home : First slide
-		End : Last slide
-		Space/Up/Right arrow : Next item/slide
-		Ctrl + Space/Up/Right arrow : Next slide
-		Down/Left arrow : Previous item/slide
-		Ctrl + Down/Left arrow : Previous slide 
-		(Shift instead of Ctrl works too)
-	*/
-	document.addEventListener('keydown', function(evt) {
-		if(evt.target === body || evt.target === body.parentNode || evt.altKey) {
-			if(evt.keyCode >= 32 && evt.keyCode <= 40) {
-				evt.preventDefault();
-			}
-
-			switch(evt.keyCode) {
-				case 33: //page up
-					me.previous();
-					break;
-				case 34: //page down
-					me.next();
-					break;
-				case 35: // end
-					me.end();
-					break;
-				case 36: // home
-					me.start();
-					break;
-				case 37: // <-
-				case 38: // up arrow
-					me.previous(evt.ctrlKey || evt.shiftKey);
-					break;
-				case 32: // space
-				case 39: // ->
-				case 40: // down arrow
-					me.next(evt.ctrlKey || evt.shiftKey);
-					break;
-			}
-		}
-	}, false);
+	// If there's already a hash, update current slide number...
+	this.handleEvent({type: 'hashchange'});
+	
+	document.addEventListener('keyup', this, false);
+	document.addEventListener('keydown', this, false);
 	
 	// Rudimentary style[scoped] polyfill
 	var scoped = $$('style[scoped]', container);
@@ -241,6 +130,121 @@ var self = window.SlideShow = function(container, slide) {
 }
 
 self.prototype = {
+	handleEvent: function(evt) {
+		switch(evt.type) {
+			/**
+				Keyboard navigation
+				Ctrl+G : Go to slide...
+				Ctrl+H : Show thumbnails and go to slide
+				Ctrl+P : Presenter view
+				(Shift instead of Ctrl works too)
+			*/
+			case 'keyup':
+				if(evt.ctrlKey || evt.shiftKey) {
+					switch(evt.keyCode) {
+						case 71: // G
+							var slide = prompt('Which slide?');
+							me.goto(+slide? slide - 1 : slide);
+							break;
+						case 72: // H
+							if(body.classList.contains('show-thumbnails')) {
+								body.classList.remove('show-thumbnails');
+								body.classList.remove('headers-only');
+							}
+							else {
+								body.classList.add('show-thumbnails');
+								
+								if(!evt.shiftKey || !evt.ctrlKey) {
+									body.classList.add('headers-only');
+								}
+		
+								body.addEventListener('click', function(evt) {
+									var slide = evt.target;
+									
+									while(slide && !slide.classList.contains('slide')) {
+										slide = slide.parentNode;
+									}
+									
+									if(slide) {
+										this.goto(slide.id);
+										setTimeout(function() { me.adjustFontSize(); }, 1000); // for Opera
+									}
+									
+									body.classList.remove('show-thumbnails');
+									body.classList.remove('headers-only');
+								}, false);
+							}
+							break;
+						case 74: // J
+							if(body.classList.contains('hide-elements')) {
+								body.classList.remove('hide-elements');
+							}
+							else {
+								body.classList.add('hide-elements');
+							}
+							break;
+						case 80: // P
+							// Open new window for attendee view
+							this.projector = open(location, 'projector');
+		
+							// Get the focus back
+							window.focus();
+							
+							// Switch this one to presenter view
+							body.classList.add('presenter');
+					}
+				}
+				break;
+			case 'keydown':
+				/**
+					Keyboard navigation
+					Home : First slide
+					End : Last slide
+					Space/Up/Right arrow : Next item/slide
+					Ctrl + Space/Up/Right arrow : Next slide
+					Down/Left arrow : Previous item/slide
+					Ctrl + Down/Left arrow : Previous slide 
+					(Shift instead of Ctrl works too)
+				*/
+				if(evt.target === body || evt.target === body.parentNode || evt.altKey) {
+					if(evt.keyCode >= 32 && evt.keyCode <= 40) {
+						evt.preventDefault();
+					}
+		
+					switch(evt.keyCode) {
+						case 33: //page up
+							this.previous();
+							break;
+						case 34: //page down
+							this.next();
+							break;
+						case 35: // end
+							this.end();
+							break;
+						case 36: // home
+							this.start();
+							break;
+						case 37: // <-
+						case 38: // up arrow
+							this.previous(evt.ctrlKey || evt.shiftKey);
+							break;
+						case 32: // space
+						case 39: // ->
+						case 40: // down arrow
+							this.next(evt.ctrlKey || evt.shiftKey);
+							break;
+					}
+				}
+				break;
+			case 'load':
+			case 'resize':
+				this.adjustFontSize();
+				break;
+			case 'hashchange':
+				this.goto(location.hash.substr(1) || 0);
+		}
+	},
+	
 	start: function() {
 		this.goto(0);
 	},
@@ -327,7 +331,7 @@ self.prototype = {
 		
 		// We have to remove it to prevent multiple calls to goto messing up
 		// our current item (and there's no point either, so we save on performance)
-		window.removeEventListener('hashchange', this.onhashchange, false);
+		window.removeEventListener('hashchange', this, false);
 		
 		var id;
 		
@@ -377,7 +381,7 @@ self.prototype = {
 		// We have to do it asynchronously
 		var me = this;
 		setTimeout(function() {
-			window.addEventListener('hashchange', me.onhashchange, false);
+			addEventListener('hashchange', me, false);
 		}, 1000);
 	},
 	
