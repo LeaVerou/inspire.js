@@ -187,21 +187,6 @@
 	transition:.5s;
 }
 
-/* Mark slides as incomplete to spot them easier */
-.incomplete.slide::after {
-	content: 'INCOMPLETE';
-	font-weight: bold;
-	position: absolute;
-	top: 40%;
-	left: 30%;
-	padding: .1em .4em 0;
-	border: .1em solid;
-	color: rgba(255, 0, 0, .8);
-	font-size: 140%;
-	border-radius: .2em;
-	transform: rotate(30deg);
-}
-
 /* Timer */
 
 #timer {
@@ -228,25 +213,6 @@
 
 #timer.end {
 	width: 100%;
-}
-
-/* Ribbon */
-[data-type].slide:not(.hide-ribbon):after {
-	content: attr(data-type);
-	position: fixed;
-	top: 0;
-	right: 0;
-	color: white;
-	font-size: 50%;
-	text-align: center;
-	text-transform: uppercase;
-	font-weight: bold;
-	background: hsl(40,100%,50%);
-	background-image: linear-gradient(rgba(255, 255, 255, .3), rgba(255, 255, 255, 0));
-	line-height: 1.6;
-	min-width: 20em;
-	box-shadow: 0 10px 5px -5px rgba(0,0,0,.3);
-	transform: rotate(45deg) translate(6em, -2em);
 }
 
 /* Presenter & projector views */
