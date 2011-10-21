@@ -92,8 +92,10 @@ var self = window.SlideShow = function(container, slide) {
 	};
 	window.addEventListener('hashchange', this.onhashchange, false);
 	
-	if(window.name === 'projector') {
+	if(window.name === 'projector' && window.opener && opener.slideshow) {
 		document.body.classList.add('projector');
+		this.presenter = opener.slideshow;
+		this.presenter.projector = this;
 	}
 	
 	// Adjust the font-size when the window is resized
@@ -264,12 +266,7 @@ self.prototype = {
 	},
 	
 	nextItem: function() {
-		// If there's no current, then just mark the first one as such
-		if(!this.item) {
-			this.items[this.item++].classList.add('current');
-		}
-		// Add .current to current item if it exists, otherwise advance to next slide
-		else if(this.item < this.items.length) {
+		if(this.item < this.items.length) {
 			this.gotoItem(++this.item);
 		}
 		else {
@@ -343,20 +340,7 @@ self.prototype = {
 			this.items = $$('.delayed, .delayed-children > *', this.slides[this.slide]);
 			this.item = 0;
 			
-			// Tell other windows
-			try {
-				if(this.projector && this.projector.slideshow && this.projector.slideshow.slide != this.slide) {
-					this.projector.slideshow.goto(this.slide);
-				}
-				
-				if(window.opener && opener.slideshow && opener.slideshow.slide != this.slide) {
-					opener.slideshow.goto(this.slide);
-				}
-			} catch(e) {
-				if(window.console && console.error) {
-					console.error(e);
-				}
-			}
+			this.projector && this.projector.goto(which);
 			
 			// Update next/previous
 			for (var i=this.slides.length; i--;) {
@@ -384,18 +368,22 @@ self.prototype = {
 		
 		var items = this.items, classes;
 		
-		for(var i=items.length; i--;) {
+		for(var i=items.length; i-- > 0;) {
 			classes = this.items[i].classList;
 			
 			classes.remove('current');
 			classes.remove('displayed');
 		}
 		
-		for(var i=this.item - 1; i--;) {
+		for(var i=this.item - 1; i-- > 0;) {
 			this.items[i].classList.add('displayed');
 		}
 		
-		this.items[this.item - 1].classList.add('current');
+		if(this.item > 0) {
+			this.items[this.item - 1].classList.add('current');
+		}
+		
+		this.projector && this.projector.gotoItem(which);
 	},
 	
 	adjustFontSize: function() {
