@@ -39,21 +39,26 @@ var self = window.SlideShow = function(container, slide) {
 	// Current .delayed item in the slide
 	this.item = 0;
 	
-	// Do we need to add a timer?
+	// Create timer, if needed
 	this.duration = container.getAttribute('data-duration');
 	
 	if(this.duration > 0) {
-		var timer = document.createElement('div'),
-		    declaration = 'transition: ' + this.duration * 60 + 's linear; ';
+		var timer = document.createElement('div');
 		    
 		timer.id = 'timer';
-		timer.setAttribute('style', '-moz-' + declaration + '-webkit-' + declaration + '-o-' + declaration + '-ms-' + declaration + declaration);
+		timer.setAttribute('style', PrefixFree.prefixCSS('transition: ' + this.duration * 60 + 's linear;'));
 		container.appendChild(timer);
 		
 		setTimeout(function() {
 			timer.className = 'end';
 		}, 1);
 	}
+	
+	// Create slide indicator
+	this.indicator = document.createElement('div');
+	
+	this.indicator.id = 'indicator';
+	container.appendChild(this.indicator);
 	
 	// Get the slide elements into an array
 	this.slides = $$('.slide', container);
@@ -358,6 +363,8 @@ self.prototype = {
 			
 			this.adjustFontSize();
 			
+			this.indicator.textContent = this.index;
+			
 			// Update items collection
 			this.items = $$('.delayed, .delayed-children > *', this.slides[this.slide]);
 			this.item = 0;
@@ -370,8 +377,8 @@ self.prototype = {
 				this.slides[i].classList.remove('next');
 			}
 			
-			this.slides.previous = this.slides[this.slide-1];
-			this.slides.next = this.slides[this.slide+1];
+			this.slides.previous = this.slides[this.order[this.index - 1]];
+			this.slides.next = this.slides[this.order[this.index + 1]];
 			
 			this.slides.previous && this.slides.previous.classList.add('previous');
 			this.slides.next && this.slides.next.classList.add('next');

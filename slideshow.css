@@ -28,7 +28,7 @@
  }
  
  .slide {
- 	visibility: hidden;
+	display: none;
  	position:absolute;
  	top:0;
  	right:0;
@@ -49,9 +49,8 @@
  
  .slide.previous,
  .slide:target,
- .slide:target + .slide, /* just in case, not really needed */
  .slide.next {
- 	visibility: visible;
+	display: block;
  }
  
  .slide:target {
@@ -65,8 +64,7 @@
 /**
 	Slide numbers
  */ 
-.slide:target::before {
-  	content: counter(slide);
+#indicator {
   	position: absolute;
   	top: .05in;
   	right: .5em;
