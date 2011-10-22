@@ -23,7 +23,6 @@
  }
  
  body {
- 	counter-reset: slide;
  	margin: 0;
  }
  
@@ -38,26 +37,19 @@
  	
  	font-size:250%;
  	line-height:1.6;
- 	 	
- 	opacity:0;
- 	height:0;
- 	width:0;
- 	overflow:hidden;
- 	
- 	counter-increment: slide;
  }
  
  .slide.previous,
  .slide:target,
  .slide.next {
 	display: block;
+	opacity:0;
+	overflow:hidden;
  }
  
  .slide:target {
  	z-index:100;
  	opacity:1;
- 	height:auto;
- 	width: auto;
  	overflow: visible;
 }
 
