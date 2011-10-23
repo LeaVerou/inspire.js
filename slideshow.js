@@ -118,20 +118,40 @@ var self = window.SlideShow = function(container, slide) {
 	document.addEventListener('keydown', this, false);
 	
 	// Rudimentary style[scoped] polyfill
-	var scoped = $$('style[scoped]', container);
-	
-	for(var i=scoped.length; i--;) {
-		var style = scoped[i],
-			rulez = style.sheet.cssRules,
+	$$('style[scoped]', container).forEach(function(style) {
+		var rulez = style.sheet.cssRules,
 			parentid = style.parentNode.id || self.getSlide(style).id;
 		
 		for(var j=rulez.length; j--;) {
-			var cssText = rulez[j].cssText.replace(/^|,/g, function($0) { return '#' + parentid + ' ' + $0 });
+			var cssText = rulez[j].cssText.replace(/^|,/g, function($0) {
+				return '#' + parentid + ' ' + $0
+			});
 
 			style.sheet.deleteRule(0);
 			style.sheet.insertRule(cssText, 0);
 		}
-	}
+	});
+	
+	// Process iframe slides
+	$$('.slide > iframe:only-child', container).forEach(function(iframe) {
+		var slide = iframe.parentNode,
+			h = document.createElement('h1'),
+			a = document.createElement('a'),
+			src = iframe.src || iframe.getAttribute('data-src');
+		
+		slide.classList.add('iframe');
+		slide.classList.add('dont-resize');
+			
+		var title = iframe.title || src.replace(/\/#?$/, '')
+						 .replace(/^\w+:\/\/w{0,3}\.?/, '');
+		
+		a.href = iframe.src;
+		a.target = '_blank';
+		a.textContent = title;
+		h.appendChild(a);
+		
+		slide.appendChild(h);
+	});
 }
 
 self.prototype = {

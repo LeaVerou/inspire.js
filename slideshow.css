@@ -98,6 +98,44 @@
 }
 
 /**
+	iframe slides
+ */
+.iframe.slide {
+	padding: 0;
+	text-align: center;
+} 
+
+	.iframe.slide > h1 {
+		position: absolute;
+		bottom: 0; right: 0; left: 0;
+		background: rgba(0,0,0,.5);
+		font-size: 100%;
+	}
+	
+		.iframe.slide > h1 > a {
+			display: inline-block;
+			padding: .2em .5em;
+			
+			color: white;
+			text-align: center;
+			text-decoration: none;
+			text-shadow: .05em .05em .1em black;
+		}
+	
+	.slide > iframe:only-of-type {
+		display: none;
+		position: absolute;
+		border: 0;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+	}
+	
+	.slide:target > iframe:only-of-type {
+		display: block;
+	}
+
+/**
 	Show thumbnails
  */
 
