@@ -10,7 +10,7 @@
 function $(expr, con) { return (con || document).querySelector(expr); }
 function $$(expr, con) { return [].slice.call((con || document).querySelectorAll(expr)); }
 
-(function(head, body){
+(function(head, body, html){
 
 // Check for classList support and include the polyfill if it's not supported
 if(!('classList' in body)) {
@@ -437,14 +437,14 @@ self.prototype = {
 	
 	adjustFontSize: function() {
 		// Cache long lookup chains, for performance
-		var bodyStyle = body.style,
-			scrollRoot = document[document.documentElement.scrollHeight? 'documentElement' : 'body'],
+		var htmlStyle = html.style,
+			scrollRoot = document[html.scrollHeight? 'documentElement' : 'body'],
 			innerHeight = window.innerHeight,
 			innerWidth = window.innerWidth,
 			slide = this.slides[this.slide];
 			
 		// Clear previous styles
-		bodyStyle.fontSize = '';
+		htmlStyle.fontSize = '';
 		
 		if(body.classList.contains('show-thumbnails') 
 			|| slide.classList.contains('dont-resize')) {
@@ -456,7 +456,7 @@ self.prototype = {
 			(scrollRoot.scrollHeight > innerHeight || scrollRoot.scrollWidth > innerWidth) && percent >= 35;
 			percent-=5
 		) {
-			bodyStyle.fontSize = percent + '%';
+			htmlStyle.fontSize = percent + '%';
 		}
 		
 		// Individual slide
@@ -471,7 +471,7 @@ self.prototype = {
 				(slide.scrollHeight > slide.clientHeight || slide.scrollWidth > slide.clientWidth) && percent >= 35;
 				percent--
 			) {
-				bodyStyle.fontSize = percent + '%';
+				htmlStyle.fontSize = percent + '%';
 			}
 			
 			slide.setAttribute('style', previousStyle);
@@ -505,4 +505,4 @@ self.getSlide = function(element) {
 	return slide;
 }
 
-})(document.head || document.getElementsByTagName('head')[0], document.body);
+})(document.head || document.getElementsByTagName('head')[0], document.body, document.documentElement);
