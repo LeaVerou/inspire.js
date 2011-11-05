@@ -114,5 +114,16 @@
 			display: block;
 			text-shadow: inherit;
 		}
-	
+		
+.slide[data-source]:after {
+	content: attr(data-source);
+	position: absolute;
+	bottom: 5px;
+	right: 10px;
+	color: white;
+	font-size: 15px;
+	text-shadow: 0 0 .1em black;
+	text-shadow: 0 0 .1em .1em black;
+}
+
 /* END Full image slides */
