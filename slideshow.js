@@ -140,12 +140,11 @@ var self = window.SlideShow = function(container, slide) {
 			src = iframe.src || iframe.getAttribute('data-src');
 		
 		slide.classList.add('iframe');
-		slide.classList.add('dont-resize');
 			
 		var title = iframe.title || src.replace(/\/#?$/, '')
 						 .replace(/^\w+:\/\/w{0,3}\.?/, '');
 		
-		a.href = iframe.src;
+		a.href = src;
 		a.target = '_blank';
 		a.textContent = title;
 		h.appendChild(a);
@@ -381,7 +380,16 @@ self.prototype = {
 		if(slide) { // Slide actually changed, perform any other tasks needed
 			document.title = slide.getAttribute('data-title') || documentTitle;
 			
-			this.adjustFontSize();
+			if(slide.classList.contains('iframe')) {
+				var iframe = $('iframe', slide), src;
+				
+				if(!iframe.hasAttribute('src') && (src = iframe.getAttribute('data-src'))) {
+					iframe.src = src;
+				}
+			}
+			else {
+				this.adjustFontSize();
+			}
 			
 			this.indicator.textContent = this.index + 1;
 			

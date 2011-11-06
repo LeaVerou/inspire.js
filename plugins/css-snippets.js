@@ -70,7 +70,7 @@ self.prototype = {
 		var supportedStyle = PrefixFree.prefixCSS(this.getCSS(), this.raw);
 		
 		if(this.raw) {
-			this.style.innerHTML = supportedStyle;
+			this.style.textContent = supportedStyle;
 		}
 		else {
 			var valid = CSSEdit.updateStyle(this.subjects, this.getCSS(), 'data-originalstyle');
