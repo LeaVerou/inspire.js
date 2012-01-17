@@ -23,15 +23,13 @@ if(!('classList' in body)) {
 // Cache <title> element, we may need it for slides that don't have titles
 var documentTitle = document.title + '';
 
-var self = window.SlideShow = function(container, slide) {
+var self = window.SlideShow = function(slide) {
 	var me = this;
 	
 	// Set instance
 	if(!window.slideshow) {
 		window.slideshow = this;
 	}
-	
-	this.container = container = container || body;
 	
 	// Current slide
 	this.index = this.slide = slide || 0;
@@ -40,14 +38,14 @@ var self = window.SlideShow = function(container, slide) {
 	this.item = 0;
 	
 	// Create timer, if needed
-	this.duration = container.getAttribute('data-duration');
+	this.duration = body.getAttribute('data-duration');
 	
 	if(this.duration > 0) {
 		var timer = document.createElement('div');
 		    
 		timer.id = 'timer';
 		timer.setAttribute('style', PrefixFree.prefixCSS('transition: ' + this.duration * 60 + 's linear;'));
-		container.appendChild(timer);
+		body.appendChild(timer);
 		
 		setTimeout(function() {
 			timer.className = 'end';
@@ -58,10 +56,10 @@ var self = window.SlideShow = function(container, slide) {
 	this.indicator = document.createElement('div');
 	
 	this.indicator.id = 'indicator';
-	container.appendChild(this.indicator);
+	body.appendChild(this.indicator);
 	
 	// Get the slide elements into an array
-	this.slides = $$('.slide', container);
+	this.slides = $$('.slide', body);
 	
 	// Order of the slides
 	this.order = [];
@@ -98,7 +96,7 @@ var self = window.SlideShow = function(container, slide) {
 	}
 	
 	if(window.name === 'projector' && window.opener && opener.slideshow) {
-		document.body.classList.add('projector');
+		body.classList.add('projector');
 		this.presenter = opener.slideshow;
 		this.presenter.projector = this;
 	}
@@ -117,23 +115,8 @@ var self = window.SlideShow = function(container, slide) {
 	document.addEventListener('keyup', this, false);
 	document.addEventListener('keydown', this, false);
 	
-	// Rudimentary style[scoped] polyfill
-	$$('style[scoped]', container).forEach(function(style) {
-		var rulez = style.sheet.cssRules,
-			parentid = style.parentNode.id || self.getSlide(style).id;
-		
-		for(var j=rulez.length; j--;) {
-			var cssText = rulez[j].cssText.replace(/^|,/g, function($0) {
-				return '#' + parentid + ' ' + $0
-			});
-
-			style.sheet.deleteRule(0);
-			style.sheet.insertRule(cssText, 0);
-		}
-	});
-	
 	// Process iframe slides
-	$$('.slide > iframe:only-child', container).forEach(function(iframe) {
+	$$('.slide > iframe:only-child').forEach(function(iframe) {
 		var slide = iframe.parentNode,
 			h = document.createElement('h1'),
 			a = document.createElement('a'),
@@ -151,7 +134,7 @@ var self = window.SlideShow = function(container, slide) {
 		
 		slide.appendChild(h);
 	});
-}
+};
 
 self.prototype = {
 	handleEvent: function(evt) {
@@ -343,7 +326,7 @@ self.prototype = {
 	},
 	
 	getSlideById: function(id) {
-		return $('.slide#' + id, this.container);
+		return $('.slide#' + id);
 	},
 	
 	/**
@@ -384,7 +367,7 @@ self.prototype = {
 				var iframe = $('iframe', slide), src;
 				
 				if(!iframe.hasAttribute('src') && (src = iframe.getAttribute('data-src'))) {
-					iframe.src = src;
+					iframe.setAttribute('src', src);
 				}
 			}
 			else {
@@ -446,7 +429,7 @@ self.prototype = {
 	adjustFontSize: function() {
 		// Cache long lookup chains, for performance
 		var htmlStyle = html.style,
-			scrollRoot = document[html.scrollHeight? 'documentElement' : 'body'],
+			scrollRoot = html.scrollHeight? html : body,
 			innerHeight = window.innerHeight,
 			innerWidth = window.innerWidth,
 			slide = this.slides[this.slide];
@@ -514,3 +497,21 @@ self.getSlide = function(element) {
 }
 
 })(document.head || document.getElementsByTagName('head')[0], document.body, document.documentElement);
+
+// Rudimentary style[scoped] polyfill
+setTimeout(function(){ // no idea why the timeout is needed
+	$$('style[scoped]').forEach(function(style) {
+		var rulez = style.sheet.cssRules,
+			parentid = style.parentNode.id || self.getSlide(style).id;
+		
+		for(var j=rulez.length; j--;) {
+			var cssText = rulez[j].cssText.replace(/^|,/g, function($0) {
+				return '#' + parentid + ' ' + $0
+			});
+			
+			style.sheet.deleteRule(j);
+			style.sheet.insertRule(cssText, j);
+		}
+		
+	});
+}, 1);
