@@ -514,4 +514,4 @@ setTimeout(function(){ // no idea why the timeout is needed
 		}
 		
 	});
-}, 1);
+}, 1000);

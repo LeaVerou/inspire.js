@@ -11,7 +11,7 @@
 .delayed,
 .delayed-children > * {
 	transition:1s;
-	transition-property: -webkit-transform, opacity, left, top, right, bottom;
+	transition-property: transform, opacity, left, top, right, bottom;
 }
  
 /**
@@ -144,9 +144,6 @@
 .presenter .slide.next {
 	width: 1024px;
 	height: 768px;
-	
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	
 	float: left;
