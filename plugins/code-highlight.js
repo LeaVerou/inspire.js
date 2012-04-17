@@ -6,11 +6,7 @@
 
 (function(){ 
 
-if(!document.body.insertAdjacentHTML) {
-	return;
-}
-
-var self = window.Highlight = {
+var _ = window.Highlight = {
 	languages: {
 		javascript: {
 			'comment': /(\/\*.*?\*\/)|\/\/.*?(\r?\n|$)/g, // TODO multiline support
@@ -19,6 +15,34 @@ var self = window.Highlight = {
 			'boolean': /\b(true|false)\b/g,
 			'number': /\b-?(0x)?\d*\.?\d+\b/g,
 			'regex': /\/.+?\/[gim]{0,3}/g
+		},
+		css: {
+			'comment': /\/\*[\w\W]*?\*\//g,
+			'url': /url\((?:'|")?(.+?)(?:'|")?\)/gi,
+			'atrule': /@[\w-]+?(\s+[^{]+)?(?=\s*{)/gi,
+			'selector': /[^\{\}\s][^\{\}]+(?=\s*\{)/g,
+			'property': /(\b|\B)[a-z-]+(?=\s*:)/ig,
+			'important': /\B!important\b/gi,
+			'ignore': /&(lt|gt|amp);/gi,
+			'punctuation': /[\{\};:]/g
+		},
+		html: {
+			'comment': /&lt;!--[\w\W]*?--(>|&gt;)/g,
+			'tag': {
+				'pattern': /(&lt;|<)\/?[\w\W]+?(>|&gt;)/gi,
+				'inside': {
+					'attr-value': {
+						'pattern': /[\w-]+=(('|").*?(\2)|[^\s>]+(?=>|&|\s))/gi,
+						'inside': {
+							'attr-name': /^[\w-]+(?==)/gi,
+							'punctuation': /=/g
+						}
+					},
+					'attr-name': /\s[\w-]+(?=\s)/gi,
+					'punctuation': /&lt;\/?|&gt;/g
+				}
+			},
+			'entity': /&amp;#?[\da-z]{1,8};/gi
 		}
 	},
 	
@@ -27,11 +51,11 @@ var self = window.Highlight = {
 	},
 	
 	init: function(code) {
-		if(!code || self.isInited(code)) {
+		if(!code || _.isInited(code)) {
 			return; // or should I rehighlight?
 		}
 		
-		var lang = self.languages[code.getAttribute('lang')];
+		var lang = _.languages[code.getAttribute('lang')];
 		
 		if(!lang) {
 			return;
@@ -39,32 +63,75 @@ var self = window.Highlight = {
 		
 		code.normalize();
 		
-		for(var token in lang) {
-			// Assumption: If there are other tags in the code, they don't cut a token in half
-			var textNodes = getTextNodes(code, function(node) {
-				var parent = node.parentNode;
-				return !(/span/i.test(parent.nodeName) && /^token\s/.test(parent.className));
-			});
+		var text = code.textContent
+					.replace(/&/g, '&amp;')
+					.replace(/</g, '&lt;')
+					.replace(/>/g, '&gt;')
+					.replace(/\u00a0/g, ' ');
+		
+		code.innerHTML = _.do(text, lang);
+		
+		code.setAttribute('data-highlighted', 'true');
+	},
+	
+	do: function(text, tokens) {
+		var strarr = [text];
+								
+		for(var token in tokens) {
+			var pattern = tokens[token], 
+				inside = pattern.inside;
+			pattern = pattern.pattern || pattern;
 			
-			for(var i=0; i<textNodes.length; i++) {
-				var oldNode = textNodes[i],
-					text = oldNode.nodeValue
-							.replace(/&/g, '&amp;')
-							.replace(/</g, '&lt;')
-							.replace(/>/g, '&gt;');
+			for(var i=0; i<strarr.length; i++) {
 				
+				var str = strarr[i];
 				
-				var newText = text.replace(lang[token], function($0) {
-					return '<span class="token ' + token + '">' + $0 + '</span>'
-				});
+				if(str.token) {
+					continue;
+				}
 				
-				if(newText !== text) {
-					replaceNodeWithHTML(oldNode, newText);
+				pattern.lastIndex = 0;
+				var match = pattern.exec(str);
+				
+				if(match) {
+					var to = pattern.lastIndex,
+						match = match[0],
+						len = match.length,
+						from = to - len,
+						before = str.slice(0, from),
+						after = str.slice(to); 
+					
+					
+					strarr.splice(i, 1);
+					
+					if(before) {
+						strarr.splice(i++, 0, before);
+					}
+					
+					var wrapped = 
+						new String(
+							_.wrap(
+								token,
+								inside && (before || after)? _.do(match, inside) : match
+							)
+						);
+					
+					wrapped.token = true;
+					strarr.splice(i, 0, wrapped);
+					
+					if(after) {
+						
+						strarr.splice(i+1, 0, after);
+					}
 				}
 			}
 		}
-		
-		code.setAttribute('data-highlighted', 'true');
+
+		return strarr.join('');
+	},
+	
+	wrap: function(token, content) {
+		return '<span class="token ' + token + (token === 'comment'? '" spellcheck="true' : '') + '">' + content + '</span>' 
 	},
 	
 	container: function(container) {
@@ -80,32 +147,9 @@ var self = window.Highlight = {
 	}
 }
 
-function getTextNodes(root, filter) {
-	var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, filter? {acceptNode: filter} : null, false),
-		node, textNodes = [];
-	
-	while(node = walker.nextNode()) {
-		textNodes.push(node);
-	}
-	
-	return textNodes;
-}
-
-function replaceNodeWithHTML(node, html) {
-	// Replace text node with element
-	var temp = document.createElement('div');
-	node.parentNode.replaceChild(temp, node);
-	
-	// Use insertAdjacentHTML to insert the new markup
-	temp.insertAdjacentHTML('beforeBegin', html);
-	
-	// Remove the element
-	temp.parentNode.removeChild(temp);
-}
-
 // Highlight current slide
 function highlightSlide() {
-	self.container(document.getElementById(location.hash.slice(1)));
+	_.container(document.getElementById(location.hash.slice(1)));
 }
 
 addEventListener('hashchange', highlightSlide, false);
