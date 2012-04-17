@@ -10,7 +10,7 @@
 .slide,
 .delayed,
 .delayed-children > * {
-	transition:1s;
+	transition:.5s;
 	transition-property: transform, opacity, left, top, right, bottom;
 }
  
