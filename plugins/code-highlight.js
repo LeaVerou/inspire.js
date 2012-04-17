@@ -14,7 +14,8 @@ var _ = window.Highlight = {
 			'keyword': /\b(var|let|if|else|while|do|for|return|in|instanceof|function|new|with|typeof|try|catch|finally)\b/g,
 			'boolean': /\b(true|false)\b/g,
 			'number': /\b-?(0x)?\d*\.?\d+\b/g,
-			'regex': /\/.+?\/[gim]{0,3}/g
+			'regex': /\/.+?\/[gim]{0,3}/g,
+			'punctuation': /[\{\}\[\];\(\),\.]/g
 		},
 		css: {
 			'comment': /\/\*[\w\W]*?\*\//g,
