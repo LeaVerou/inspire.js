@@ -11,7 +11,7 @@ var _ = window.Highlight = {
 		javascript: {
 			'comment': /(\/\*.*?\*\/)|\/\/.*?(\r?\n|$)/g, // TODO multiline support
 			'string': /(('|").*?(\2))/g, // used to be: /'.*?'|".*?"/g,
-			'keyword': /\b(var|let|if|else|while|do|for|return|in|instanceof|function|new|with|typeof)\b/g,
+			'keyword': /\b(var|let|if|else|while|do|for|return|in|instanceof|function|new|with|typeof|try|catch|finally)\b/g,
 			'boolean': /\b(true|false)\b/g,
 			'number': /\b-?(0x)?\d*\.?\d+\b/g,
 			'regex': /\/.+?\/[gim]{0,3}/g
