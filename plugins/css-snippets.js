@@ -31,6 +31,8 @@ var self = window.CSSSnippet = function(element) {
 				}
 			}, false);
 		}
+		
+		this.subjects = [element];
 	}
 	else {
 		
@@ -49,13 +51,41 @@ var self = window.CSSSnippet = function(element) {
 		
 		CSSEdit.elastic(this.textField);
 		
+		var supportsInput = 'oninput' in this.textField;
+		
 		this.textField.addEventListener('input', function() {
 			me.update();
-		}, false);
+		});
 		
-		this.textField.addEventListener('keyup', function() {
+		this.textField.addEventListener('keydown', function(evt) {
+			var code = evt.keyCode;
+
+			if(
+				(evt.metaKey || evt.ctrlKey) 
+				&& !evt.altKey 
+				&& [48, 61, 109, 187, 189].indexOf(code) > -1
+			  ) { // 0, +, -
+			  
+				var fontSize;
+	
+				if(code === 48) {
+					fontSize = 100;
+				}
+				else {
+					fontSize = (code == 61 || code == 187? 10 : -10) + (+this.getAttribute('data-size') || 100);
+				}
+				
+				evt.preventDefault();
+				
+				if(40 <= fontSize && fontSize <= 200) {
+					this.setAttribute('data-size', fontSize);
+				}
+				
+				return false;
+			}
+			
 			me.update();
-		}, false);
+		});
 		
 		this.update();
 	}
@@ -67,13 +97,16 @@ var self = window.CSSSnippet = function(element) {
 
 self.prototype = {
 	update: function() {
-		var supportedStyle = PrefixFree.prefixCSS(this.getCSS(), this.raw);
+		var code = this.getCSS(),
+		    raw = code.indexOf('{') > -1;
 		
-		if(this.raw) {
+		var supportedStyle = PrefixFree.prefixCSS(code, raw && this.raw);
+		
+		if(raw && this.raw) {
 			this.style.textContent = supportedStyle;
 		}
 		else {
-			var valid = CSSEdit.updateStyle(this.subjects, this.getCSS(), 'data-originalstyle');
+			var valid = CSSEdit.updateStyle(this.subjects, code, 'data-originalstyle');
 			
 			if(this.textField && this.textField.classList) {
 				this.textField.classList[valid? 'remove' : 'add']('error');
@@ -85,5 +118,14 @@ self.prototype = {
 		return this.textField ? this.textField.value : this.subjects[0].getAttribute('style');
 	}
 };
+
+var sizeStyles = '';
+for(var i=40; i<=200; i++) {
+	sizeStyles += '\r\ntextarea[data-size="' + i + '"] { font-size: ' + i + '%; }';
+}
+
+var style = document.createElement('style');
+style.textContent = sizeStyles;
+document.head.appendChild(style);
 
 })(document.head);

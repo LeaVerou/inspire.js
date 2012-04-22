@@ -118,21 +118,23 @@ var self = window.SlideShow = function(slide) {
 	// Process iframe slides
 	$$('.slide > iframe:only-child').forEach(function(iframe) {
 		var slide = iframe.parentNode,
-			h = document.createElement('h1'),
-			a = document.createElement('a'),
 			src = iframe.src || iframe.getAttribute('data-src');
 		
 		slide.classList.add('iframe');
+		
+		if(!slide.classList.contains('notitle')) {
+			var h = document.createElement('h1'),
+			    a = document.createElement('a'),
+			    title = iframe.title || src.replace(/\/#?$/, '')
+							 .replace(/^\w+:\/\/w{0,3}\.?/, '');
 			
-		var title = iframe.title || src.replace(/\/#?$/, '')
-						 .replace(/^\w+:\/\/w{0,3}\.?/, '');
-		
-		a.href = src;
-		a.target = '_blank';
-		a.textContent = title;
-		h.appendChild(a);
-		
-		slide.appendChild(h);
+			a.href = src;
+			a.target = '_blank';
+			a.textContent = title;
+			h.appendChild(a);
+			
+			slide.appendChild(h);
+		}
 	});
 };
 
@@ -499,19 +501,21 @@ self.getSlide = function(element) {
 })(document.head || document.getElementsByTagName('head')[0], document.body, document.documentElement);
 
 // Rudimentary style[scoped] polyfill
-setTimeout(function(){ // no idea why the timeout is needed
+addEventListener('load', function(){ // no idea why the timeout is needed
 	$$('style[scoped]').forEach(function(style) {
 		var rulez = style.sheet.cssRules,
-			parentid = style.parentNode.id || self.getSlide(style).id;
-		
+			parentid = style.parentNode.id || self.getSlide(style).id || style.parentNode.parentNode.id;
+
 		for(var j=rulez.length; j--;) {
-			var cssText = rulez[j].cssText.replace(/^|,/g, function($0) {
+			var selector = rulez[j].selectorText.replace(/^|,/g, function($0) {
 				return '#' + parentid + ' ' + $0
 			});
+			
+			var cssText = rulez[j].cssText.replace(/^.+?{/, selector + '{');
 			
 			style.sheet.deleteRule(j);
 			style.sheet.insertRule(cssText, j);
 		}
 		
 	});
-}, 1000);
+});

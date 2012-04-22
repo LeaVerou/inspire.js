@@ -120,6 +120,7 @@
 	position: absolute;
 	bottom: 5px;
 	right: 10px;
+	z-index: 100;
 	color: white;
 	font-size: 15px;
 	text-shadow: 0 0 .1em black;

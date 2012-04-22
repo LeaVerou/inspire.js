@@ -119,7 +119,7 @@
 			color: white;
 			text-align: center;
 			text-decoration: none;
-			text-shadow: .05em .05em .1em black;
+			text-shadow: 0 -.05em .05em black;
 		}
 	
 	.slide > iframe:only-of-type {

@@ -9,13 +9,14 @@
 var _ = window.Highlight = {
 	languages: {
 		javascript: {
-			'comment': /(\/\*.*?\*\/)|\/\/.*?(\r?\n|$)/g, // TODO multiline support
+			'comment': /(\/\*.*?\*\/)|\/\/.*?(\r?\n|$)/g,
 			'string': /(('|").*?(\2))/g, // used to be: /'.*?'|".*?"/g,
 			'keyword': /\b(var|let|if|else|while|do|for|return|in|instanceof|function|new|with|typeof|try|catch|finally)\b/g,
 			'boolean': /\b(true|false)\b/g,
 			'number': /\b-?(0x)?\d*\.?\d+\b/g,
 			'regex': /\/.+?\/[gim]{0,3}/g,
-			'punctuation': /[\{\}\[\];\(\),\.]/g
+			'operator': /([-+!=<>]|&lt;){1,3}/g,
+			'punctuation': /[{}[\];(),.]/g
 		},
 		css: {
 			'comment': /\/\*[\w\W]*?\*\//g,

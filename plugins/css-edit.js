@@ -22,8 +22,8 @@ var self = window.CSSEdit = {
 		for (var i=0; i<subjects.length; i++) {
 			var subject = subjects[i];
 			
-			subject.setAttribute('data-originalstyle', subject.getAttribute('style'));
-			subject.setAttribute('data-originalcssText', subject.style.cssText);
+			subject.setAttribute('data-originalstyle', subject.getAttribute('style') || '');
+			subject.setAttribute('data-originalcssText', subject.style.cssText || '');
 		}
 	},
 	
@@ -55,30 +55,33 @@ var self = window.CSSEdit = {
 	},
 	
 	updateStyle: function(subjects, code, originalAttribute) {
-		code = PrefixFree.prefixCSS(code.trim());
+		code = code? PrefixFree.prefixCSS(code.trim()) : '';
 		
-		if(code && self.isCSSValid(code)) {
+		if(!code || self.isCSSValid(code)) {
 			dummy.setAttribute('style', code);
 			
-			var appliedCode = dummy.style.cssText;
-			if(appliedCode.match(/\b[a-z-]+(?=:)/gi) === null) console.log('"' + appliedCode + '"');
-			var properties = appliedCode.match(/\b[a-z-]+(?=:)/gi), propRegex = [];
+			var appliedCode = dummy.style.cssText,
+			    properties = appliedCode.match(/\b[a-z-]+(?=:)/gi),
+			    propRegex = [];
 			
-			for(var i=0; i<properties.length; i++) {
-				properties[i] = self.util.camelCase(properties[i]);
+			if(code) {
+				for(var i=0; i<properties.length; i++) {
+					properties[i] = self.util.camelCase(properties[i]);
+				}
 			}
 			
 			for (var i=0; i<subjects.length; i++) {
 				var element = subjects[i],
-					prevStyle = subjects[i].getAttribute('style'),
-					style = prevStyle;
+					prevStyle = element.getAttribute('style');
 				
-				if(prevStyle && prevStyle !== 'null') {	
-					for(var j=0; j<properties.length; j++) {
-						element.style[properties[i]] = null;
+				if(prevStyle && prevStyle !== 'null') {
+					if(code) {
+						for(var j=0; j<properties.length; j++) {
+							element.style[properties[i]] = null;
+						}
 					}
 					
-					element.setAttribute('style', element.getAttribute(originalAttribute) + '; ' + code);
+					element.setAttribute('style', (element.getAttribute(originalAttribute) || '') + '; ' + code);
 				}
 				else {
 					element.setAttribute('style', code);
