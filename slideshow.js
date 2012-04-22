@@ -149,6 +149,8 @@ var self = window.SlideShow = function(slide) {
 
 self.prototype = {
 	handleEvent: function(evt) {
+		var me = this;
+		
 		switch(evt.type) {
 			/**
 				Keyboard navigation
@@ -184,12 +186,14 @@ self.prototype = {
 									}
 									
 									if(slide) {
-										this.goto(slide.id);
+										me.goto(slide.id);
 										setTimeout(function() { me.adjustFontSize(); }, 1000); // for Opera
 									}
 									
 									body.classList.remove('show-thumbnails');
 									body.classList.remove('headers-only');
+									
+									body.removeEventListener('click', arguments.callee);
 								}, false);
 							}
 							break;
