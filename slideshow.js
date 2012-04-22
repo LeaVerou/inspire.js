@@ -116,6 +116,15 @@ var self = window.SlideShow = function(slide) {
 	document.addEventListener('keydown', this, false);
 	
 	// Process iframe slides
+	$$('.slide[data-src]:empty').forEach(function(slide) {
+		var iframe = document.createElement('iframe');
+		
+		iframe.setAttribute('data-src', slide.getAttribute('data-src'));
+		slide.removeAttribute('data-src');
+		
+		slide.appendChild(iframe);
+	});
+	
 	$$('.slide > iframe:only-child').forEach(function(iframe) {
 		var slide = iframe.parentNode,
 			src = iframe.src || iframe.getAttribute('data-src');
