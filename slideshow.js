@@ -44,12 +44,16 @@ var self = window.SlideShow = function(slide) {
 		var timer = document.createElement('div');
 		    
 		timer.id = 'timer';
-		timer.setAttribute('style', PrefixFree.prefixCSS('transition: ' + this.duration * 60 + 's linear;'));
+		timer.setAttribute('style', PrefixFree.prefixCSS('transition-duration: ' + this.duration * 60 + 's;'));
 		body.appendChild(timer);
 		
-		setTimeout(function() {
+		addEventListener('load', function() {
 			timer.className = 'end';
-		}, 1);
+
+			setTimeout(function() {
+				timer.classList.add('overtime');
+			}, me.duration * 60000);
+		});
 	}
 	
 	// Create slide indicator
@@ -134,7 +138,7 @@ var self = window.SlideShow = function(slide) {
 		if(!slide.classList.contains('notitle')) {
 			var h = document.createElement('h1'),
 			    a = document.createElement('a'),
-			    title = iframe.title || src.replace(/\/#?$/, '')
+			    title = iframe.title || slide.title || slide.getAttribute('data-title') || src.replace(/\/#?$/, '')
 							 .replace(/^\w+:\/\/w{0,3}\.?/, '');
 			
 			a.href = src;
@@ -160,7 +164,7 @@ self.prototype = {
 				(Shift instead of Ctrl works too)
 			*/
 			case 'keyup':
-				if(evt.ctrlKey || evt.shiftKey) {
+				if((evt.ctrlKey || evt.shiftKey) && !evt.altKey) {
 					switch(evt.keyCode) {
 						case 71: // G
 							var slide = prompt('Which slide?');
@@ -228,7 +232,7 @@ self.prototype = {
 					Ctrl + Down/Left arrow : Previous slide 
 					(Shift instead of Ctrl works too)
 				*/
-				if(evt.target === body || evt.target === body.parentNode || evt.altKey) {
+				if((evt.target === body || evt.target === body.parentNode) && !evt.altKey) {
 					if(evt.keyCode >= 32 && evt.keyCode <= 40) {
 						evt.preventDefault();
 					}
@@ -481,6 +485,11 @@ self.prototype = {
 			}
 			
 			slide.setAttribute('style', previousStyle);
+		}
+
+		if(percent <= 35) {
+			// Something probably went wrong, so just give up altogether
+			htmlStyle.fontSize = '';
 		}
 	},
 	

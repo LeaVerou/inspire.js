@@ -224,17 +224,24 @@
 	overflow: hidden;
 	text-align: right;
 	box-sizing: border-box;
+	transition: linear;
 }
 
-#timer:before {
-	content: 'Progress ';
-	text-transform: uppercase;
-	color: white;
-	font-size: 9px;
-}
+	#timer:before {
+		content: 'Progress ';
+		text-transform: uppercase;
+		color: white;
+		font-size: 9px;
+	}
 
 #timer.end {
 	width: 100%;
+}
+
+#timer.end.overtime {
+	width: 0%;
+	left: auto;
+	right: 0;
 }
 
 /* Presenter & projector views */
