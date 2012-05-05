@@ -397,6 +397,9 @@ self.prototype = {
 			
 			// Update items collection
 			this.items = $$('.delayed, .delayed-children > *', this.slides[this.slide]);
+			this.items.sort(function(a, b){
+				return (a.getAttribute('data-index') || 0) - (b.getAttribute('data-index') || 0)
+			});
 			this.item = 0;
 			
 			this.projector && this.projector.goto(which);
