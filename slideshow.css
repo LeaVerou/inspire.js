@@ -11,7 +11,7 @@
 .delayed,
 .delayed-children > * {
 	transition:.5s;
-	transition-property: transform, opacity, left, top, right, bottom;
+	transition-property: transform, opacity, left, top, right, bottom, background;
 }
  
 /**
@@ -26,18 +26,18 @@
  	margin: 0;
  }
  
- .slide {
+.slide {
 	display: none;
- 	position:absolute;
- 	top:0;
- 	right:0;
- 	bottom:0;
- 	left:0;
- 	z-index:1;
- 	
- 	font-size:250%;
- 	line-height:1.6;
- }
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	z-index:1;
+	
+	font-size:250%;
+	line-height:1.6;
+}
  
  .slide.previous,
  .slide:target,
@@ -93,7 +93,10 @@
 .delayed.current,
 .delayed-children > .current,
 .delayed.displayed.non-dismissable,
-.delayed-children > .displayed.non-dismissable {
+.delayed-children > .displayed.non-dismissable, /* non-dismissable name is deprecated */
+.delayed.displayed.persistent,
+.delayed-children > .displayed.persistent,
+.delayed-children.persistent > .displayed {
 	opacity: 1;
 }
 
