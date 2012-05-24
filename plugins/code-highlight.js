@@ -10,12 +10,13 @@ var _ = window.Highlight = {
 	languages: {
 		javascript: {
 			'comment': /(\/\*.*?\*\/)|\/\/.*?(\r?\n|$)/g,
+			'regex': /\/(\\?.)+?\/[gim]{0,3}/g,
 			'string': /(('|").*?(\2))/g, // used to be: /'.*?'|".*?"/g,
-			'keyword': /\b(var|let|if|else|while|do|for|return|in|instanceof|function|new|with|typeof|try|catch|finally)\b/g,
+			'keyword': /\b(var|let|if|else|while|do|for|return|in|instanceof|function|new|with|typeof|try|catch|finally|null)\b/g,
 			'boolean': /\b(true|false)\b/g,
 			'number': /\b-?(0x)?\d*\.?\d+\b/g,
-			'regex': /\/.+?\/[gim]{0,3}/g,
 			'operator': /([-+!=<>]|&lt;){1,3}/g,
+			'ignore': /&(lt|gt|amp);/gi,
 			'punctuation': /[{}[\];(),.]/g
 		},
 		css: {
@@ -34,13 +35,13 @@ var _ = window.Highlight = {
 				'pattern': /(&lt;|<)\/?[\w\W]+?(>|&gt;)/gi,
 				'inside': {
 					'attr-value': {
-						'pattern': /[\w-]+=(('|").*?(\2)|[^\s>]+(?=>|&|\s))/gi,
+						'pattern': /[\w:-]+=(('|").*?(\2)|[^\s>]+(?=>|&|\s))/gi,
 						'inside': {
-							'attr-name': /^[\w-]+(?==)/gi,
+							'attr-name': /^[\w:-]+(?==)/gi,
 							'punctuation': /=/g
 						}
 					},
-					'attr-name': /\s[\w-]+(?=\s)/gi,
+					'attr-name': /\s[\w:-]+(?=\s)/gi,
 					'punctuation': /&lt;\/?|&gt;/g
 				}
 			},
