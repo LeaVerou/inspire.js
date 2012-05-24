@@ -53,6 +53,13 @@
 	background-color: black;
 }
 
+.image.slide:target {
+	display: flexbox;
+	display: flex;
+	flex-align: center;
+	flex-pack: center;
+}
+
 /* When you don't want to clip the image at all */
 .partial.image.slide {
 	background-size: contain;
@@ -73,13 +80,17 @@
 	background-position: center top;
 }
 
+.top-heavy.image.slide:target,
+.bottom-heavy.image.slide:target {
+	display: block;
+}
+
 	.image.slide > .caption,
 	.image.slide > h1:only-child {
-		position: absolute;
-		top: 50%;
-		right: 0;
-		left: 0;
-		margin-top: -.6em;
+		position: relative;
+		z-index: 1;
+		box-sizing: border-box;
+		width: 100%;
 		padding: .2em 0;
 		text-align: center;
 		font-size: 200%;
@@ -88,19 +99,19 @@
 		line-height: 1.2;
 		color: white;
 		background: rgba(0,0,0,.4);
-		text-shadow: .03em .03em .05em black;
+		text-shadow: 0 -.05em .1em black;
 		white-space: nowrap;
 	}
 	
 	.top-heavy.image.slide > .caption,
 	.top-heavy.image.slide > h1:only-child {
-		top: auto;
+		position: absolute;
+		left: 0; right: 0;
 		bottom: .5in;
 	}
 	
 	.bottom-heavy.image.slide > .caption,
 	.bottom-heavy.image.slide > h1:only-child {
-		position: static;
 		margin: .5in 0 0;
 	}
 	
