@@ -7,8 +7,8 @@
 /**
  * Make the environment a bit friendlier
  */
-//function $(expr, con) { return (con || document).querySelector(expr); }
-//function $$(expr, con) { return [].slice.call((con || document).querySelectorAll(expr)); }
+function $(expr, con) { return (con || document).querySelector(expr); }
+function $$(expr, con) { return [].slice.call((con || document).querySelectorAll(expr)); }
 
 (function(head, body, html){
 
