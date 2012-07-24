@@ -7,8 +7,8 @@
 /**
  * Make the environment a bit friendlier
  */
-function $(expr, con) { return (con || document).querySelector(expr); }
-function $$(expr, con) { return [].slice.call((con || document).querySelectorAll(expr)); }
+//function $(expr, con) { return (con || document).querySelector(expr); }
+//function $$(expr, con) { return [].slice.call((con || document).querySelectorAll(expr)); }
 
 (function(head, body, html){
 
@@ -148,6 +148,15 @@ var self = window.SlideShow = function(slide) {
 			
 			slide.appendChild(h);
 		}
+		else {
+			var b = document.createElement('button');
+			b.className = 'onscreen-nav next';
+			b.textContent = 'Next ▶';
+			b.type = 'button';
+			b.onclick = function() { me.next(); }
+			
+			slide.appendChild(b);
+		}
 	});
 };
 
@@ -164,7 +173,7 @@ self.prototype = {
 				(Shift instead of Ctrl works too)
 			*/
 			case 'keyup':
-				if((evt.ctrlKey || evt.shiftKey) && !evt.altKey) {
+				if((evt.ctrlKey || evt.shiftKey) && !evt.altKey && !/^(?:input|textarea)$/i.test(document.activeElement.nodeName)) {
 					switch(evt.keyCode) {
 						case 71: // G
 							var slide = prompt('Which slide?');

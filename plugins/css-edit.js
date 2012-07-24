@@ -55,7 +55,7 @@ var self = window.CSSEdit = {
 	},
 	
 	updateStyle: function(subjects, code, originalAttribute) {
-		code = code? PrefixFree.prefixCSS(code.trim()) : '';
+		code = code? StyleFix.fix(code.trim()) : '';
 		
 		if(!code || self.isCSSValid(code)) {
 			dummy.setAttribute('style', code);

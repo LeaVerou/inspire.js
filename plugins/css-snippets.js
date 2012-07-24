@@ -100,7 +100,7 @@ self.prototype = {
 		var code = this.getCSS(),
 		    raw = code.indexOf('{') > -1;
 		
-		var supportedStyle = PrefixFree.prefixCSS(code, raw && this.raw);
+		var supportedStyle = StyleFix.fix(code, raw && this.raw);
 		
 		if(raw && this.raw) {
 			this.style.textContent = supportedStyle;

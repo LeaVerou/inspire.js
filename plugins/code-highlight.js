@@ -42,7 +42,7 @@ var _ = window.Highlight = {
 						}
 					},
 					'attr-name': /\s[\w:-]+(?=\s)/gi,
-					'punctuation': /&lt;\/?|&gt;/g
+					'punctuation': /&lt;\/?|\/?&gt;/g
 				}
 			},
 			'entity': /&amp;#?[\da-z]{1,8};/gi
