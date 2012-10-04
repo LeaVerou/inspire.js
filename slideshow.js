@@ -96,7 +96,7 @@ var self = window.SlideShow = function(slide) {
                 body.removeEventListener('click', arguments.callee);
             }, false);
         }
-    }
+    };
 
 	// Order of the slides
 	this.order = [];
@@ -186,7 +186,7 @@ var self = window.SlideShow = function(slide) {
 			b.className = 'onscreen-nav next';
 			b.textContent = 'Next ▶';
 			b.type = 'button';
-			b.onclick = function() { me.next(); }
+			b.onclick = function() { me.next(); };
 
 			slide.appendChild(b);
 		}
@@ -195,7 +195,6 @@ var self = window.SlideShow = function(slide) {
 
 self.prototype = {
 	handleEvent: function(evt) {
-		var me = this;
 
 		// Prevent script from hijacking the user’s navigation
 		if (evt.metaKey && evt.keyCode) {
@@ -215,10 +214,10 @@ self.prototype = {
 					switch(evt.keyCode) {
 						case 71: // G
 							var slide = prompt('Which slide?');
-							me.goto(+slide? slide - 1 : slide);
+							this.goto(+slide? slide - 1 : slide);
 							break;
 						case 72: // H
-						    me.overview(evt);
+							this.overview(evt);
 							break;
 						case 74: // J
 							if(body.classList.contains('hide-elements')) {
@@ -379,12 +378,10 @@ self.prototype = {
 		// our current item (and there's no point either, so we save on performance)
 		window.removeEventListener('hashchange', this, false);
 
-		var id;
-
 		if(which + 0 === which && which in this.slides) {
 			// Argument is a valid slide number
 			this.index = which;
-			this.slide = this.order[which]
+			this.slide = this.order[which];
 
 			slide = this.slides[this.slide];
 
@@ -418,7 +415,7 @@ self.prototype = {
 			// Update items collection
 			this.items = $$('.delayed, .delayed-children > *', this.slides[this.slide]);
 			this.items.sort(function(a, b){
-				return (a.getAttribute('data-index') || 0) - (b.getAttribute('data-index') || 0)
+				return (a.getAttribute('data-index') || 0) - (b.getAttribute('data-index') || 0);
 			});
 			this.item = 0;
 
@@ -547,7 +544,7 @@ self.getSlide = function(element) {
 	}
 
 	return slide;
-}
+};
 
 })(document.head || document.getElementsByTagName('head')[0], document.body, document.documentElement);
 
@@ -559,7 +556,7 @@ addEventListener('load', function(){ // no idea why the timeout is needed
 
 		for(var j=rulez.length; j--;) {
 			var selector = rulez[j].selectorText.replace(/^|,/g, function($0) {
-				return '#' + parentid + ' ' + $0
+				return '#' + parentid + ' ' + $0;
 			});
 
 			var cssText = rulez[j].cssText.replace(/^.+?{/, selector + '{');
