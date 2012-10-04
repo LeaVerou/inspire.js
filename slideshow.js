@@ -152,6 +152,11 @@ var self = window.SlideShow = function(slide) {
 	document.addEventListener('keyup', this, false);
 	document.addEventListener('keydown', this, false);
 
+	document.addEventListener('touchstart', this, false);
+	document.addEventListener('touchmove', this, false);
+	document.addEventListener('touchend', this, false);
+	document.addEventListener('touchcancel', this, false);
+
 	// Process iframe slides
 	$$('.slide[data-src]:empty').forEach(function(slide) {
 		var iframe = document.createElement('iframe');
@@ -192,6 +197,11 @@ var self = window.SlideShow = function(slide) {
 		}
 	});
 };
+
+var horizontalDistanceThreshold = 30,  // Swipe horizontal displacement must be more than this.
+    verticalDistanceThreshold   = 75,  // Swipe vertical displacement must be less than this.
+		startTouch,
+		stopTouch;
 
 self.prototype = {
 	handleEvent: function(evt) {
@@ -279,6 +289,29 @@ self.prototype = {
 							break;
 					}
 				}
+				break;
+			case 'touchstart':
+				evt.preventDefault();  // prevent image drag
+				data = evt.touches ? evt.touches[0] : evt;
+				startTouch = { X: data.pageX, Y: data.pageY };
+				break;
+			case 'touchmove':
+				data = evt.touches ? evt.touches[0] : evt;
+				stopTouch = { X: data.pageX, Y: data.pageY };
+				break;
+			case 'touchend':
+				if (!startTouch || !stopTouch) break;
+				if (Math.abs(startTouch.X - stopTouch.X) < horizontalDistanceThreshold) break;
+				if (Math.abs(startTouch.Y - stopTouch.Y) > verticalDistanceThreshold) break;
+				if (startTouch.X > stopTouch.X) {
+					this.previous();
+				} else {
+					this.next();
+				}
+				startTouch = stopTouch = null;
+				break;
+			case 'touchcancel':
+				startTouch = stopTouch = null;
 				break;
 			case 'load':
 			case 'resize':
