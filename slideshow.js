@@ -241,7 +241,7 @@ self.prototype = {
 					Ctrl + Down/Left arrow : Previous slide 
 					(Shift instead of Ctrl works too)
 				*/
-				if((evt.target === body || evt.target === body.parentNode) && !evt.altKey) {
+				if(evt.target === body || evt.target === body.parentNode || evt.metaKey && evt.altKey) {
 					if(evt.keyCode >= 32 && evt.keyCode <= 40) {
 						evt.preventDefault();
 					}
@@ -304,9 +304,10 @@ self.prototype = {
 			// Mark all items as not displayed, if there are any
 			if(this.items.length) {	
 				for (var i=0; i<this.items.length; i++) {
-					if(this.items[i].classList) {
-						this.items[i].classList.remove('displayed');
-						this.items[i].classList.remove('current');
+					var classes = this.items[i].classList;
+					if(classes) {
+						classes.remove('displayed');
+						classes.remove('current');
 					}
 				}
 			}

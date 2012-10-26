@@ -107,7 +107,7 @@
 	.top-heavy.image.slide > .caption,
 	.top-heavy.image.slide > h1:only-child,
 	.top-heavy.image.slide > hgroup:only-child {
-		position: absolute;
+		position: fixed;
 		left: 0; right: 0;
 		bottom: .5in;
 	}
