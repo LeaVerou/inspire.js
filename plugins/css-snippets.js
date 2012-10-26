@@ -10,37 +10,10 @@
 var self = window.CSSSnippet = function(element) {
 	var me = this;
 	
-	this.raw = element.hasAttribute('data-raw');
+	// this holds the elements the CSS is gonna be applied to
+	this.subjects = CSSEdit.getSubjects(element);
 	
-	if(this.raw) {
-		this.style = document.createElement('style');
-		
-		if(window.SlideShow) {
-			this.slide = SlideShow.getSlide(element);
-			
-			if(location.hash == '#' + me.slide.id) {
-				this.style = head.appendChild(this.style);
-			}
-			
-			// Remove it after we're done with it, to save on resources
-			addEventListener('hashchange', function() {
-				var appended = !!me.style.parentNode;
-				
-				if(location.hash == '#' + me.slide.id != appended) {
-					me.style = head[(appended? 'remove' : 'append') + 'Child'](me.style);
-				}
-			}, false);
-		}
-		
-		this.subjects = [element];
-	}
-	else {
-		
-		// this holds the elements the CSS is gonna be applied to
-		this.subjects = CSSEdit.getSubjects(element);
-		
-		CSSEdit.setupSubjects(this.subjects);
-	}
+	CSSEdit.setupSubjects(this.subjects);
 
 	// Test if its text field first
 	if(/^(input|textarea)$/i.test(element.nodeName)) {
@@ -86,11 +59,28 @@ var self = window.CSSSnippet = function(element) {
 			
 			me.update();
 		});
+	}
+	
+	this.raw = this.getCSS().indexOf('{') > -1;
+	
+	if (window.SlideShow) {
+		this.slide = SlideShow.getSlide(element);
 		
-		this.update();
+		// Remove it after we're done with it, to save on resources
+		addEventListener('hashchange', function() {
+			if(location.hash == '#' + me.slide.id) {
+				me.update();
+			}
+			else if(me.raw) {
+				head.removeChild(me.style);
+			}
+		}, false);
+		
+		if(location.hash == '#' + me.slide.id) {
+			this.update();
+		}
 	}
 	else {
-		// Update style, only once
 		this.update();
 	}
 }
@@ -98,11 +88,31 @@ var self = window.CSSSnippet = function(element) {
 self.prototype = {
 	update: function() {
 		var code = this.getCSS(),
-		    raw = code.indexOf('{') > -1;
+		    previousRaw = this.raw;
 		
-		var supportedStyle = StyleFix.fix(code, raw && this.raw);
+		this.raw = code.indexOf('{') > -1;
 		
-		if(raw && this.raw) {
+		var supportedStyle = StyleFix.fix(code, this.raw);
+		
+		if (previousRaw != this.raw) {
+			if (previousRaw && !this.raw) {
+				head.removeChild(this.style);
+			}
+			else {
+				this.textField.classList.remove('error');
+				CSSEdit.updateStyle(this.subjects, '', 'data-originalstyle');
+			}
+		}
+		
+		if (this.raw) {
+			if (!this.style) {
+				this.style = document.createElement('style');
+			}
+			
+			if (!this.style.parentNode) {
+				head.appendChild(this.style);
+			}
+			
 			this.style.textContent = supportedStyle;
 		}
 		else {
