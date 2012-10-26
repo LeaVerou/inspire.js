@@ -64,6 +64,39 @@ var self = window.SlideShow = function(slide) {
 	
 	// Get the slide elements into an array
 	this.slides = $$('.slide', body);
+
+	// Get the overview
+	this.overview = function(evt) {
+        if(body.classList.contains('show-thumbnails')) {
+            body.classList.remove('show-thumbnails');
+            body.classList.remove('headers-only');
+        }
+        else {
+            body.classList.add('show-thumbnails');
+            
+            if(evt && (!evt.shiftKey || !evt.ctrlKey)) {
+                body.classList.add('headers-only');
+            }
+
+            body.addEventListener('click', function(evt) {
+                var slide = evt.target;
+                
+                while(slide && !slide.classList.contains('slide')) {
+                    slide = slide.parentNode;
+                }
+                
+                if(slide) {
+                    me.goto(slide.id);
+                    setTimeout(function() { me.adjustFontSize(); }, 1000); // for Opera
+                }
+                
+                body.classList.remove('show-thumbnails');
+                body.classList.remove('headers-only');
+                
+                body.removeEventListener('click', arguments.callee);
+            }, false);
+        }
+    }
 	
 	// Order of the slides
 	this.order = [];
@@ -180,35 +213,7 @@ self.prototype = {
 							me.goto(+slide? slide - 1 : slide);
 							break;
 						case 72: // H
-							if(body.classList.contains('show-thumbnails')) {
-								body.classList.remove('show-thumbnails');
-								body.classList.remove('headers-only');
-							}
-							else {
-								body.classList.add('show-thumbnails');
-								
-								if(!evt.shiftKey || !evt.ctrlKey) {
-									body.classList.add('headers-only');
-								}
-		
-								body.addEventListener('click', function(evt) {
-									var slide = evt.target;
-									
-									while(slide && !slide.classList.contains('slide')) {
-										slide = slide.parentNode;
-									}
-									
-									if(slide) {
-										me.goto(slide.id);
-										setTimeout(function() { me.adjustFontSize(); }, 1000); // for Opera
-									}
-									
-									body.classList.remove('show-thumbnails');
-									body.classList.remove('headers-only');
-									
-									body.removeEventListener('click', arguments.callee);
-								}, false);
-							}
+						    me.overview(evt);
 							break;
 						case 74: // J
 							if(body.classList.contains('hide-elements')) {
