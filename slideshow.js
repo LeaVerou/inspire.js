@@ -198,8 +198,8 @@ var self = window.SlideShow = function(slide) {
 	});
 };
 
-var horizontalDistanceThreshold = 30,  // Swipe horizontal displacement must be more than this.
-    verticalDistanceThreshold   = 75,  // Swipe vertical displacement must be less than this.
+var horizontalDistanceThreshold = 20,  // Swipe horizontal displacement must be more than this.
+    verticalDistanceThreshold   = 80,  // Swipe vertical displacement must be less than this.
 		startTouch,
 		stopTouch;
 
