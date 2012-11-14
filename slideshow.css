@@ -11,9 +11,9 @@
 .delayed,
 .delayed-children > * {
 	transition:.5s;
-	transition-property: transform, opacity, left, top, right, bottom, background;
+	transition-property: all;
 }
- 
+
 /**
  * Styles
  */
@@ -37,6 +37,8 @@
 	
 	font-size:250%;
 	line-height:1.6;
+	
+	opacity: 1;
 }
  
  .slide.previous,
@@ -45,6 +47,8 @@
 	display: block;
 	visibility: hidden;
 	overflow:hidden;
+	
+	opacity: 0;
  }
  
  .slide:target {
@@ -84,11 +88,13 @@
 .delayed,
 .delayed-children > * {
 	opacity: 0;
+	transform: translateX(20px);
 }
 
 .delayed.displayed,
 .delayed-children > .displayed {
 	opacity: .3;
+	transform: translateX(0);
 }
 
 .delayed.current,
@@ -99,6 +105,7 @@
 .delayed-children > .displayed.persistent,
 .delayed-children.persistent > .displayed {
 	opacity: 1;
+	transform: translateX(0);
 }
 
 /**
