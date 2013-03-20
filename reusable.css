@@ -51,6 +51,7 @@
 	background-position: center;
 	background-repeat: no-repeat;
 	background-color: black;
+	image-rendering: crisp-edges;
 }
 
 /* When you don't want to clip the image at all */

@@ -172,7 +172,7 @@ var self = window.SlideShow = function(slide) {
 			var h = document.createElement('h1'),
 			    a = document.createElement('a'),
 			    title = iframe.title || slide.title || slide.getAttribute('data-title') || src.replace(/\/#?$/, '')
-							 .replace(/^\w+:\/\/w{0,3}\.?/, '');
+							 .replace(/^\w+:\/\/(www\.)?/, '');
 			
 			a.href = src;
 			a.target = '_blank';
@@ -418,18 +418,24 @@ self.prototype = {
 			this.item = 0;
 			
 			this.projector && this.projector.goto(which);
-			
+
 			// Update next/previous
-			for (var i=this.slides.length; i--;) {
-				this.slides[i].classList.remove('previous');
-				this.slides[i].classList.remove('next');
-			}
+			var previousPrevious = this.slides.previous,
+			    previousNext = this.slides.next;
 			
 			this.slides.previous = this.slides[this.order[this.index - 1]];
 			this.slides.next = this.slides[this.order[this.index + 1]];
 			
 			this.slides.previous && this.slides.previous.classList.add('previous');
 			this.slides.next && this.slides.next.classList.add('next');
+			
+			if (previousPrevious && previousPrevious != this.slides.previous) {
+				previousPrevious.classList.remove('previous');
+			}
+			
+			if (previousNext && previousNext != this.slides.next) {
+				previousNext.classList.remove('next');
+			}
 		}
 		
 		// If you attach the listener immediately again then it will catch the event
