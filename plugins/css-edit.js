@@ -29,16 +29,22 @@ var self = window.CSSEdit = {
 	
 	getSubjects: function(element) {
 		var selector = element.getAttribute('data-subject'),
-			subjects;
+			subjects,
+			scoped = element.hasAttribute('data-scoped');
 		
-		if(selector) {
+		if (scoped) {
+			var slideId = SlideShow.getSlide(element.parentNode).id;
+			selector = '#' + slideId + ' ' + selector;
+		}
+		
+		if (selector) {
 			subjects = self.util.toArray(document.querySelectorAll(selector)) || [];
 		}
 		else {
 			subjects = element.hasAttribute('data-subject')? [element] : [];
 		}
 		
-		if(/^(input|textarea)$/i.test(element.nodeName)) {
+		if (/^(input|textarea)$/i.test(element.nodeName)) {
 			// If no subject specified, it will be the slide
 			if(!subjects.length) {
 				// Find containing slide
