@@ -197,6 +197,11 @@ self.prototype = {
 	handleEvent: function(evt) {
 		var me = this;
 
+		// Prevent script from hijacking the user’s navigation
+		if (evt.metaKey && evt.keyCode) {
+			return true;
+		}
+
 		switch(evt.type) {
 			/**
 				Keyboard navigation
