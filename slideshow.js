@@ -20,6 +20,21 @@ if(!('classList' in body)) {
 	thisScript.parentNode.insertBefore(script, thisScript);
 }
 
+// http://ichuan.net/post/52/stable-sort-of-javascript-array/
+Array.prototype.stableSort = function (fn) {
+  if (!fn) {
+    return this.sort();
+  }
+  var newArr = this.map(function (i, j) { return {i:i, j:j}; });
+  return newArr.sort(function (a, b) {
+    result = fn(a.i, b.i);
+    if (result === 0) {
+      return a.j - b.j;
+    }
+    return result;
+  }).map(function (i) { return i.i; });
+};
+
 // Cache <title> element, we may need it for slides that don't have titles
 var documentTitle = document.title + '';
 
@@ -469,6 +484,15 @@ self.prototype = {
 
 		if(this.item > 0) {
 			this.items[this.item - 1].classList.add('current');
+
+      // support for nested lists
+      for (var i = this.item - 1, cur = this.items[i], j; i > 0; i--) {
+        j = this.items[i - 1];
+        if (j.contains(cur)) {
+          j.classList.remove('displayed');
+          j.classList.add('current');
+        }
+      }
 		}
 
 		this.projector && this.projector.gotoItem(which);
