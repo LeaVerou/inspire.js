@@ -20,14 +20,14 @@ var _ = window.Incrementable = function(textField, multiplier, units) {
 				+textField.getAttribute('data-step') || 1;
 
 	this.multiplier = multiplier || function(evt) {
-		if(evt.shiftKey) { return 10; }
+		if (evt.shiftKey) { return 10; }
 		
-		if(evt.ctrlKey) { return .1; }
+		if (evt.ctrlKey) { return .1; }
 		
 		return 1;
 	}
 
-	if(units) {
+	if (units) {
 		this.units = units;
 	}
 	
@@ -36,17 +36,19 @@ var _ = window.Incrementable = function(textField, multiplier, units) {
 	this.textField.addEventListener('keydown', function(evt) {
 		var multiplier = me.multiplier(evt);
 		
-		if(multiplier && (evt.keyCode == 38 || evt.keyCode == 40)) {
+		if (multiplier && (evt.keyCode == 38 || evt.keyCode == 40)) {
 			me.changed = false;
 			
 			// Up or down arrow pressed, check if there's something
 			// increment/decrement-able where the caret is
-			var caret = this.selectionStart, text = this.value,
-				regex = new RegExp('^([\\s\\S]{0,' + caret + '}[^-0-9\\.])(-?[0-9]*(?:\\.?[0-9]+)(?:' + me.units + '))\\b', 'i'),
-				property = 'value' in this? 'value' : 'textContent';
+			var caret = this.selectionStart,
+			    text = this.value,
+			    regex = new RegExp('^([\\s\\S]{0,' + caret + '}[^-0-9\\.])?(-?[0-9]*(?:\\.?[0-9]+)(?:' + me.units + '))\\b', 'i'),
+			    property = 'value' in this? 'value' : 'textContent';
 			
 			this[property] = this[property].replace(regex, function($0, $1, $2) {
-				if($1.length <= caret && $1.length + $2.length >= caret) {
+				$1 = $1 || '';
+				if ($1.length <= caret && $1.length + $2.length >= caret) {
 					me.changed = true;
 					var stepValue = me.stepValue($2, evt.keyCode == 40, multiplier);
 					caret = caret + (stepValue.length - $2.length);
@@ -57,17 +59,24 @@ var _ = window.Incrementable = function(textField, multiplier, units) {
 				}
 			});
 
-			if(me.changed) {
+			if (me.changed) {
 				this.setSelectionRange(caret, caret);
 				
 				evt.preventDefault();
 				evt.stopPropagation();
+				
+				// Fire input event
+				var evt = document.createEvent("HTMLEvents");
+				
+				evt.initEvent('input', true, true );
+		
+				this.dispatchEvent(evt);
 			}
 		}
 	}, false);
 
 	this.textField.addEventListener('keypress', function(evt) {
-		if(me.changed && (evt.keyCode == 38 || evt.keyCode == 40))
+		if (me.changed && (evt.keyCode == 38 || evt.keyCode == 40))
 			evt.preventDefault();
 			evt.stopPropagation();
 			me.changed = false;
@@ -93,7 +102,7 @@ _.prototype = {
 		return newVal + length.replace(/^-|[0-9]+|\./g, '');
 	},
 
-	units: '|%|deg|px|r?em|ex|ch|in|cm|mm|pt|pc|vmin|vw|vh|gd|m?s'
+	units: '|%|deg|px|r?em|ex|ch|in|cm|mm|pt|pc|vmin|vmax|vw|vh|gd|m?s'
 };
 
 function precision(number) {

@@ -133,7 +133,9 @@ var self = window.CSSEdit = {
 		adjustHeight: function(textarea) {
 			textarea.rows = textarea.value.split(/\r\n?|\n/).length;
 			
-			textarea.style.fontSize = Math.min(100, Math.max(100 - textarea.rows * 5, 65)) + '%';
+			if (!textarea.classList.contains('dont-font-resize')) {
+				textarea.style.fontSize = Math.min(100, Math.max(100 - textarea.rows * 5, 65)) + '%';
+			}
 		}
 	}
  };

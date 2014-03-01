@@ -7,7 +7,7 @@
 /**
  * Make the environment a bit friendlier
  */
-function $(expr, con) { return (con || document).querySelector(expr); }
+function $(expr, con) { return typeof expr === 'string'? (con || document).querySelector(expr) : expr; }
 function $$(expr, con) { return [].slice.call((con || document).querySelectorAll(expr)); }
 
 (function(head, body, html){
@@ -130,6 +130,34 @@ var self = window.SlideShow = function(slide) {
 			imported = imp? this.getSlideById(imp) : null;
 		
 		this.order.push(imported? +imported.getAttribute('data-index') : i);
+		
+		// [data-steps] can be used to define steps (applied through the data-step
+		// property), used in CSS to go through multiple states for an element
+		var stepped = $$('[data-steps]', slide);
+		
+		if (slide.hasAttribute('data-steps')) {
+			stepped.push(slide);
+		}
+		
+		stepped.forEach(function(element) {
+			var steps = +element.getAttribute('data-steps');
+			element.removeAttribute('data-step');
+			
+			for(var i=0; i<steps; i++) {
+				var dummy = document.createElement('span');
+				dummy.style.display = 'none';
+				dummy.className = 'delayed dummy';
+				dummy.dummyFor = element;
+				dummy.dummyIndex = i+1;
+				
+				if (element === slide) {
+					slide.appendChild(dummy);
+				}
+				else {
+					element.parentNode.insertBefore(dummy, element);
+				}
+			}
+		});
 	}
 	
 	if(window.name === 'projector' && window.opener && opener.slideshow) {
@@ -451,19 +479,29 @@ self.prototype = {
 		
 		var items = this.items, classes;
 		
-		for(var i=items.length; i-- > 0;) {
-			classes = this.items[i].classList;
+		for (var i=items.length; i-- > 0;) {
+			classes = items[i].classList;
 			
 			classes.remove('current');
 			classes.remove('displayed');
+			
+			if (classes.contains('dummy') && items[i].dummyFor) {
+				items[i].dummyFor.removeAttribute('data-step');
+			}
 		}
 		
-		for(var i=this.item - 1; i-- > 0;) {
-			this.items[i].classList.add('displayed');
+		for (var i=this.item - 1; i-- > 0;) {
+			items[i].classList.add('displayed');
 		}
 		
-		if(this.item > 0) {
-			this.items[this.item - 1].classList.add('current');
+		if (this.item > 0) { // this.item can be zero, at which point no items are current
+			var item = items[this.item - 1];
+			
+			item.classList.add('current');
+			
+			if (item.classList.contains('dummy') && item.dummyFor) {
+				item.dummyFor.setAttribute('data-step', item.dummyIndex);
+			}
 		}
 		
 		this.projector && this.projector.gotoItem(which);
