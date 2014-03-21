@@ -1,7 +1,7 @@
 /**
  * CSSS javascript code
- * @author Lea Verou (http://leaverou.me)
- * @version 2.0
+ * @author Lea Verou (http://lea.verou.me)
+ * @version 2.1
  */
 
 /**
@@ -61,6 +61,38 @@ var self = window.SlideShow = function(slide) {
 
 	this.indicator.id = 'indicator';
 	body.appendChild(this.indicator);
+	
+	// Add on screen navigation
+	var onscreen = document.createElement('nav');
+	onscreen.id = 'onscreen-nav';
+	
+	var prev = document.createElement('button');
+	prev.className = 'onscreen-nav prev';
+	prev.textContent = '◀';
+	prev.type = 'button';
+	prev.onclick = function() { me.previous(); }
+	
+	var next = document.createElement('button');
+	next.className = 'onscreen-nav next';
+	next.textContent = 'Next ▶';
+	next.type = 'button';
+	next.onclick = function() { me.next(); }
+
+	onscreen.appendChild(prev);
+	onscreen.appendChild(next);
+	onscreen.style.display = 'none';
+	document.body.appendChild(onscreen);
+	
+	// Expand multiple imported slides
+	$$('.slide[data-base][data-src*=" "]').forEach(function(slide) {
+		var hashes = slide.getAttribute('data-src').split(/\s+/).forEach(function (hash) {
+			var s = slide.cloneNode(true);
+			s.setAttribute('data-src', hash);
+			slide.parentNode.insertBefore(s, slide);
+		});
+		
+		slide.parentNode.removeChild(slide);
+	});
 
 	// Get the slide elements into an array
 	this.slides = $$('.slide', body);
@@ -97,11 +129,34 @@ var self = window.SlideShow = function(slide) {
             }, false);
         }
     }
+    
+    // Process iframe slides
+	$$('.slide[data-src]:not([data-base]):empty').forEach(function(slide) {
+		var iframe = document.createElement('iframe');
+
+		iframe.setAttribute('data-src', slide.getAttribute('data-src'));
+		slide.removeAttribute('data-src');
+
+		slide.appendChild(iframe);
+	});
+
+	$$('.slide > iframe:only-child').forEach(function(iframe) {
+		var slide = iframe.parentNode,
+			src = iframe.src || iframe.getAttribute('data-src');
+
+		slide.classList.add('iframe');
+
+		if(!slide.classList.contains('notitle')) {
+			addTitle(slide, src, iframe.title);
+		}
+		
+		slide.classList.add('onscreen-nav');
+	});
 
 	// Order of the slides
 	this.order = [];
 
-	for(var i=0; i<this.slides.length; i++) {
+	for (var i=0; i<this.slides.length; i++) {
 		var slide = this.slides[i]; // to speed up references
 
 		// Asign ids to slides that don't have one
@@ -179,46 +234,51 @@ var self = window.SlideShow = function(slide) {
 
 	document.addEventListener('keyup', this, false);
 	document.addEventListener('keydown', this, false);
-
-	// Process iframe slides
-	$$('.slide[data-src]:empty').forEach(function(slide) {
-		var iframe = document.createElement('iframe');
-
-		iframe.setAttribute('data-src', slide.getAttribute('data-src'));
-		slide.removeAttribute('data-src');
-
-		slide.appendChild(iframe);
-	});
-
-	$$('.slide > iframe:only-child').forEach(function(iframe) {
-		var slide = iframe.parentNode,
-			src = iframe.src || iframe.getAttribute('data-src');
-
-		slide.classList.add('iframe');
-
-		if(!slide.classList.contains('notitle')) {
-			var h = document.createElement('h1'),
-			    a = document.createElement('a'),
-			    title = iframe.title || slide.title || slide.getAttribute('data-title') || src.replace(/\/#?$/, '')
-							 .replace(/^\w+:\/\/(www\.)?/, '');
-
-			a.href = src;
-			a.target = '_blank';
-			a.textContent = title;
-			h.appendChild(a);
-
-			slide.appendChild(h);
+	
+	$$('link[rel~="csss-import"]').forEach(function (link) {
+		var url = link.href;
+		var id = link.id;
+		var slides = $$('.slide[data-base="' + id + '"][data-src^="#"]');
+		var isSlideshow = link.rel.indexOf('slides') > -1;
+		
+		if (slides.length) {
+			var iframe = document.createElement('iframe');
+			var hash = slides[0].getAttribute('data-src');
+			iframe.className = 'csss-import';
+			iframe.src = url + hash;
+			
+			document.body.insertBefore(iframe, document.body.firstChild);
+			
+			// Process the rest of the slides, which should use the same iframe
+			slides.forEach(function (slide) {
+				var hash = slide.getAttribute('data-src');
+				
+				slide.classList.add('dont-resize');
+				
+				this.onSlide(slide.id, function () {
+					onscreen.style.display = '';
+					
+					iframe.src = iframe.src.replace(/#.+$/, hash);
+					iframe.className = 'csss-import show';
+				});
+			}, this);
 		}
-		else {
-			var b = document.createElement('button');
-			b.className = 'onscreen-nav next';
-			b.textContent = 'Next ▶';
-			b.type = 'button';
-			b.onclick = function() { me.next(); }
+	}, this);
+	
+	function addTitle(slide, url, title) {
+		var h = document.createElement('h1'),
+		    a = document.createElement('a');
+		
+		title = title || slide.title || slide.getAttribute('data-title') ||
+		            url.replace(/\/#?$/, '').replace(/^\w+:\/\/(www\.)?/, '');
 
-			slide.appendChild(b);
-		}
-	});
+		a.href = url;
+		a.target = '_blank';
+		a.textContent = title;
+		h.appendChild(a);
+
+		slide.appendChild(h);
+	}
 };
 
 self.prototype = {
@@ -409,7 +469,7 @@ self.prototype = {
 
 		var id;
 
-		if(which + 0 === which && which in this.slides) {
+		if (which + 0 === which && which in this.slides) {
 			// Argument is a valid slide number
 			this.index = which;
 			this.slide = this.order[which]
@@ -418,7 +478,7 @@ self.prototype = {
 
 			location.hash = '#' + slide.id;
 		}
-		else if(which + '' === which) { // Argument is a slide id
+		else if (which + '' === which) { // Argument is a slide id
 			slide = this.getSlideById(which);
 
 			if(slide) {
@@ -427,19 +487,24 @@ self.prototype = {
 			}
 		}
 
-		if(slide) { // Slide actually changed, perform any other tasks needed
+		if (slide) { // Slide actually changed, perform any other tasks needed
 			document.title = slide.getAttribute('data-title') || documentTitle;
 
-			if(slide.classList.contains('iframe')) {
+			if (slide.classList.contains('iframe')) {
 				var iframe = $('iframe', slide), src;
 
-				if(!iframe.hasAttribute('src') && (src = iframe.getAttribute('data-src'))) {
+				if(iframe && !iframe.hasAttribute('src') && (src = iframe.getAttribute('data-src'))) {
 					iframe.setAttribute('src', src);
 				}
 			}
 			else {
 				this.adjustFontSize();
 			}
+			
+			$('#onscreen-nav').style.display = slide.classList.contains('onscreen-nav')? '' : 'none';
+			
+			// Hide iframes from CSSS imports
+			$$('iframe.csss-import').forEach(function (iframe) { iframe.classList.remove('show'); });
 
 			this.indicator.textContent = this.index + 1;
 
@@ -564,11 +629,38 @@ self.prototype = {
 	onCurrent: function(element) {
 		var slide = self.getSlide(element);
 
-		if(slide) {
+		if (slide) {
 			return '#' + slide.id === location.hash;
 		}
 
 		return false;
+	},
+	
+	onSlide: function(id, callback, once) {
+		var me = this;
+		
+		id = (id.indexOf('#') !== 0? '#' : '') + id;
+		
+		var fired = false;
+		
+		if (id == location.hash) {
+			callback.call(this.slides[this.slide]);
+			fired = true;
+		}
+		
+		if (!fired || !once) {
+			addEventListener('hashchange', function() {
+				if (id == location.hash) {
+					callback.call(me.slides[me.slide]);
+					fired = true;
+					
+					if (once) {
+						removeEventListener('hashchange', arguments.callee);
+					}
+				}
+				
+			});
+		}
 	}
 };
 

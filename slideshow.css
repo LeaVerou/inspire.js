@@ -75,6 +75,50 @@
   	border-radius: 999px;
 }
 
+/**
+ 	On-screen navigation
+ */
+#onscreen-nav {
+	z-index: 1010;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 0 1em 1em;
+	font-size: 150%;
+	opacity: 0;
+	transition: 1s opacity;
+}
+
+#onscreen-nav:hover {
+	opacity: 1;
+}
+
+	#onscreen-nav:not(:hover) button {
+		margin-top: -1.5em;
+		pointer-events: none;
+	}
+	
+	button.onscreen-nav {
+		float: right;
+		padding: .2em .5em;
+		border: 0;
+		border-radius: .3em;
+		background: rgba(0,0,0,.5);
+		color: white;
+		text-shadow: 0 -.05em .05em black;
+		text-transform: uppercase;
+		cursor: pointer;
+	}
+	
+	button.onscreen-nav:hover {
+		background: black;
+	}
+	
+	button.onscreen-nav.prev {
+		float: left;
+	}
+
 /* If there's nothing selected, show the first */
 .slide:first-child {
 	z-index:2;
@@ -99,23 +143,6 @@
 .delayed-children > .displayed.persistent,
 .delayed-children.persistent > .displayed {
 	opacity: 1;
-}
-
-/**
- 	On-screen navigation
- */
-
-button.onscreen-nav {
-	position: absolute;
-	bottom: 1em;
-	right: 1em;
-	padding: .2em .4em;
-	border: 0;
-	border-radius: .3em;
-	background: rgba(0,0,0,.5);
-	color: white;
-	text-shadow: 0 -.05em .05em black;
-	text-transform: uppercase;
 }
 
 /**
@@ -144,7 +171,8 @@ button.onscreen-nav {
 			text-shadow: 0 -.05em .05em black;
 		}
 	
-	.slide > iframe:only-of-type {
+	.slide > iframe:only-of-type,
+	iframe.csss-import {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -153,6 +181,20 @@ button.onscreen-nav {
 		height: 100%;
 		margin: 0;
 	}
+
+iframe.csss-import {
+	
+}
+
+iframe.csss-import:not(.show) {
+	z-index: -1;
+	visibility: hidden;
+}
+
+iframe.csss-import.show {
+	visibility: visible;
+	z-index: 101;
+}
 
 /**
 	Show thumbnails

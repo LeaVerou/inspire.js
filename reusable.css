@@ -87,6 +87,7 @@
 		box-sizing: border-box;
 		width: 100%;
 		padding: .2em 0;
+		margin: 0;
 		margin-top: 300px;
 		margin-top: calc(384px - 1em);
 		margin-top: calc(50vh - 1em);
