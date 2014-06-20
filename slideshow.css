@@ -90,6 +90,12 @@
 	transition: 1s opacity;
 }
 
+@media (-webkit-min-device-pixel-ratio: 2) {
+	#onscreen-nav {
+		opacity: 1;
+	}
+}
+
 #onscreen-nav:hover {
 	opacity: 1;
 }

@@ -23,7 +23,7 @@ if(!('classList' in body)) {
 // Cache <title> element, we may need it for slides that don't have titles
 var documentTitle = document.title + '';
 
-var self = window.SlideShow = function(slide) {
+var _ = window.SlideShow = function(slide) {
 	var me = this;
 
 	// Set instance
@@ -152,6 +152,8 @@ var self = window.SlideShow = function(slide) {
 		
 		slide.classList.add('onscreen-nav');
 	});
+	
+	this.isIpad = navigator.userAgent.indexOf('iPad;') > -1;
 
 	// Order of the slides
 	this.order = [];
@@ -281,7 +283,7 @@ var self = window.SlideShow = function(slide) {
 	}
 };
 
-self.prototype = {
+_.prototype = {
 	handleEvent: function(evt) {
 		var me = this;
 
@@ -501,7 +503,7 @@ self.prototype = {
 				this.adjustFontSize();
 			}
 			
-			$('#onscreen-nav').style.display = slide.classList.contains('onscreen-nav')? '' : 'none';
+			$('#onscreen-nav').style.display = this.isIpad || slide.classList.contains('onscreen-nav')? '' : 'none';
 			
 			// Hide iframes from CSSS imports
 			$$('iframe.csss-import').forEach(function (iframe) { iframe.classList.remove('show'); });
@@ -627,7 +629,7 @@ self.prototype = {
 
 	// Is the element on the current slide?
 	onCurrent: function(element) {
-		var slide = self.getSlide(element);
+		var slide = _.getSlide(element);
 
 		if (slide) {
 			return '#' + slide.id === location.hash;
@@ -669,7 +671,7 @@ self.prototype = {
  **********************************************/
 
 // Helper method for plugins
-self.getSlide = function(element) {
+_.getSlide = function(element) {
 	var slide = element;
 
 	while (slide && slide.classList && !slide.classList.contains('slide')) {
@@ -682,21 +684,25 @@ self.getSlide = function(element) {
 })(document.head || document.getElementsByTagName('head')[0], document.body, document.documentElement);
 
 // Rudimentary style[scoped] polyfill
-addEventListener('load', function(){ // no idea why the timeout is needed
-	$$('style[scoped]').forEach(function(style) {
-		var rulez = style.sheet.cssRules,
-			parentid = style.parentNode.id || self.getSlide(style).id || style.parentNode.parentNode.id;
-
-		for(var j=rulez.length; j--;) {
-			var selector = rulez[j].selectorText.replace(/^|,/g, function($0) {
-				return '#' + parentid + ' ' + $0
-			});
-
-			var cssText = rulez[j].cssText.replace(/^.+?{/, selector + '{');
-
-			style.sheet.deleteRule(j);
-			style.sheet.insertRule(cssText, j);
-		}
-
+if (!('scoped' in document.createElement('style'))) {
+	addEventListener('load', function(){ // no idea why the timeout is needed
+		$$('style[scoped]').forEach(function(style) {
+			var rulez = style.sheet.cssRules,
+				parentid = style.parentNode.id || SlideShow.getSlide(style).id || style.parentNode.parentNode.id;
+	
+			for(var j=rulez.length; j--;) {
+				var selector = rulez[j].selectorText.replace(/^|,/g, function($0) {
+					return '#' + parentid + ' ' + $0
+				});
+	
+				var cssText = rulez[j].cssText.replace(/^.+?{/, selector + '{');
+	
+				style.sheet.deleteRule(j);
+				style.sheet.insertRule(cssText, j);
+			}
+			
+			style.removeAttribute('scoped');
+			style.setAttribute('data-scoped', '');
+		});
 	});
-});
+}
