@@ -10,7 +10,7 @@ var dummy = document.createElement('div');
  
 var self = window.CSSEdit = {
 	isCSSValid: function(code) {
-		var declarationCount = code.split(':').length - 1;
+		var declarationCount = (code.match(/(?!data:|https?:|blob:)\b[a-z-]+:/gi) || []).length - 1;
 			
 		dummy.removeAttribute('style');
 		dummy.setAttribute('style', code);
@@ -31,14 +31,15 @@ var self = window.CSSEdit = {
 		var selector = element.getAttribute('data-subject'),
 			subjects,
 			scoped = element.hasAttribute('data-scoped');
+		var slide = SlideShow.getSlide(element.parentNode);
 		
 		if (scoped) {
-			var slideId = SlideShow.getSlide(element.parentNode).id;
+			var slideId = slide.id;
 			selector = '#' + slideId + ' ' + selector;
 		}
 		
 		if (selector) {
-			subjects = self.util.toArray(document.querySelectorAll(selector)) || [];
+			subjects = self.util.toArray(slide.querySelectorAll(selector)) || [];
 		}
 		else {
 			subjects = element.hasAttribute('data-subject')? [element] : [];
@@ -48,14 +49,16 @@ var self = window.CSSEdit = {
 			// If no subject specified, it will be the slide
 			if(!subjects.length) {
 				// Find containing slide
-				var slide = SlideShow.getSlide(element.parentNode);
-				
 				subjects = [slide? slide : element];
 			}
 		}
 		else {
 			subjects.unshift(element);
 		}
+
+		subjects.forEach(function(subject){
+			subject.classList.add("subject");
+		});
 		
 		return subjects;
 	},

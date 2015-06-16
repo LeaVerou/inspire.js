@@ -102,7 +102,7 @@ _.prototype = {
 		return newVal + length.replace(/^-|[0-9]+|\./g, '');
 	},
 
-	units: '|%|deg|px|r?em|ex|ch|in|cm|mm|pt|pc|vmin|vmax|vw|vh|gd|m?s'
+	units: '|%|deg|turn|px|r?em|ex|ch|in|cm|mm|pt|pc|vmin|vmax|vw|vh|gd|m?s'
 };
 
 function precision(number) {
