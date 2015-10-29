@@ -71,7 +71,7 @@ var self = window.CSSSnippet = function(element) {
 			if(location.hash == '#' + me.slide.id) {
 				me.update();
 			}
-			else if(me.raw && me.style) {
+			else if(me.raw && me.style && me.style.parentNode) {
 				head.removeChild(me.style);
 			}
 		}, false);

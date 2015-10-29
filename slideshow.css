@@ -35,8 +35,14 @@
 	left:0;
 	z-index:1;
 	
-	font-size:250%;
-	line-height:1.6;
+	font-size: 250%;
+	line-height: 1.6;
+}
+
+@media (max-width: 1024px) {
+	.slide {
+		font-size: 195%;
+	}
 }
  
  .slide.previous,
@@ -48,8 +54,8 @@
  }
  
  .slide:target {
- 	z-index:100;
- 	opacity:1;
+ 	z-index: 100;
+ 	opacity: 1;
  	visibility: visible;
  	overflow: visible;
 }
