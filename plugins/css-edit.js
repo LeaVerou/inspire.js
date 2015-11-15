@@ -10,7 +10,7 @@ var dummy = document.createElement('div');
  
 var self = window.CSSEdit = {
 	isCSSValid: function(code) {
-		var declarationCount = (code.match(/(?!data:|https?:|blob:)\b[a-z-]+:/gi) || []).length - 1;
+		var declarationCount = (code.match(/(?!data:|https?:|blob:)\b[a-z-]+:/gi) || []).length;
 			
 		dummy.removeAttribute('style');
 		dummy.setAttribute('style', code);
