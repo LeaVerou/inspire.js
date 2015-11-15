@@ -17,13 +17,8 @@ var self = window.CSSControl = function(control) {
 	
 	CSSEdit.setupSubjects(control);
 	
-	control.addEventListener('input', function() {
-		me.update();
-	}, false);
-	
-	control.addEventListener('change', function() {
-		me.update();
-	}, false);
+	control.addEventListener('input', this.update.bind(this));
+	control.addEventListener('change', this.update.bind(this));
 	
 	this.update();
 };

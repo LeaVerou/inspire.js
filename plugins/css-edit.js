@@ -45,16 +45,13 @@ var self = window.CSSEdit = {
 			subjects = element.hasAttribute('data-subject')? [element] : [];
 		}
 		
-		if (/^(input|textarea)$/i.test(element.nodeName)) {
-			// If no subject specified, it will be the slide
-			if(!subjects.length) {
-				// Find containing slide
-				subjects = [slide? slide : element];
-			}
+		
+		// If no subject specified, it will be the slide
+		if(!subjects.length) {
+			// Find containing slide
+			subjects = [slide? slide : element];
 		}
-		else {
-			subjects.unshift(element);
-		}
+		
 
 		subjects.forEach(function(subject){
 			subject.classList.add("subject");
