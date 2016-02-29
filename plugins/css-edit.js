@@ -31,7 +31,7 @@ var self = window.CSSEdit = {
 		var selector = element.getAttribute('data-subject'),
 			subjects,
 			scoped = element.hasAttribute('data-scoped');
-		var slide = SlideShow.getSlide(element.parentNode) : document.body;
+		var slide = window.SlideShow? SlideShow.getSlide(element.parentNode) : document.body;
 		
 		if (scoped && slide.id) {
 			var slideId = slide.id;
