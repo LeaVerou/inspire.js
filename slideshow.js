@@ -76,17 +76,17 @@ var _ = window.SlideShow = function(slide) {
 
 	this.indicator.id = 'indicator';
 	body.appendChild(this.indicator);
-	
+
 	// Add on screen navigation
 	var onscreen = document.createElement('nav');
 	onscreen.id = 'onscreen-nav';
-	
+
 	var prev = document.createElement('button');
 	prev.className = 'onscreen-nav prev';
 	prev.textContent = '◀';
 	prev.type = 'button';
 	prev.onclick = function() { me.previous(); }
-	
+
 	var next = document.createElement('button');
 	next.className = 'onscreen-nav next';
 	next.textContent = 'Next ▶';
@@ -97,7 +97,7 @@ var _ = window.SlideShow = function(slide) {
 	onscreen.appendChild(next);
 	onscreen.style.display = 'none';
 	document.body.appendChild(onscreen);
-	
+
 	// Expand multiple imported slides
 	$$('.slide[data-base][data-src*=" "]').forEach(function(slide) {
 		var hashes = slide.getAttribute('data-src').split(/\s+/).forEach(function (hash) {
@@ -105,7 +105,7 @@ var _ = window.SlideShow = function(slide) {
 			s.setAttribute('data-src', hash);
 			slide.parentNode.insertBefore(s, slide);
 		});
-		
+
 		slide.parentNode.removeChild(slide);
 	});
 
@@ -144,7 +144,7 @@ var _ = window.SlideShow = function(slide) {
             }, false);
         }
     }
-    
+
     // Process iframe slides
 	$$('.slide[data-src]:not([data-base]):empty').forEach(function(slide) {
 		var iframe = document.createElement('iframe');
@@ -153,21 +153,18 @@ var _ = window.SlideShow = function(slide) {
 		slide.removeAttribute('data-src');
 
 		slide.appendChild(iframe);
-	});
 
-	$$('.slide > iframe:only-child').forEach(function(iframe) {
-		var slide = iframe.parentNode,
-			src = iframe.src || iframe.getAttribute('data-src');
+		var src = iframe.src || iframe.getAttribute('data-src');
 
 		slide.classList.add('iframe');
 
 		if(!slide.classList.contains('notitle')) {
 			addTitle(slide, src, iframe.title);
 		}
-		
+
 		slide.classList.add('onscreen-nav');
 	});
-	
+
 	this.isIpad = navigator.userAgent.indexOf('iPad;') > -1;
 
 	// Order of the slides
@@ -200,28 +197,28 @@ var _ = window.SlideShow = function(slide) {
 
 		var imp = slide.getAttribute('data-import'),
 			imported = imp? this.getSlideById(imp) : null;
-		
+
 		this.order.push(imported? +imported.getAttribute('data-index') : i);
-		
+
 		// [data-steps] can be used to define steps (applied through the data-step
 		// property), used in CSS to go through multiple states for an element
 		var stepped = $$('[data-steps]', slide);
-		
+
 		if (slide.hasAttribute('data-steps')) {
 			stepped.push(slide);
 		}
-		
+
 		stepped.forEach(function(element) {
 			var steps = +element.getAttribute('data-steps');
 			element.removeAttribute('data-step');
-			
+
 			for(var i=0; i<steps; i++) {
 				var dummy = document.createElement('span');
 				dummy.style.display = 'none';
 				dummy.className = 'delayed dummy';
 				dummy.dummyFor = element;
 				dummy.dummyIndex = i+1;
-				
+
 				if (element === slide) {
 					slide.appendChild(dummy);
 				}
@@ -251,41 +248,41 @@ var _ = window.SlideShow = function(slide) {
 
 	document.addEventListener('keyup', this, false);
 	document.addEventListener('keydown', this, false);
-	
+
 	$$('link[rel~="csss-import"]').forEach(function (link) {
 		var url = link.href;
 		var id = link.id;
 		var slides = $$('.slide[data-base="' + id + '"][data-src^="#"]');
 		var isSlideshow = link.rel.indexOf('slides') > -1;
-		
+
 		if (slides.length) {
 			var iframe = document.createElement('iframe');
 			var hash = slides[0].getAttribute('data-src');
 			iframe.className = 'csss-import';
 			iframe.src = url + hash;
-			
+
 			document.body.insertBefore(iframe, document.body.firstChild);
-			
+
 			// Process the rest of the slides, which should use the same iframe
 			slides.forEach(function (slide) {
 				var hash = slide.getAttribute('data-src');
-				
+
 				slide.classList.add('dont-resize');
-				
+
 				this.onSlide(slide.id, function () {
 					onscreen.style.display = '';
-					
+
 					iframe.src = iframe.src.replace(/#.+$/, hash);
 					iframe.className = 'csss-import show';
 				});
 			}, this);
 		}
 	}, this);
-	
+
 	function addTitle(slide, url, title) {
 		var h = document.createElement('h1'),
 		    a = document.createElement('a');
-		
+
 		title = title || slide.title || slide.getAttribute('data-title') ||
 		            url.replace(/\/#?$/, '').replace(/^\w+:\/\/(www\.)?/, '');
 
@@ -491,7 +488,7 @@ _.prototype = {
 			this.index = which;
 			this.slide = this.order[which]
 
-			slide = this.slides[this.slide];
+			slide = this.currentSlide;
 
 			location.hash = '#' + slide.id;
 		}
@@ -517,16 +514,16 @@ _.prototype = {
 			else {
 				this.adjustFontSize();
 			}
-			
+
 			$('#onscreen-nav').style.display = this.isIpad || slide.classList.contains('onscreen-nav')? '' : 'none';
-			
+
 			// Hide iframes from CSSS imports
 			$$('iframe.csss-import').forEach(function (iframe) { iframe.classList.remove('show'); });
 
 			this.indicator.textContent = this.index + 1;
 
 			// Update items collection
-			this.items = $$('.delayed, .delayed-children > *', this.slides[this.slide]);
+			this.items = $$('.delayed, .delayed-children > *', this.currentSlide);
 			this.items.stableSort(function(a, b){
 				return (a.getAttribute('data-index') || 0) - (b.getAttribute('data-index') || 0)
 			});
@@ -551,6 +548,10 @@ _.prototype = {
 			if (previousNext && previousNext != this.slides.next) {
 				previousNext.classList.remove('next');
 			}
+
+			slide.dispatchEvent(new CustomEvent("slidechange", {
+				"bubbles": true
+			}));
 		}
 
 		// If you attach the listener immediately again then it will catch the event
@@ -571,19 +572,19 @@ _.prototype = {
 
 			classes.remove('current');
 			classes.remove('displayed');
-			
+
 			if (classes.contains('dummy') && items[i].dummyFor) {
 				items[i].dummyFor.removeAttribute('data-step');
 			}
 		}
-		
+
 		for (var i=this.item - 1; i-- > 0;) {
 			items[i].classList.add('displayed');
 		}
-		
+
 		if (this.item > 0) { // this.item can be zero, at which point no items are current
 			var item = items[this.item - 1];
-			
+
 			item.classList.add('current');
 
             // support for nested lists
@@ -594,7 +595,7 @@ _.prototype = {
                 j.classList.add('current');
               }
             }
-			
+
 			if (item.classList.contains('dummy') && item.dummyFor) {
 				item.dummyFor.setAttribute('data-step', item.dummyIndex);
 			}
@@ -609,7 +610,7 @@ _.prototype = {
 			scrollRoot = html.scrollHeight? html : body,
 			innerHeight = window.innerHeight,
 			innerWidth = window.innerWidth,
-			slide = this.slides[this.slide];
+			slide = this.currentSlide;
 
 		// Clear previous styles
 		htmlStyle.fontSize = '';
@@ -651,6 +652,11 @@ _.prototype = {
 		}
 	},
 
+	// Get current slide as an element
+	get currentSlide() {
+		return this.slides[this.slide];
+	},
+
 	// Is the element on the current slide?
 	onCurrent: function(element) {
 		var slide = _.getSlide(element);
@@ -661,30 +667,30 @@ _.prototype = {
 
 		return false;
 	},
-	
+
 	onSlide: function(id, callback, once) {
 		var me = this;
-		
+
 		id = (id.indexOf('#') !== 0? '#' : '') + id;
-		
+
 		var fired = false;
-		
+
 		if (id == location.hash) {
-			callback.call(this.slides[this.slide]);
+			callback.call(this.currentSlide);
 			fired = true;
 		}
-		
+
 		if (!fired || !once) {
 			addEventListener('hashchange', function() {
 				if (id == location.hash) {
 					callback.call(me.slides[me.slide]);
 					fired = true;
-					
+
 					if (once) {
 						removeEventListener('hashchange', arguments.callee);
 					}
 				}
-				
+
 			});
 		}
 	}
@@ -696,37 +702,26 @@ _.prototype = {
 
 // Helper method for plugins
 _.getSlide = function(element) {
-	var slide = element;
+	return element.closest(".slide");
+}
 
-	while (slide && slide.classList && !slide.classList.contains('slide')) {
-		slide = slide.parentNode;
-	}
+// Account for scoped style inside slides
+if (!('scoped' in document.createElement('style'))) {
+	document.documentElement.addEventListener("slidechange", function(evt) {
+		var slide = evt.target;
 
-	return slide;
+		$$(".slide:not(target) style[data-slide]").forEach(function(style) {
+			if (style._media === undefined) {
+				style._media = style.media;
+			}
+
+			style.media = "not all";
+		});
+
+		$$(".slide:target style[data-slide]", slide).forEach(function(style) {
+			style.media = style._media || "";
+		})
+	});
 }
 
 })(document.head || document.getElementsByTagName('head')[0], document.body, document.documentElement);
-
-// Rudimentary style[scoped] polyfill
-if (!('scoped' in document.createElement('style'))) {
-	addEventListener('load', function(){ // no idea why the timeout is needed
-		$$('style[scoped]').forEach(function(style) {
-			var rulez = style.sheet.cssRules,
-				parentid = style.parentNode.id || SlideShow.getSlide(style).id || style.parentNode.parentNode.id;
-	
-			for(var j=rulez.length; j--;) {
-				var selector = rulez[j].selectorText.replace(/^|,/g, function($0) {
-					return '#' + parentid + ' ' + $0
-				});
-	
-				var cssText = rulez[j].cssText.replace(/^.+?{/, selector + '{');
-	
-				style.sheet.deleteRule(j);
-				style.sheet.insertRule(cssText, j);
-			}
-			
-			style.removeAttribute('scoped');
-			style.setAttribute('data-scoped', '');
-		});
-	});
-}
