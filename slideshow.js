@@ -705,23 +705,21 @@ _.getSlide = function(element) {
 	return element.closest(".slide");
 }
 
-// Account for scoped style inside slides
-if (!('scoped' in document.createElement('style'))) {
-	document.documentElement.addEventListener("slidechange", function(evt) {
-		var slide = evt.target;
+// Account for slide-specific style
+document.documentElement.addEventListener("slidechange", function(evt) {
+	var slide = evt.target;
 
-		$$(".slide:not(target) style[data-slide]").forEach(function(style) {
-			if (style._media === undefined) {
-				style._media = style.media;
-			}
+	$$(".slide:not(target) style[data-slide]").forEach(function(style) {
+		if (style._media === undefined) {
+			style._media = style.media;
+		}
 
-			style.media = "not all";
-		});
-
-		$$(".slide:target style[data-slide]", slide).forEach(function(style) {
-			style.media = style._media || "";
-		})
+		style.media = "not all";
 	});
-}
+
+	$$("style[data-slide]", slide).forEach(function(style) {
+		style.media = style._media || "";
+	})
+});
 
 })(document.head || document.getElementsByTagName('head')[0], document.body, document.documentElement);
