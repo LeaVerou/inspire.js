@@ -114,25 +114,18 @@ var _ = window.SlideShow = function(slide) {
 
 	// Get the overview
 	this.overview = function(evt) {
-        if(body.classList.contains('show-thumbnails')) {
-            body.classList.remove('show-thumbnails');
+        if (body.classList.contains('show-thumbnails')) {
             body.classList.remove('headers-only');
         }
         else {
-            body.classList.add('show-thumbnails');
-
             if(evt && (!evt.shiftKey || !evt.ctrlKey)) {
                 body.classList.add('headers-only');
             }
 
             body.addEventListener('click', function(evt) {
-                var slide = evt.target;
+                var slide = evt.target.closest(".slide");
 
-                while(slide && !slide.classList.contains('slide')) {
-                    slide = slide.parentNode;
-                }
-
-                if(slide) {
+                if (slide) {
                     me.goto(slide.id);
                     setTimeout(function() { me.adjustFontSize(); }, 1000); // for Opera
                 }
@@ -143,6 +136,8 @@ var _ = window.SlideShow = function(slide) {
                 body.removeEventListener('click', arguments.callee);
             }, false);
         }
+
+		body.classList.toggle('show-thumbnails')
     }
 
     // Process iframe slides

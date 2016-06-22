@@ -48,7 +48,7 @@
    .slide { display: flex; }
    without having to specify :not(.target) all the bloody time
 */
-.slide:not(.previous):not(:target):not(.next) {
+body:not(.show-thumbnails) .slide:not(.previous):not(:target):not(.next) {
 	display: none !important;
 }
 
@@ -239,12 +239,8 @@ iframe.csss-import.show {
 	transition:1s transform;
 }
 
-.show-thumbnails.headers-only .slide {
-	display: none;
-}
-
-.show-thumbnails.headers-only header.slide {
-	display: block !important;
+.show-thumbnails.headers-only .slide:not(header) {
+	display: none !important;
 }
 
 .show-thumbnails .slide .delayed,
@@ -270,7 +266,7 @@ iframe.csss-import.show {
 }
 
 /* Display titles */
-.show-thumbnails .slide[data-title]:after {
+.show-thumbnails .slide[data-title]:not(header):after {
 	content: attr(data-title);
 	position: absolute;
 	left: 0;
