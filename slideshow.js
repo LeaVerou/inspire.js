@@ -244,6 +244,10 @@ var _ = window.SlideShow = function(slide) {
 	document.addEventListener('keyup', this, false);
 	document.addEventListener('keydown', this, false);
 
+	this.currentSlide.dispatchEvent(new CustomEvent("slidechange", {
+		"bubbles": true
+	}));
+
 	$$('link[rel~="csss-import"]').forEach(function (link) {
 		var url = link.href;
 		var id = link.id;
@@ -715,6 +719,10 @@ document.documentElement.addEventListener("slidechange", function(evt) {
 	$$("style[data-slide]", slide).forEach(function(style) {
 		style.media = style._media || "";
 	})
+});
+
+document.addEventListener("DOMContentLoaded", function(evt) {
+	new SlideShow();
 });
 
 })(document.head || document.getElementsByTagName('head')[0], document.body, document.documentElement);
