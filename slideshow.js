@@ -38,7 +38,7 @@ Array.prototype.stableSort = function (fn) {
 // Cache <title> element, we may need it for slides that don't have titles
 var documentTitle = document.title + '';
 
-var _ = window.SlideShow = function(slide) {
+var _ = window.SlideShow = function() {
 	var me = this;
 
 	// Set instance
@@ -47,7 +47,7 @@ var _ = window.SlideShow = function(slide) {
 	}
 
 	// Current slide
-	this.index = this.slide = slide || 0;
+	this.index = this.slide = 0;
 
 	// Current .delayed item in the slide
 	this.item = 0;
@@ -292,6 +292,10 @@ var _ = window.SlideShow = function(slide) {
 
 		slide.appendChild(h);
 	}
+
+	document.body.dispatchEvent(new CustomEvent("slideshowinit", {
+		"bubbles": true
+	}));
 };
 
 _.prototype = {
@@ -548,17 +552,18 @@ _.prototype = {
 				previousNext.classList.remove('next');
 			}
 
-			slide.dispatchEvent(new CustomEvent("slidechange", {
-				"bubbles": true
-			}));
+			requestAnimationFrame(() => {
+				slide.dispatchEvent(new CustomEvent("slidechange", {
+					"bubbles": true
+				}));
+			});
 		}
 
 		// If you attach the listener immediately again then it will catch the event
 		// We have to do it asynchronously
-		var me = this;
-		setTimeout(function() {
-			addEventListener('hashchange', me, false);
-		}, 1000);
+		requestAnimationFrame(() => {
+			addEventListener('hashchange', this, false);
+		});
 	},
 
 	gotoItem: function(which) {
@@ -708,16 +713,12 @@ _.getSlide = function(element) {
 document.documentElement.addEventListener("slidechange", function(evt) {
 	var slide = evt.target;
 
-	$$(".slide:not(target) style[data-slide]").forEach(function(style) {
-		if (style._media === undefined) {
-			style._media = style.media;
-		}
-
-		style.media = "not all";
+	$$(".slide:not(:target) style[data-slide]").forEach(function(style) {
+		style.disabled = true;
 	});
 
 	$$("style[data-slide]", slide).forEach(function(style) {
-		style.media = style._media || "";
+		style.disabled = false;
 	})
 });
 
