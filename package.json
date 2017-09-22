@@ -1,0 +1,26 @@
+{
+  "name": "csss",
+  "version": "6.2.0",
+  "description": "Warning: Only works in latest Firefox, Opera, Safari or Chrome. For more information, see the [sample slideshow](http://lea.verou.me/csss/sample-slideshow.html)",
+  "main": "classList.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zellwk/csss.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zellwk/csss/issues"
+  },
+  "homepage": "https://github.com/zellwk/csss#readme",
+  "devDependencies": {
+    "browser-sync": "^2.16.0",
+    "gulp": "^3.9.1",
+    "gulp-postcss": "^6.2.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "postcss-cssnext": "^2.8.0"
+  }
+}
