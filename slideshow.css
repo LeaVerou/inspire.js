@@ -223,20 +223,34 @@ iframe.csss-import.show {
 }
 
 .show-thumbnails .slide,
-.presenter .slide.next {
-	width: 1024px;
-	height: 768px;
+.presenter .slide.next,
+.show-next .slide.next {
+	width: 100vw;
+	height: 100vh;
 	box-sizing: border-box;
-
 	float: left;
 	overflow: hidden;
 	position: static;
 	opacity: 1;
-	margin:-292px -395px;
+	visibility: visible;
 	cursor: pointer;
-
 	transform: scale(.2, .2);
-	transition:1s transform;
+	/*transition-duration: .3s;
+	transition-property: transform, transform-origin, margin;*/
+}
+
+.show-next .slide {
+	transition: 0s;
+}
+
+.show-next .slide.next {
+	transform: scale(.05, .05);
+	transform-origin: bottom right;
+	margin: 15px 15px;
+}
+
+.show-next .slide.next:not(:hover) {
+	opacity: .5;
 }
 
 .show-thumbnails.headers-only .slide:not(header) {
@@ -244,13 +258,15 @@ iframe.csss-import.show {
 }
 
 .show-thumbnails .slide .delayed,
-.presenter .slide:target + .slide .delayed {
+.presenter .slide:target + .slide .delayed,
+.show-next .slide:target + .slide .delayed {
 	opacity: 1 !important;
 }
 
 .show-thumbnails .slide:hover,
 .show-thumbnails .slide:target,
-.presenter .slide:target + .slide {
+.presenter .slide:target + .slide,
+.show-next .slide:target + .slide {
 	outline: 20px solid rgba(255, 255, 255, .6);
 	outline-radius:5px;
 
@@ -347,7 +363,8 @@ iframe.csss-import.show {
 	box-shadow: .1em .1em .3em rgba(0,0,0,.5) inset;
 }
 
-.presenter .slide.next {
+.presenter .slide.next,
+.show-next .slide.next {
 	position: fixed;
 	top: auto;
 	right: 0;
