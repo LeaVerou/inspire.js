@@ -174,18 +174,22 @@ var _ = window.SlideShow = function() {
 		}
 
 		// Set data-title attribute to the title of the slide
-		if(!slide.title) {
+		var title = slide.title || slide.getAttribute("data-title");
+
+		if (title) {
+			slide.removeAttribute('title');
+		}
+		else {
 			// no title attribute, fetch title from heading(s)
 			var heading = $('hgroup', slide) || $('h1,h2,h3,h4,h5,h6', slide);
 
 			if(heading && heading.textContent.trim()) {
-				slide.setAttribute('data-title', heading.textContent);
+				title = heading.textContent;
 			}
 		}
-		else {
-			// The title attribute is set, use that
-			slide.setAttribute('data-title', slide.title);
-			slide.removeAttribute('title');
+
+		if (title) {
+			slide.setAttribute('data-title', title);
 		}
 
 		slide.setAttribute('data-index', i);
@@ -308,6 +312,7 @@ _.prototype = {
 		}
 
 		switch(evt.type) {
+
 			/**
 				Keyboard navigation
 				Ctrl+G : Go to slide...
@@ -356,7 +361,7 @@ _.prototype = {
 					Ctrl + Down/Left arrow : Previous slide
 					(Shift instead of Ctrl works too)
 				*/
-				if(evt.target === body || evt.target === body.parentNode || evt.metaKey && evt.altKey) {
+				if(evt.target === body || evt.target === body.parentNode || evt.altKey) {
 					if(evt.keyCode >= 32 && evt.keyCode <= 40) {
 						evt.preventDefault();
 					}
