@@ -1,8 +1,5 @@
 /**
-	CSSS basic slideshow theme
-	
-	@author Lea Verou
-	@version 1.0
+	Inspire.js basic slideshow theme
 */
 
 /**
@@ -13,13 +10,13 @@ section > header.slide > h1 {
 	font-family: 'Helvetica Neue', Helvetica, sans-serif;
 	font-weight: 100;
 }
- 
+
 /**
  * Styles
  */
 
 * {
-	padding:0;	
+	padding:0;
 	margin:0;
 	font:inherit;
 	color:inherit;
@@ -47,7 +44,7 @@ select {
 }
 
 code, pre, style, textarea, input {
-	font-family: Consolas, 'Andale Mono', 'Courier New', monospace;	
+	font-family: Consolas, 'Andale Mono', 'Courier New', monospace;
 	background:rgba(0,0,0,.4);
 }
 
@@ -81,7 +78,7 @@ textarea {
 }
 
 strong, b {
-	font-weight:bold;	
+	font-weight:bold;
 }
 
 	pre strong {
@@ -108,46 +105,46 @@ strong, b {
 		font-weight: 100;
 		font-size: 1.2in;
 	}
-	
+
 	.slide p,
 	.slide li {
 		font-weight: bold;
 		letter-spacing: -.03em;
 	}
-		
+
 	.slide > ul {
-		list-style:none;	
+		list-style:none;
 	}
-	
+
 	.slide ol {
-		margin-left:2em;	
+		margin-left:2em;
 	}
-		
+
 		.slide > ul ul {
-			margin-left:2em;	
+			margin-left:2em;
 			list-style: none;
 		}
-		
+
 			.slide li li {
 				font-size:80%;
 			}
-			
+
 		.slide li {
 			margin:.2em 0;
 		}
-		
+
 		.slide > ul > li:before {
 			content:'\2714';
 			color: #a0c12c;
 			padding-right: .2em;
 		}
-		
+
 			.slide li li:before {
 				content: '\279C';
 				color: #28bcbc;
 				padding-right: .2em;
 			}
-			
+
 section > header.slide {
 	background-color: rgba(0,0,0,.8);
 }
@@ -184,7 +181,7 @@ section > header.slide {
 .slide .emphasis::before {
 	content: '\279C';
 	color: rgba(255,255,255,.5);
-	float: left;	
+	float: left;
 	width: .75em;
 	height: 0;
 	padding: .45em 0 .3em;
@@ -215,7 +212,7 @@ section > header.slide {
 	.attribution a {
 		text-decoration: none;
 	}
-	
+
 	.attribution a::after {
 		content:  ' (' attr(href) ')';
 	}

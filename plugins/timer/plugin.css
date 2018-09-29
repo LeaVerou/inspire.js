@@ -1,0 +1,34 @@
+/* Timer */
+
+#timer {
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:101;
+	width:0%;
+	height:16px;
+	line-height: 16px;
+	padding: 0 5px;
+	background:rgba(0,0,0,.5);
+	overflow: hidden;
+	text-align: right;
+	box-sizing: border-box;
+	transition: linear;
+}
+
+	#timer:before {
+		content: 'Progress ';
+		text-transform: uppercase;
+		color: white;
+		font-size: 9px;
+	}
+
+#timer.end {
+	width: 100%;
+}
+
+#timer.end.overtime {
+	width: 0%;
+	left: auto;
+	right: 0;
+}

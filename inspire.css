@@ -19,21 +19,20 @@
  */
 
  html, body {
- 	height: 100%;
+	height: 100%;
  }
 
  body {
- 	margin: 0;
+	margin: 0;
  }
 
 .slide {
 	position:absolute;
-	top:0;
-	right:0;
-	bottom:0;
-	left:0;
-	z-index:1;
-
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
 	font-size: 250%;
 	line-height: 1.6;
 }
@@ -60,35 +59,35 @@ body:not(.show-thumbnails) .slide:not(.previous):not(:target):not(.next) {
  }
 
  .slide:target {
- 	z-index: 100;
- 	opacity: 1;
- 	visibility: visible;
- 	overflow: visible;
+	z-index: 100;
+	opacity: 1;
+	visibility: visible;
+	overflow: visible;
 }
 
 /**
 	Slide numbers
  */
 #indicator {
-  	position: absolute;
-  	top: .05in;
-  	right: .5em;
-  	z-index: 1010;
+	position: absolute;
+	top: .05in;
+	right: .5em;
+	z-index: 1010;
 
-  	font-size: .15in;
-  	color: white;
-  	background: rgba(0,0,0,.25);
-  	font-weight: 900;
-  	text-shadow: .05em .05em .1em black;
-  	text-align: center;
-  	padding: .1em .3em 0;
-  	min-width: 1.6em;
-  	box-sizing: border-box;
-  	border-radius: 999px;
+	font-size: .15in;
+	color: white;
+	background: rgba(0,0,0,.25);
+	font-weight: 900;
+	text-shadow: .05em .05em .1em black;
+	text-align: center;
+	padding: .1em .3em 0;
+	min-width: 1.6em;
+	box-sizing: border-box;
+	border-radius: 999px;
 }
 
 /**
- 	On-screen navigation
+	On-screen navigation
  */
 #onscreen-nav {
 	z-index: 1010;
@@ -102,7 +101,7 @@ body:not(.show-thumbnails) .slide:not(.previous):not(:target):not(.next) {
 	transition: 1s opacity;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2) {
+@media (pointer: coarse) {
 	#onscreen-nav {
 		opacity: 1;
 	}
@@ -139,7 +138,7 @@ body:not(.show-thumbnails) .slide:not(.previous):not(:target):not(.next) {
 
 /* If there's nothing selected, show the first */
 .slide:first-child {
-	z-index:2;
+	z-index: 2;
 }
 
 /* Delayed items that are shown incrementally after the slide is */
@@ -155,8 +154,6 @@ body:not(.show-thumbnails) .slide:not(.previous):not(:target):not(.next) {
 
 .delayed.current,
 .delayed-children > .current,
-.delayed.displayed.non-dismissable,
-.delayed-children > .displayed.non-dismissable, /* non-dismissable name is deprecated */
 .delayed.displayed.persistent,
 .delayed-children > .displayed.persistent,
 .delayed-children.persistent > .displayed {
@@ -297,73 +294,6 @@ iframe.csss-import.show {
 	transform: none;
 }
 
-/* Hide all elements in slide by hitting Ctrl + J or Shift + J */
-.hide-elements .slide:target > * {
-	opacity: 0;
-	transition:.5s;
-}
-
-/* Timer */
-
-#timer {
-	position:absolute;
-	top:0;
-	left:0;
-	z-index:101;
-	width:0%;
-	height:16px;
-	line-height: 16px;
-	padding: 0 5px;
-	background:rgba(0,0,0,.5);
-	overflow: hidden;
-	text-align: right;
-	box-sizing: border-box;
-	transition: linear;
-}
-
-	#timer:before {
-		content: 'Progress ';
-		text-transform: uppercase;
-		color: white;
-		font-size: 9px;
-	}
-
-#timer.end {
-	width: 100%;
-}
-
-#timer.end.overtime {
-	width: 0%;
-	left: auto;
-	right: 0;
-}
-
-/* Presenter & projector views */
-
-.projector #timer {
-	display: none;
-}
-
-.presenter-notes {
-	display: none;
-	position: fixed;
-	right: 230px;
-	bottom: 0;
-	left: 0;
-	max-height: 6em;
-	overflow: auto;
-	padding: .6em 1em;
-	font-size: 60%;
-	line-height: 1.3;
-	font-weight: normal;
-	resize:vertical;
-	background: rgba(255, 255, 255, .5);
-	color: black;
-	text-shadow: 0 1px white;
-	box-shadow: .1em .1em .3em rgba(0,0,0,.5) inset;
-}
-
-.presenter .slide.next,
 .show-next .slide.next {
 	position: fixed;
 	top: auto;
@@ -371,8 +301,4 @@ iframe.csss-import.show {
 	bottom: 0;
 	left: auto;
 	z-index: 100;
-}
-
-.presenter .slide:target > .presenter-notes {
-	display: block;
 }
