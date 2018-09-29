@@ -1,14 +1,14 @@
 Inspire.hooks.add("init-start", me => {
 	// Create timer, if needed
-	this.duration = body.getAttribute("data-duration");
+	this.duration = document.body.getAttribute("data-duration");
 
 	if (this.duration > 0) {
-		var timer = $.create({
+		var timer = Bliss.create({
 			id: "timer",
 			style: {
 				transitionDuration: this.duration * 60 + "s"
 			},
-			inside: body
+			inside: document.body
 		});
 
 		addEventListener("load", evt => {

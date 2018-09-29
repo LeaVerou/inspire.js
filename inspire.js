@@ -7,6 +7,12 @@
 
 (async function(body, html){
 
+// Cache <title> element, we may need it for slides that don"t have titles
+var documentTitle = document.title + "";
+
+// Cache current <script> src, we will need it for loading plugins
+var scriptSrc = document.currentScript ? document.currentScript.src : undefined;
+
 if (!window.Bliss) {
 	// Load Bliss if not loaded
 	console.log("Bliss not loaded. Loading remotely from blissfuljs.com");
@@ -18,9 +24,7 @@ if (!window.Bliss) {
 	await new Promise(resolve => bliss.onload = resolve);
 }
 
-// Cache <title> element, we may need it for slides that don"t have titles
-var documentTitle = document.title + "";
-var scriptSrc = document.currentScript ? document.currentScript.src : "";
+var $ = Bliss, $$ = $.$;
 
 var _ = class Inspire {
 	constructor() {
@@ -43,7 +47,7 @@ var _ = class Inspire {
 		// Add on screen navigation
 		var onscreen = $.create("nav", {
 			id: "onscreen-nav",
-			hidden: true,
+			className: "hidden",
 			inside: body,
 			contents: [
 				{
@@ -67,71 +71,8 @@ var _ = class Inspire {
 			]
 		});
 
-		// Expand multiple imported slides
-		$$(".slide[data-base][data-src*=\" \"]").forEach(function(slide) {
-			var hashes = slide.getAttribute("data-src").split(/\s+/).forEach(function (hash) {
-				var s = slide.cloneNode(true);
-				s.setAttribute("data-src", hash);
-				slide.parentNode.insertBefore(s, slide);
-			});
-
-			slide.parentNode.removeChild(slide);
-		});
-
 		// Get the slide elements into an array
 		this.slides = $$(".slide", body);
-
-		// Get the overview
-		this.overview = function(evt) {
-			if (body.classList.contains("show-thumbnails")) {
-				body.classList.remove("headers-only");
-			}
-			else {
-				if (evt && (!evt.shiftKey || !evt.ctrlKey)) {
-					body.classList.add("headers-only");
-				}
-
-				body.addEventListener("click", function(evt) {
-					var slide = evt.target.closest(".slide");
-
-					if (slide) {
-						me.goto(slide.id);
-						setTimeout(() => me.adjustFontSize(), 1000); // for Opera
-					}
-
-					body.classList.remove("show-thumbnails");
-					body.classList.remove("headers-only");
-				}, {
-					capture: false,
-					once: true
-				});
-			}
-
-			body.classList.toggle("show-thumbnails");
-		};
-
-		// Process iframe slides
-		$$(".slide[data-src]:not([data-base]):empty").forEach(slide => {
-			var iframe = $.create("iframe", {
-				"data-src": slide.getAttribute("data-src"),
-				inside: slide
-			});
-
-
-			slide.removeAttribute("data-src");
-
-			var src = iframe.src || iframe.getAttribute("data-src");
-
-			slide.classList.add("iframe");
-
-			if (!slide.classList.contains("notitle")) {
-				addTitle(slide, src, iframe.title);
-			}
-
-			slide.classList.add("onscreen-nav");
-		});
-
-		this.isIpad = navigator.userAgent.indexOf("iPad;") > -1;
 
 		// Order of the slides
 		this.order = [];
@@ -152,7 +93,7 @@ var _ = class Inspire {
 		}
 		else {
 			// no title attribute, fetch title from heading(s)
-			var heading = $("hgroup", slide) || $("h1,h2,h3,h4,h5,h6", slide);
+			var heading = $("h1, h2, h3, h4, h5, h6", slide);
 
 			if (heading && heading.textContent.trim()) {
 				title = heading.textContent;
@@ -163,8 +104,7 @@ var _ = class Inspire {
 			slide.setAttribute("data-title", title);
 		}
 
-			slide.setAttribute("data-index", i);
-
+		slide.setAttribute("data-index", i);
 			var imp = slide.getAttribute("data-import"),
 				imported = imp? this.getSlideById(imp) : null;
 
@@ -199,123 +139,40 @@ var _ = class Inspire {
 			});
 		}
 
-		// Adjust the font-size when the window is resized
-		addEventListener("resize", this, false);
-
-		// In some browsers DOMContentLoaded is too early, so try again onload
-		addEventListener("load", this, false);
-
-		addEventListener("hashchange", this, false);
-
-		// If there"s already a hash, update current slide number...
-		this.handleEvent({type: "hashchange"});
-
-		document.addEventListener("keyup", this, false);
-		document.addEventListener("keydown", this, false);
-
-		this.currentSlide.dispatchEvent(new CustomEvent("slidechange", {
-			"bubbles": true
-		}));
-
-		$$('link[rel~="csss-import"]').forEach(function (link) {
-			var url = link.href;
-			var id = link.id;
-			var slides = $$('.slide[data-base="' + id + '"][data-src^="#"]');
-			var isSlideshow = link.rel.indexOf("slides") > -1;
-
-			if (slides.length) {
-				var iframe = document.createElement("iframe");
-				var hash = slides[0].getAttribute("data-src");
-				iframe.className = "csss-import";
-				iframe.src = url + hash;
-
-				document.body.insertBefore(iframe, document.body.firstChild);
-
-				// Process the rest of the slides, which should use the same iframe
-				slides.forEach(function (slide) {
-					var hash = slide.getAttribute("data-src");
-
-					slide.classList.add("dont-resize");
-
-					this.onSlide(slide.id, function () {
-						onscreen.removeAttribute("hidden");
-
-						iframe.src = iframe.src.replace(/#.+$/, hash);
-						iframe.className = "csss-import show";
-					});
-				}, this);
-			}
-		}, this);
-
-		function addTitle(slide, url, title) {
-			var h = document.createElement("h1"),
-				a = document.createElement("a");
-
-			title = title || slide.title || slide.getAttribute("data-title") ||
-						url.replace(/\/#?$/, "").replace(/^\w+:\/\/(www\.)?/, "");
-
-			a.href = url;
-			a.target = "_blank";
-			a.textContent = title;
-			h.appendChild(a);
-
-			slide.appendChild(h);
-		}
-
-		document.body.dispatchEvent(new CustomEvent("inspireinit", {
-			"bubbles": true
-		}));
-
-		_.hooks.run("init-end", this);
-	}
-
-	handleEvent(evt) {
-		var me = this;
-
-		// Prevent script from hijacking the user’s navigation
-		if (evt.metaKey && evt.keyCode) {
-			return true;
-		}
-
-		switch (evt.type) {
+		$.bind(window, {
+			// Adjust the font-size when the window is resized
+			"load resize": evt => this.adjustFontSize(),
 			/**
 				Keyboard navigation
 				Ctrl+G : Go to slide...
-				Ctrl+H : Show thumbnails and go to slide
-				Ctrl+P : Presenter view
 				(Shift instead of Ctrl works too)
 			*/
-			case "keyup":
+			"keyup": evt => {
 				if ((evt.ctrlKey || evt.shiftKey) && !evt.altKey && !/^(?:input|textarea)$/i.test(document.activeElement.nodeName)) {
+					var letter = evt.key.toUpperCase();
 
-					switch (evt.key) {
-						case "G": // G
-							var slide = prompt("Which slide?");
-							me.goto(+slide? slide - 1 : slide);
-							break;
-						case "H": // H
-							if (evt.ctrlKey) {
-								me.overview(evt);
-							}
-							break;
-						default:
-							_.hooks.run("keyup", {evt, context: this});
+					if (letter === "G") {
+						var slide = prompt("Which slide?");
+						me.goto(+slide? slide - 1 : slide);
+					}
+					else {
+						_.hooks.run("keyup", {evt, letter, context: this});
 					}
 				}
-				break;
-			case "keydown":
-				/**
-					Keyboard navigation
-					Home : First slide
-					End : Last slide
-					Space/Up/Right arrow : Next item/slide
-					Ctrl + Space/Up/Right arrow : Next slide
-					Down/Left arrow : Previous item/slide
-					Ctrl + Down/Left arrow : Previous slide
-					(Shift instead of Ctrl works too)
-				*/
-				if(evt.target === body || evt.target === body.parentNode || evt.altKey) {
-					if(evt.keyCode >= 32 && evt.keyCode <= 40) {
+			},
+			/**
+				Keyboard navigation
+				Home : First slide
+				End : Last slide
+				Space/Up/Right arrow : Next item/slide
+				Ctrl + Space/Up/Right arrow : Next slide
+				Down/Left arrow : Previous item/slide
+				Ctrl + Down/Left arrow : Previous slide
+				(Shift instead of Ctrl works too)
+			*/
+			"keydown": evt => {
+				if (evt.target === body || evt.target === body.parentNode || evt.altKey) {
+					if (evt.keyCode >= 32 && evt.keyCode <= 40) {
 						evt.preventDefault();
 					}
 
@@ -343,14 +200,21 @@ var _ = class Inspire {
 							break;
 					}
 				}
-				break;
-			case "load":
-			case "resize":
-				this.adjustFontSize();
-				break;
-			case "hashchange":
-				this.goto(location.hash.substr(1) || 0);
-		}
+			}
+		});
+
+		addEventListener("hashchange", this);
+
+		_.hooks.run("init-before-first-goto", this);
+
+		// If there"s already a hash, update current slide number
+		this.goto(location.hash.substr(1) || 0);
+
+		_.hooks.run("init-end", this);
+	}
+
+	handleEvent(evt) {
+		this.goto(location.hash.substr(1) || 0);
 	}
 
 	start() {
@@ -375,13 +239,11 @@ var _ = class Inspire {
 			this.item = 0;
 
 			// Mark all items as not displayed, if there are any
-			if (this.items.length) {
-				for (var i=0; i<this.items.length; i++) {
-					var classes = this.items[i].classList;
-					if (classes) {
-						classes.remove("displayed");
-						classes.remove("current");
-					}
+			for (var i=0; i<this.items.length; i++) {
+				var classes = this.items[i].classList;
+				if (classes) {
+					classes.remove("displayed");
+					classes.remove("current");
 				}
 			}
 		}
@@ -437,10 +299,11 @@ var _ = class Inspire {
 	*/
 	goto(which) {
 		var slide;
+		var prev = this.slide;
 
 		// We have to remove it to prevent multiple calls to goto messing up
 		// our current item (and there"s no point either, so we save on performance)
-		window.removeEventListener("hashchange", this, false);
+		window.removeEventListener("hashchange", this);
 
 		var id;
 
@@ -449,7 +312,9 @@ var _ = class Inspire {
 
 			if (slide) {
 				this.slide = this.index = +slide.getAttribute("data-index");
-				location.hash = "#" + which;
+
+				location.hash = ""; // See https://twitter.com/LeaVerou/status/1046114577648422912
+				location.hash = which;
 			}
 			else if (/^slide(\d+)$/.test(which)) { // No slide found with that id. Perhaps it's in the slideN format?
 				which = which.slice(5) - 1;
@@ -469,24 +334,15 @@ var _ = class Inspire {
 			location.hash = "#" + slide.id;
 		}
 
-		if (slide) { // Slide actually changed, perform any other tasks needed
+		if (prev != this.slide) { // Slide actually changed, perform any other tasks needed
 			document.title = slide.getAttribute("data-title") || documentTitle;
 
-			if (slide.classList.contains("iframe")) {
-				var iframe = $("iframe", slide), src;
+			var env = {slide, prevSlide: this.slides[prev], which, context: this};
+			_.hooks.run("slidechange", env);
 
-				if (iframe && !iframe.hasAttribute("src") && (src = iframe.getAttribute("data-src"))) {
-					iframe.setAttribute("src", src);
-				}
-			}
-			else {
-				this.adjustFontSize();
-			}
+			this.adjustFontSize();
 
-			$.toggleAttribute($("#onscreen-nav"), "hidden", "", !this.isIpad && !slide.classList.contains("onscreen-nav"));
-
-			// Hide iframes from CSSS imports
-			$$("iframe.csss-import").forEach(iframe => iframe.classList.remove("show"));
+			$("#onscreen-nav").classList.toggle("hidden", !slide.matches(".onscreen-nav"));
 
 			this.indicator.textContent = this.index + 1;
 
@@ -496,8 +352,6 @@ var _ = class Inspire {
 				return (a.getAttribute("data-index") || 0) - (b.getAttribute("data-index") || 0);
 			});
 			this.item = 0;
-
-			this.projector && this.projector.goto(which);
 
 			// Update next/previous
 			var previousPrevious = this.slides.previous;
@@ -521,12 +375,13 @@ var _ = class Inspire {
 				slide.dispatchEvent(new CustomEvent("slidechange", {
 					"bubbles": true
 				}));
+				_.hooks.run("slidechange-async", env);
 			});
 		}
 
 		// If you attach the listener immediately again then it will catch the event
 		// We have to do it asynchronously
-		requestAnimationFrame(() => addEventListener("hashchange", this, false));
+		requestAnimationFrame(() => addEventListener("hashchange", this));
 	}
 
 	gotoItem(which) {
@@ -568,7 +423,7 @@ var _ = class Inspire {
 			}
 		}
 
-		this.projector && this.projector.gotoItem(which);
+		_.hooks.run("gotoitem-end", {which, context: this});
 	}
 
 	adjustFontSize() {
@@ -579,8 +434,7 @@ var _ = class Inspire {
 		// Clear previous styles
 		html.style.fontSize = "";
 
-		if (body.classList.contains("show-thumbnails")
-			|| slide.classList.contains("dont-resize")) {
+		if (body.matches(".show-thumbnails") || slide.matches(".dont-resize")) {
 			return;
 		}
 
@@ -619,44 +473,6 @@ var _ = class Inspire {
 	// Get current slide as an element
 	get currentSlide() {
 		return this.slides[this.slide];
-	}
-
-	// Is the element on the current slide?
-	onCurrent(element) {
-		var slide = _.getSlide(element);
-
-		if (slide) {
-			return "#" + slide.id === location.hash;
-		}
-
-		return false;
-	}
-
-	onSlide(id, callback, once) {
-		var me = this;
-
-		id = (id.indexOf("#") !== 0? "#" : "") + id;
-
-		var fired = false;
-
-		if (id == location.hash) {
-			callback.call(this.currentSlide);
-			fired = true;
-		}
-
-		if (!fired || !once) {
-			addEventListener("hashchange", function callee() {
-				if (id == location.hash) {
-					callback.call(me.slides[me.slide]);
-					fired = true;
-
-					if (once) {
-						removeEventListener("hashchange", callee);
-					}
-				}
-
-			});
-		}
 	}
 
 	static getSlide(element) {
@@ -700,41 +516,46 @@ var _ = class Inspire {
 	}
 
 	static loadPlugin(id) {
-		_.load(`${id}/plugin.css`, scriptSrc).catch(e => e);
-		return _.load(`${id}/plugin.js`, scriptSrc);
+		_.load(`plugins/${id}/plugin.css`, scriptSrc).catch(e => e);
+		return _.load(`plugins/${id}/plugin.js`, scriptSrc).then(() => _.pluginsLoaded.push(id));
 	}
 
 	static init() {
 		var dependencies = [];
 
 		for (let id in _.plugins) {
-			if ($(_.plugins)) {
+			if ($(_.plugins[id])) {
 				dependencies.push(_.loadPlugin(id));
 			}
 		}
 
 		Promise.all(dependencies).then(() => {
+			console.log("Inspire.js plugins loaded:", _.pluginsLoaded.length? _.pluginsLoaded.join(", ") : "none");
 			window.inspire = new _();
 		});
 	}
 };
 
-// Plugin ids and selectors
-// If selector matches anything, plugin is loaded
-_.plugins = {
-	timer: "[data-duration]",
-	presenter: ".enable-presenter",
-	slidescript: "slide-script",
-	slidestyle: "style[data-slide]"
-};
+// Static properties
+Object.assign(_, {
+	// Plugin ids and selectors
+	// If selector matches anything, plugin is loaded
+	plugins: {
+		timer: "[data-duration]",
+		presenter: ".enable-presenter",
+		slidescript: "slide-script",
+		slidestyle: "style[data-slide]",
+		overview: "body:not(.no-overview)",
+		iframe: ".slide[data-src], .iframe.slide"
+	},
 
-_.hooks = new $.Hooks();
+	pluginsLoaded: [],
 
-// Account for slide-specific style
-document.documentElement.addEventListener("slidechange", function(evt) {
-	_.hooks.run("slidechange", evt.target);
+	hooks: new $.Hooks()
 });
 
-document.addEventListener("DOMContentLoaded", _.init);
+$.ready().then(_.init);
+
+window.Inspire = _;
 
 })(document.body, document.documentElement);

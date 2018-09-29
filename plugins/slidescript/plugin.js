@@ -1,6 +1,6 @@
-Inspire.hooks.add("slidechange", slide => {
+Inspire.hooks.add("slidechange", env => {
 	// Slide-specific script, run only when on that slide
-	$$("slide-script", slide).forEach(script => {
+	$$("slide-script", env.slide).forEach(script => {
 		$.create("script", {
 			attributes: {
 				src: script.getAttribute("src"),

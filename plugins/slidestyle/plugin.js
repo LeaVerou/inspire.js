@@ -1,4 +1,4 @@
-Inspire.hooks.add("slidechange", slide => {
+Inspire.hooks.add("slidechange", env => {
 	$$(".slide:not(:target) style[data-slide]").forEach(style => style.disabled = true);
-	$$("style[data-slide]", slide).forEach(style => style.disabled = false);
+	$$("style[data-slide]", env.slide).forEach(style => style.disabled = false);
 });

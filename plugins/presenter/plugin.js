@@ -7,7 +7,8 @@ Inspire.hooks.add({
 		}
 	},
 	"keyup": env => {
-		if (env.evt.key === "P") {
+		// Ctrl+P : Presenter view
+		if (env.letter === "P") {
 			// Open new window for attendee view
 			this.projector = open(location, "projector");
 
@@ -15,7 +16,13 @@ Inspire.hooks.add({
 			window.focus();
 
 			// Switch this one to presenter view
-			body.classList.add("presenter");
+			body.classList.add("presenter", "show-next");
 		}
+	},
+	"goto-slidechanged": env => {
+		this.projector && this.projector.goto(env.which);
+	},
+	"gotoitem-end": env => {
+		this.projector && this.projector.gotoItem(which);
 	}
 });
