@@ -1,17 +1,7 @@
-@font-face {
-	font-family: 'Reenie Beanie';
-	font-style: normal;
-	font-weight: 400;
-	src: local('Reenie Beanie'),
-		local('ReenieBeanie'),
-		url("fonts/reenie-beanie.woff2") format('woff2');
-}
-
 :root {
 	--font-mono: Consolas, Monaco, 'Andale Mono', monospace;
-	--font-body: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	--font-body: 'Helvetica Neue', Helvetica, Segoe UI, sans-serif;
 	--font-heading: var(--font-body);
-	--font-handwritten: 'Reenie Beanie', Marker Felt, var(--font-body);
 	--color1: hsl(40, 100%, 50%);
 	--color2: hsl(178, 80%, 40%);
 	--color3: #f06;
@@ -30,7 +20,6 @@ body {
 	            linear-gradient(45deg, silver 25%, transparent 25%, transparent 75%, silver 75%) 20px 20px;
 	background-color: #eee;
 	background-size: 40px 40px;
-	text-decoration-skip: ink;
 	font-synthesis: none;
 }
 
@@ -48,9 +37,23 @@ strong, b {
 	font-weight: bold; /* FF is weird */
 }
 
-input:not([type=file]) {
+:focus:not(:focus-visible) {
+	outline: none;
+}
+
+input:not([type=file]),
+button {
 	font: inherit;
 	color: inherit;
+}
+
+input:not([type]),
+input[type="text"],
+input[type="email"],
+input[type="tel"] {
+	background: transparent;
+	padding: 0 .3em;
+	border: .05em solid hsl(200, 40%, 80%);
 }
 
 code, textarea, pre {
@@ -60,10 +63,6 @@ code, textarea, pre {
 	tab-size: 4;
 	color: inherit;
 }
-
-	pre.delayed > code.delayed {
-		opacity: 1;
-	}
 
 	pre > code {
 		font-size: inherit;
@@ -83,38 +82,10 @@ pre + pre {
 	margin-top: 1.5em;
 }
 
-	input[type="range"][orient="vertical"] {
-		-webkit-appearance: slider-vertical;
-		writing-mode: bt-lr;
-	}
-
-	input:not([type]),
-	input[type="text"],
-	input[type="email"],
-	input[type="tel"] {
-		background: transparent;
-		padding: 0 .3em;
-		border: .05em solid hsl(200, 40%, 80%);
-	}
-
-button {
-	font: inherit;
-}
-
-	button:focus:not(:focus-visible) {
-		outline: none;
-	}
-
 img {
 	max-width: 100%;
 	max-height: 100%;
 	object-fit: contain;
-}
-
-.note {
-	font-family: var(--font-handwritten);
-	color: orange;
-	font-weight: normal;
 }
 
 .slide {
@@ -133,11 +104,6 @@ img {
 	}
 }
 
-	.slide[data-source]::after {
-		color: black;
-		text-shadow: none;
-	}
-
 	.light.slide,
 	.example.slide {
 		background: hsl(200, 40%, 90%);
@@ -155,37 +121,128 @@ img {
 		font-size: 120%;
 	}
 
+
+/* Mark slides as incomplete to spot them easier */
+.incomplete.slide::after {
+	content: 'INCOMPLETE';
+	font-weight: bold;
+	position: absolute;
+	top: 40%;
+	left: 30%;
+	padding: .1em .4em 0;
+	border: .1em solid;
+	color: rgba(255, 0, 0, .8);
+	font-size: 140%;
+	border-radius: .2em;
+	transform: rotate(30deg);
+}
+
+/* Ribbon */
+[data-type].slide::after {
+	content: attr(data-type);
+	position: fixed;
+	top: 0;
+	right: 0;
+
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: bold;
+	background: hsl(85, 80%, 45%);
+	background-image: linear-gradient(rgba(255, 255, 255, .3), rgba(255, 255, 255, 0));
+	font-size: 80%;
+	line-height: 1.6;
+	min-width: 20em;
+	box-shadow: 0 10px 5px -5px rgba(0,0,0,.3);
+	transform: rotate(45deg) translate(6em, -2em);
+}
+
+/* Full image slides */
+
+.image.slide {
+	padding: 0;
+	background: center / cover no-repeat black;
+	image-rendering: crisp-edges;
+}
+
+.bottom-heavy.image.slide {
+	background-position: center bottom;
+}
+
+.top-heavy.image.slide {
+	background-position: center top;
+}
+
+	.slide > .caption,
+	.image.slide > h1:only-child {
+		position: relative;
+		z-index: 1;
+		box-sizing: border-box;
+		width: 100%;
+		padding: .2em 0;
+		margin: 0;
+		margin-top: calc(50vh - 1em);
+		text-align: center;
+		font-family: inherit;
+		font-weight: inherit;
+		color: white;
+		background: rgba(0,0,0,.4);
+		text-shadow: 0 .05em .1em rgba(0,0,0,.3);
+		white-space: nowrap;
+	}
+
+	.slide > .caption,
+	.image.slide > h1:only-child {
+		font-size: 200%;
+		line-height: 1.2;
+	}
+
+	.top-heavy.image.slide > .caption,
+	.top-heavy.image.slide > h1:only-child {
+		position: fixed;
+		left: 0; right: 0;
+		bottom: .5in;
+	}
+
+	.bottom-heavy.image.slide > .caption,
+	.bottom-heavy.image.slide > h1:only-child {
+		margin: .5in 0 0;
+	}
+
+		.slide > .caption h1 {
+			font: inherit;
+			margin-bottom: 0;
+		}
+
+		.slide > .caption h1 + a {
+			font-size: 30%;
+			display: block;
+			text-shadow: inherit;
+		}
+
+.slide[data-credits]:after {
+	content: "Media credits: " attr(data-credits);
+	position: absolute;
+	bottom: 5px;
+	right: 10px;
+	z-index: 100;
+	color: white;
+	font-size: 15px;
+	font-weight: 300;
+	text-shadow: 0 0 .1em black;
+	text-shadow: 0 0 .1em .1em black;
+}
+
 .image.slide > h1:only-child,
-.slide > .caption,
-.iframe.slide > h1 {
-	/*bottom: .5em;
-	margin: 0;*/
+.slide > .caption {
 	text-shadow: none;
 	background: rgba(0,0,0,.5);
 }
 
-.delayed.displayed,
-.delayed-children > .displayed {
-	opacity: 1;
-}
-
 section > header.slide {
-	overflow: hidden !important;
-	align-items: center;
-	justify-content: center;
-	--stripe: 15vw;
-	--stripe-gap: 10px;
-	background: repeating-linear-gradient(-30deg, white 0, white var(--stripe-gap), transparent var(--stripe-gap), transparent var(--stripe)),
-	repeating-linear-gradient(-30deg,
-	                  hsl(35, 100%, 50%) 0, hsl(35, 100%, 50%) var(--stripe),
-					  hsl(330, 100%, 50%) var(--stripe), hsl(330, 100%, 50%) calc(2 * var(--stripe)),
-					  hsl(85, 80%, 45%) calc(2 * var(--stripe)), hsl(85, 80%, 45%) calc(3 * var(--stripe)),
-					  hsl(200, 90%, 55%) calc(3 * var(--stripe)), hsl(200, 90%, 55%) calc(4 * var(--stripe))
-			    );
-}
-
-section > header.slide:target {
-	display: flex;
+	--color1: hsl(50, 100%, 50%);
+	--color2: hsl(150, 90%, 40%);
+	--color3: hsl(190, 100%, 40%);
+	background: linear-gradient(to bottom right, var(--color1), var(--color2), var(--color3), var(--color2), var(--color1));
 }
 
 	section > header.slide > h1 {
@@ -197,23 +254,7 @@ section > header.slide:target {
 		font-weight: 300;
 	}
 
-@keyframes scrollscreenshot {
-	to {
-		background-position-y: calc(var(--screenshot-height) * var(--ratio) * -1 + 100vh);
-	}
-}
-
-.long-screenshot.slide:target {
-	--ratio: calc(100vw / var(--screenshot-width));
-	animation: scrollscreenshot calc(var(--screenshot-height) * 1ms) 5s forwards ease-in;
-}
-
-.slide[data-credits]::after {
-	font-weight: 300;
-}
-
 #indicator {
-	background: transparent;
 	text-shadow: none;
 	font-weight: 300;
 }
@@ -221,30 +262,6 @@ section > header.slide:target {
 ::selection {
 	background: hsl(335, 100%, 40%);
 	color: white;
-}
-
-footer.ref a {
-	position: absolute;
-	bottom: 5vmin;
-	text-decoration: none;
-	font-size: 75%;
-}
-
-/* Syntax highlighting */
-
-code.de-emphasize,
-span.de-emphasize {
-	opacity: .4;
-}
-
-.hint {
-	position: absolute;
-	bottom: -5px;
-	right: 10px;
-	font-size: .8rem;
-	font-weight: bold;
-	line-height: 1;
-	opacity: .15;
 }
 
 blockquote {
@@ -260,7 +277,7 @@ blockquote {
 		top: -.3em;
 		margin-right: .2em;
 		font-size: 300%;
-		color: #f06;
+		color: var(--color-magenta);
 		font-style: normal;
 	}
 
@@ -269,7 +286,7 @@ blockquote {
 		font-style: normal;
 		font-size: 60%;
 		font-weight: bold;
-		color: #f06;
+		color: var(--color-magenta);
 	}
 
 		blockquote .cite a:not(:hover) {
@@ -284,7 +301,7 @@ blockquote {
 	table caption {
 		font-weight: bold;
 		letter-spacing: -.05em;
-		color: orange;
+		color: var(--color-orange);
 	}
 
 	th,
@@ -306,7 +323,7 @@ blockquote {
 	thead th {
 		vertical-align: top;
 		font-size: 75%;
-		background: orange;
+		background: var(--color-orange);
 		padding: .3em .5em;
 	}
 
@@ -322,9 +339,3 @@ blockquote {
 	th:first-child {
 		text-align: left;
 	}
-
-/* Ribbon */
-[data-type].slide:not(.hide-ribbon):after {
-	background: hsl(85, 80%, 45%);
-	font-size: 80%;
-}

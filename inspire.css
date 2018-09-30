@@ -47,8 +47,10 @@
    .slide { display: flex; }
    without having to specify :not(.target) all the bloody time
 */
-body:not(.show-thumbnails) .slide:not(.previous):not(:target):not(.next) {
-	display: none !important;
+@media screen {
+	body:not(.show-thumbnails) .slide:not(.previous):not(:target):not(.next) {
+		display: none !important;
+	}
 }
 
  .slide.previous,
@@ -73,17 +75,7 @@ body:not(.show-thumbnails) .slide:not(.previous):not(:target):not(.next) {
 	top: .05in;
 	right: .5em;
 	z-index: 1010;
-
-	font-size: .15in;
-	color: white;
-	background: rgba(0,0,0,.25);
-	font-weight: 900;
-	text-shadow: .05em .05em .1em black;
-	text-align: center;
-	padding: .1em .3em 0;
-	min-width: 1.6em;
-	box-sizing: border-box;
-	border-radius: 999px;
+	font-size: 2vh;
 }
 
 /**
@@ -149,20 +141,44 @@ body:not(.show-thumbnails) .slide:not(.previous):not(:target):not(.next) {
 }
 
 /* Delayed items that are shown incrementally after the slide is */
-.delayed,
-.delayed-children > * {
-	opacity: 0;
+@media screen {
+	.delayed,
+	.delayed-children > * {
+		opacity: 0;
+	}
+
+	.delayed.displayed,
+	.delayed-children > .displayed {
+		opacity: .3;
+	}
+
+	.delayed.current,
+	.delayed-children > .current,
+	.delayed.displayed.persistent,
+	.delayed-children > .displayed.persistent,
+	.delayed-children.persistent > .displayed {
+		opacity: 1;
+	}
 }
 
-.delayed.displayed,
-.delayed-children > .displayed {
-	opacity: .3;
-}
+@media print {
+	@page {
+		size: landscape;
+		margin: 0;
+	}
 
-.delayed.current,
-.delayed-children > .current,
-.delayed.displayed.persistent,
-.delayed-children > .displayed.persistent,
-.delayed-children.persistent > .displayed {
-	opacity: 1;
+	.slide.slide {
+		width: 100vw;
+		height: 100vh;
+		box-sizing: border-box;
+		overflow: hidden;
+		position: static;
+		opacity: 1;
+		visibility: visible;
+	}
+
+	#onscreen-nav,
+	#indicator {
+		display: none;
+	}
 }

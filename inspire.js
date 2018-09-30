@@ -31,7 +31,7 @@ var _ = class Inspire {
 		var me = this;
 
 		// Current slide
-		this.index = this.slide = 0;
+		this.index = 0;
 
 		// Current .delayed item in the slide
 		this.item = 0;
@@ -73,6 +73,7 @@ var _ = class Inspire {
 
 		// Get the slide elements into an array
 		this.slides = $$(".slide", body);
+		this.indicator.style.setProperty("--total", this.slides.length);
 
 		// Order of the slides
 		this.order = [];
@@ -334,7 +335,7 @@ var _ = class Inspire {
 			location.hash = "#" + slide.id;
 		}
 
-		if (prev != this.slide) { // Slide actually changed, perform any other tasks needed
+		if (prev !== this.slide) { // Slide actually changed, perform any other tasks needed
 			document.title = slide.getAttribute("data-title") || documentTitle;
 
 			var env = {slide, prevSlide: this.slides[prev], which, context: this};
@@ -542,7 +543,7 @@ Object.assign(_, {
 	// If selector matches anything, plugin is loaded
 	plugins: {
 		timer: "[data-duration]",
-		presenter: ".enable-presenter",
+		presenter: ".presenter-notes",
 		slidescript: "slide-script",
 		slidestyle: "style[data-slide]",
 		overview: "body:not(.no-overview)",
