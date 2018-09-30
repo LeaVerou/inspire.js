@@ -1,0 +1,104 @@
+/**
+ * Styles for the sample talk, you don’t need to copy this to use Inspire.js
+ * If you just want the theme of the sample talk, use theme.css
+ */
+
+
+#intro h1,
+#intro h2 {
+	margin: 0;
+	filter: drop-shadow(.1rem .1rem .5rem rgba(0,0,0,.5));
+}
+
+#intro h1 {
+	margin-top: auto;
+	color: var(--color-aqua);
+	letter-spacing: -.04em;
+}
+
+@supports (-webkit-background-clip: text) {
+	#intro h1 {
+		background: linear-gradient(to bottom right, var(--color1), var(--color2), var(--color3), var(--color2), var(--color1));
+		font-size: calc(400% + 15vh);
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+}
+
+#intro h2 {
+	width: 12em;
+	font-size: calc(100% + 5vh);
+	color: white;
+	font-weight: 300;
+}
+
+	#intro h2::first-line {
+		font-size: 80%;
+	}
+
+#intro .attribution {
+	margin-top: auto;
+	font-weight: bold;
+	font-size: 80%;
+	color: var(--color-yellow);
+	text-align: center;
+}
+
+/* Syntax highlighting */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: hsla(220, 10%, 90%, .5);
+}
+
+.token.punctuation {
+	color: #999;
+}
+
+.namespace {
+	opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol {
+	color: var(--color-green);
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin {
+	color: hsl(335, 80%, 70%); /* deep pink */
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css > .token.string,
+.token.inserted,
+.token.function {
+	color: var(--color-aqua);
+}
+
+.token.attr-value,
+.token.keyword,
+.token.variable {
+	color: var(--color-yellow);
+}
+
+.token.atrule,
+.token.regex,
+.token.important {
+	color: orange;
+}
+
+.token.important,
+.token.bold {
+	font-weight: bold;
+}

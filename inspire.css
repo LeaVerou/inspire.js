@@ -18,13 +18,14 @@
  * Styles
  */
 
- html, body {
+html,
+body {
 	height: 100%;
- }
+}
 
- body {
+body {
 	margin: 0;
- }
+}
 
 .slide {
 	position:absolute;
@@ -33,14 +34,7 @@
 	bottom: 0;
 	left: 0;
 	z-index: 1;
-	font-size: 250%;
-	line-height: 1.6;
-}
-
-@media (max-width: 1024px) {
-	.slide {
-		font-size: 195%;
-	}
+	font-size: calc(100% + 1vw + 1vh);
 }
 
 /* So that people can override and do things like
@@ -53,14 +47,14 @@
 	}
 }
 
- .slide.previous,
- .slide:target,
- .slide.next {
+.slide.previous,
+.slide:target,
+.slide.next {
 	visibility: hidden;
 	overflow:hidden;
- }
+}
 
- .slide:target {
+.slide:target {
 	z-index: 100;
 	opacity: 1;
 	visibility: visible;
@@ -72,11 +66,22 @@
  */
 #indicator {
 	position: absolute;
-	top: .05in;
+	top: .2em;
 	right: .5em;
 	z-index: 1010;
 	font-size: 2vh;
+	text-align: center;
+	font-weight: bold;
 }
+
+	#indicator::after {
+		counter-reset: total var(--total);
+		content: counter(total);
+		display: block;
+		border-top: 1px solid;
+		line-height: 1.2;
+		font-weight: 300;
+	}
 
 /**
 	On-screen navigation

@@ -24,7 +24,8 @@ if (!window.Bliss) {
 	await new Promise(resolve => bliss.onload = resolve);
 }
 
-var $ = Bliss, $$ = $.$;
+window.$ = Bliss;
+window.$$ = $.$;
 
 var _ = class Inspire {
 	constructor() {
@@ -496,6 +497,11 @@ var _ = class Inspire {
 		}).map(i => i.i);
 	}
 
+	static getAttribute(attribute) {
+		var element = $(`[${attribute}]`);
+		return element && element.getAttribute(attribute);
+	}
+
 	static load(url, base = location.href) {
 		url = new URL(url, base);
 
@@ -518,20 +524,22 @@ var _ = class Inspire {
 
 	static loadPlugin(id) {
 		_.load(`plugins/${id}/plugin.css`, scriptSrc).catch(e => e);
-		return _.load(`plugins/${id}/plugin.js`, scriptSrc).then(() => _.pluginsLoaded.push(id));
+		_.plugins[id] = {};
+		return _.load(`plugins/${id}/plugin.js`, scriptSrc).catch(() => delete _.plugins[id]);
 	}
 
 	static init() {
 		var dependencies = [];
 
-		for (let id in _.plugins) {
-			if ($(_.plugins[id])) {
+		for (let id in _.pluginTest) {
+			if ($(_.pluginTest[id])) {
 				dependencies.push(_.loadPlugin(id));
 			}
 		}
 
 		Promise.all(dependencies).then(() => {
-			console.log("Inspire.js plugins loaded:", _.pluginsLoaded.length? _.pluginsLoaded.join(", ") : "none");
+			var loaded = Object.keys(_.plugins);
+			console.log("Inspire.js plugins loaded:", loaded.length? loaded.join(", ") : "none");
 			window.inspire = new _();
 		});
 	}
@@ -541,16 +549,18 @@ var _ = class Inspire {
 Object.assign(_, {
 	// Plugin ids and selectors
 	// If selector matches anything, plugin is loaded
-	plugins: {
+	pluginTest: {
 		timer: "[data-duration]",
 		presenter: ".presenter-notes",
 		slidescript: "slide-script",
 		slidestyle: "style[data-slide]",
 		overview: "body:not(.no-overview)",
-		iframe: ".slide[data-src], .iframe.slide"
+		iframe: ".slide[data-src], .iframe.slide",
+		prism: "[class*='lang-'], [class*='language-']"
 	},
 
-	pluginsLoaded: [],
+	// Plugins loaded
+	plugins: {},
 
 	hooks: new $.Hooks()
 });

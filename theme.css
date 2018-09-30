@@ -2,15 +2,12 @@
 	--font-mono: Consolas, Monaco, 'Andale Mono', monospace;
 	--font-body: 'Helvetica Neue', Helvetica, Segoe UI, sans-serif;
 	--font-heading: var(--font-body);
-	--color1: hsl(40, 100%, 50%);
-	--color2: hsl(178, 80%, 40%);
-	--color3: #f06;
-	--color4: yellowgreen;
-	--color5: yellow;
-	--color-orange: var(--color1);
-	--color-aqua: var(--color2);
-	--color-magenta: var(--color3);
-	--color-green: var(--color4);
+	--color-yellow: hsl(50, 100%, 50%);
+	--color-green: hsl(150, 90%, 40%);
+	--color-aqua: hsl(190, 100%, 40%);
+	--color1: var(--color-yellow);
+	--color2: var(--color-green);
+	--color3: var(--color-aqua);
 }
 
 body {
@@ -23,9 +20,9 @@ body {
 	font-synthesis: none;
 }
 
-h1 {
-	font-weight: bold;
+h1, h2, h3, h4, h5, h6 {
 	line-height: 1.2;
+	text-align: center;
 }
 
 a {
@@ -88,6 +85,11 @@ img {
 	object-fit: contain;
 }
 
+::selection {
+	background: hsl(335, 100%, 40%);
+	color: white;
+}
+
 .slide {
 	display: flex;
 	flex-flow: column;
@@ -121,6 +123,103 @@ img {
 		font-size: 120%;
 	}
 
+section > header.slide {
+	background: linear-gradient(to bottom right, var(--color1), var(--color2), var(--color3), var(--color2), var(--color1));
+}
+
+	section > header.slide > h1 {
+		margin: auto;
+		padding: .5em .7em;
+		background: black;
+		text-align: center;
+		font-size: 250%;
+		line-height: 1.2;
+		font-weight: 300;
+	}
+
+#indicator {
+	color: white;
+}
+
+/* Quotes */
+
+blockquote {
+	position: relative;
+	font-style: italic;
+	width: calc(80vw - 4.5em);
+}
+
+	blockquote::before {
+		content: "❝";
+		position: absolute;
+		right: 100%;
+		top: -.3em;
+		margin-right: .2em;
+		font-size: 300%;
+		color: var(--color-magenta);
+		font-style: normal;
+	}
+
+	blockquote .cite {
+		text-align: right;
+		font-style: normal;
+		font-size: 60%;
+		font-weight: bold;
+		color: var(--color-magenta);
+	}
+
+		blockquote .cite a:not(:hover) {
+			text-decoration: none;
+		}
+
+/* Tables */
+
+.slide > table {
+	border-spacing: 0;
+	margin: 1em;
+}
+
+	table caption {
+		font-weight: bold;
+		letter-spacing: -.05em;
+		color: var(--color-orange);
+	}
+
+	th,
+	td {
+		vertical-align: middle;
+		text-align: left;
+		padding: .5em;
+	}
+
+	th {
+		border: 0;
+	}
+
+	tbody th {
+		text-align: right;
+		padding-left: 0;
+	}
+
+	thead th {
+		vertical-align: top;
+		font-size: 75%;
+		background: var(--color-orange);
+		padding: .3em .5em;
+	}
+
+	tbody tr > * {
+		border-top: 1px solid hsla(0, 0%, 100%, .15);
+	}
+
+	td:first-child {
+		font-weight: 300;
+	}
+
+	td:first-child,
+	th:first-child {
+		text-align: left;
+	}
 
 /* Mark slides as incomplete to spot them easier */
 .incomplete.slide::after {
@@ -237,105 +336,3 @@ img {
 	text-shadow: none;
 	background: rgba(0,0,0,.5);
 }
-
-section > header.slide {
-	--color1: hsl(50, 100%, 50%);
-	--color2: hsl(150, 90%, 40%);
-	--color3: hsl(190, 100%, 40%);
-	background: linear-gradient(to bottom right, var(--color1), var(--color2), var(--color3), var(--color2), var(--color1));
-}
-
-	section > header.slide > h1 {
-		margin: auto;
-		padding: .5em .7em;
-		background: black;
-		text-align: center;
-		line-height: 1.2;
-		font-weight: 300;
-	}
-
-#indicator {
-	text-shadow: none;
-	font-weight: 300;
-}
-
-::selection {
-	background: hsl(335, 100%, 40%);
-	color: white;
-}
-
-blockquote {
-	position: relative;
-	font-style: italic;
-	width: calc(80vw - 4.5em);
-}
-
-	blockquote::before {
-		content: "❝";
-		position: absolute;
-		right: 100%;
-		top: -.3em;
-		margin-right: .2em;
-		font-size: 300%;
-		color: var(--color-magenta);
-		font-style: normal;
-	}
-
-	blockquote .cite {
-		text-align: right;
-		font-style: normal;
-		font-size: 60%;
-		font-weight: bold;
-		color: var(--color-magenta);
-	}
-
-		blockquote .cite a:not(:hover) {
-			text-decoration: none;
-		}
-
-.slide > table {
-	border-spacing: 0;
-	margin: 1em;
-}
-
-	table caption {
-		font-weight: bold;
-		letter-spacing: -.05em;
-		color: var(--color-orange);
-	}
-
-	th,
-	td {
-		vertical-align: middle;
-		text-align: left;
-		padding: .5em;
-	}
-
-	th {
-		border: 0;
-	}
-
-	tbody th {
-		text-align: right;
-		padding-left: 0;
-	}
-
-	thead th {
-		vertical-align: top;
-		font-size: 75%;
-		background: var(--color-orange);
-		padding: .3em .5em;
-	}
-
-	tbody tr > * {
-		border-top: 1px solid hsla(0, 0%, 100%, .15);
-	}
-
-	td:first-child {
-		font-weight: 300;
-	}
-
-	td:first-child,
-	th:first-child {
-		text-align: left;
-	}

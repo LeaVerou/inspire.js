@@ -9,26 +9,29 @@
 	<link href="theme.css" rel="stylesheet" />
 	<link href="talk.css" rel="stylesheet" />
 </head>
-<body data-duration="10">
+<body class="language-markup" data-prism-plugins="normalize-whitespace">
 
 <header id="intro" class="slide">
 	<h1>
 		Inspire.js
 	</h1>
-	<p class="attribution">By Lea Verou</p>
+	<h2>
+		Lean,&nbsp;hackable,&nbsp;extensible slide&nbsp;deck&nbsp;framework
+	</h2>
+	<p class="attribution">By <a href="http://lea.verou.me">Lea Verou</a> and <a href="https://github.com/LeaVerou/inspire.js/graphs/contributors">contributors</a></p>
 </header>
 <section>
 	<header class="slide">
 		<h1>Introduction</h1>
 	</header>
 
-	<article class="slide" title="CSSS: Introduction">
-		<h1>What is it?</h1>
-		<p>A simple framework for building presentations with modern web standards.</p>
+	<article class="slide" title="Inspire.js: Introduction">
+		<h1>Main idea</h1>
+
 		<ul class="delayed-children">
 			<li>An HTML file contains the whole presentation</li>
 			<li>Themes as CSS files</li>
-			<li>Plugins for extra functionality, autoloaded when the functionality is used</li>
+			<li>Plugins for extra functionality, autoloaded when used</li>
 			<li>JavaScript for custom things</li>
 		</ul>
 	</article>
@@ -38,7 +41,7 @@
 		<ul>
 			<li>Originally created in 2010 for my first talk, at <a href="http://front-trends.com">Front Trends 2010</a></li>
 			<li>By popular demand, it was released shortly after, named CSSS</li>
-			<li>Incremental improvements since, huge refactor in 2018</li>
+			<li>Huge refactor and renaming to Inspire.js in Sep 2018</li>
 		</ul>
 	</article>
 
@@ -61,8 +64,6 @@
 			<li>Home to go to the first slide, End to go to the last</li>
 			<li>Ctrl* + G to jump to an arbitrary slide (by slide number or identifier)</li>
 		</ul>
-		<p>* Ctrl or Shift actually.</p>
-		<p></p>
 	</article>
 </section>
 
@@ -130,7 +131,7 @@
 				</ul>
 			</li>
 			<li>No mouse click to advance to the next slide. I consider it annoying.</li>
-			<li>Doesn't work in mobile :(</li>
+
 		</ul>
 	</article>
 </section>
