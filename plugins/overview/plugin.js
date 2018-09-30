@@ -8,7 +8,7 @@ Inspire.hooks.add({
 		// Ctrl + Shift + H: Show overview of all slides
 		// Esc: Escape
 
-		if (!(env.evt.key === "Esc" || env.letter === "H")) {
+		if (!(env.evt.key === "Escape" || env.letter === "H")) {
 			// Escape overview
 			return;
 		}
@@ -17,7 +17,7 @@ Inspire.hooks.add({
 		var headersOnly = evt.shiftKey && evt.ctrlKey;
 
 		if (document.body.matches(".show-thumbnails")) {
-			if (env.evt.key === "Esc" || headersOnly === isHeadersOnly) {
+			if (env.evt.key === "Escape" || headersOnly === isHeadersOnly) {
 				// Escape overview
 				exitOverview();
 			}

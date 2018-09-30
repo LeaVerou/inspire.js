@@ -149,10 +149,10 @@ var _ = class Inspire {
 				(Shift instead of Ctrl works too)
 			*/
 			"keyup": evt => {
-				if ((evt.ctrlKey || evt.shiftKey) && !evt.altKey && !/^(?:input|textarea)$/i.test(document.activeElement.nodeName)) {
+				if (!document.activeElement.matches("input, textarea, select, button")) {
 					var letter = evt.key.toUpperCase();
 
-					if (letter === "G") {
+					if (letter === "G" && (evt.ctrlKey || evt.shiftKey) && !evt.altKey) {
 						var slide = prompt("Which slide?");
 						me.goto(+slide? slide - 1 : slide);
 					}
