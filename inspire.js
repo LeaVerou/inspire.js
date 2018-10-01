@@ -431,46 +431,31 @@ var _ = class Inspire {
 	}
 
 	adjustFontSize() {
-		// Cache long lookup chains, for performance
-		var scrollRoot = html.scrollHeight? html : body;
 		var slide = this.currentSlide;
 
-		// Clear previous styles
-		html.style.fontSize = "";
-
-		if (body.matches(".show-thumbnails") || slide.matches(".dont-resize")) {
+		if (body.matches(".show-thumbnails") || slide.matches(".dont-resize")
+		    || slide.scrollHeight <= innerHeight || slide.scrollWidth <= innerWidth) {
 			return;
 		}
 
+		slide.style.fontSize = "";
+		var size = parseInt(getComputedStyle(slide).fontSize);
+		var prev = {scrollHeight: slide.scrollHeight, scrollWidth: slide.scrollWidth};
+
 		for (
-			var percent = 100;
-			(scrollRoot.scrollHeight > innerHeight || scrollRoot.scrollWidth > innerWidth) && percent >= 35;
-			percent-=5
+			var factor = size / parseInt(getComputedStyle(document.body).fontSize);
+			(slide.scrollHeight > innerHeight || slide.scrollWidth > innerWidth) && factor >= 1;
+			factor -= .1
 		) {
-			html.style.fontSize = percent + "%";
-		}
+			slide.style.fontSize = factor * 100 + "%";
 
-		// Individual slide
-
-		if (slide.clientHeight && slide.clientWidth) {
-			// Strange FF bug: scrollHeight doesn"t work properly with overflow:hidden
-			var previousStyle = slide.getAttribute("style");
-			slide.style.overflow = "auto";
-
-			for (
-				;
-				(slide.scrollHeight > slide.clientHeight || slide.scrollWidth > slide.clientWidth) && percent >= 35;
-				percent--
-			) {
-				html.style.fontSize = percent + "%";
+			if (prev && prev.scrollHeight <= slide.scrollHeight && prev.scrollWidth <= slide.scrollWidth) {
+				// Reducing font-size is having no effect, abort mission
+				break;
 			}
-
-			slide.setAttribute("style", previousStyle);
-		}
-
-		if (percent <= 35) {
-			// Something probably went wrong, so just give up altogether
-			html.style.fontSize = "";
+			else {
+				prev = null;
+			}
 		}
 	}
 

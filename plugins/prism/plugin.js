@@ -60,9 +60,7 @@ if (ids.size) {
 		var deps = toArray(languages[id].require);
 		ok[id] = promise();
 
-		await Promise.all(deps.map(i => {
-			return loadLanguage(i);
-		}));
+		await Promise.all(deps.map(loadLanguage));
 
 		await $.include(`${PRISM_ROOT}/components/prism-${id}.js`);
 		ok[id].resolve(id);
