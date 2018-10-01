@@ -342,7 +342,7 @@ kbd {
 	padding: 0 .4em;
 	border: 1px solid rgba(0,0,0,.8);
 	border-radius: .15em;
-	box-shadow: 0 1px 0 rgba(0,0,0,.8), 0 0 0 2px white inset;
+	box-shadow: 0 0 0 2px white inset, 0 .05em .2em rgba(0,0,0,.5);
 	color: black;
 	background-color: hsla(0,0%,100%,.85);
 	font: 70%/1.6 sans-serif;

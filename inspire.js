@@ -106,6 +106,7 @@ var _ = class Inspire {
 			slide.setAttribute("data-title", title);
 		}
 
+		// TODO data-import and data-steps should probably move to a plugin
 		slide.setAttribute("data-index", i);
 			var imp = slide.getAttribute("data-import"),
 				imported = imp? this.getSlideById(imp) : null;

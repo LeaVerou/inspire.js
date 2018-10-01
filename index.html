@@ -32,7 +32,7 @@
 			<li>An HTML file contains the whole presentation</li>
 			<li>Themes as CSS files</li>
 			<li>Plugins for extra functionality, autoloaded when used</li>
-			<li>JavaScript for custom things</li>
+			<li>Nice JavaScript API for really custom things</li>
 		</ul>
 	</article>
 
@@ -65,6 +65,15 @@
 			<li><kbd>Ctrl</kbd><kbd>G</kbd> to jump to an arbitrary slide (by slide number or identifier)</li>
 		</ul>
 	</article>
+
+	<article class="slide">
+		<h1>Features</h1>
+		<ul>
+			<li>IDs are dynamically assigned by JavaScript, but you can also use your own</li>
+			<li class="delayed">Incremental display of slide contents (just add <code>class="delayed"</code>)</li>
+			<li>Slide scaling based on window size (size everything you want to be scalable in ems)</li>
+		</ul>
+	</article>
 </section>
 
 <section>
@@ -73,72 +82,67 @@
 	</header>
 
 	<article class="slide">
-		<h1>Overview Plugin</h1>
+		<h1>Overview</h1>
 
 		<ul>
 			<li>Loaded automatically, use <code>&lt;code class="no-overview"></code> to prevent this.</li>
 			<li>Press <kbd>Ctrl</kbd>+<kbd>H</kbd> (or <kbd>Shift</kbd>+<kbd>H</kbd>) to trigger, <kbd>Esc</kbd> to close.</li>
-			<li class="delayed">Cool, huh? You can press Ctrl+Shift+H to see all slides (warning: can be slow!)</li>
+			<li class="delayed">Cool, huh? You can press <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>H</kbd> to see all slides</li>
 		</ul>
 	</article>
 
 	<article class="slide">
-		<h1>Timer Plugin</h1>
+		<h1>Prism</h1>
+
 		<ul>
-			<li>Define the talk duration with the attribute <code>data-duration</code> on the <code>body</code>. This also loads the plugin.</li>
+			<li>Autoloads core & languages</li>
+			<li>Load plugins by listing their ids in a <code>data-prism-plugins</code> attribute, on any element (first one will be used).</li>
+			<li>Automatically figures out dependencies & aliases</li>
+			<li>CSS is up to you!</li>
+		</ul>
+		<pre class="language-jsx"><code>var start = new Date().getTime();
+	setInterval(function() {
+		React.render(
+			&lt;ExampleApplication elapsed={new Date().getTime() - start} />,
+			document.getElementById('container')
+		);
+}, 50);</code></pre>
+	</article>
+
+	<article class="slide">
+		<h1>Timer</h1>
+		<ul>
+			<li>Define the talk duration with the attribute <code>data-duration</code> on the <code>body</code>.</li>
 			<li>Timer in the form of a progress bar on the top</li>
 			<li>Style the timer and the end state with the selectors <code>#timer</code> and <code>#timer.end</code> respectively.</li>
 		</ul>
 	</article>
 
 	<article class="slide">
-		<h1>Presenter View Plugin</h1>
-		<p>This slide has presenter notes. They are only visible in presenter view (Ctrl+P or Shift+P).</p>
-		<p class="presenter-notes">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		<h1>Presenter View</h1>
+
+		<ul>
+			<li>Use <code>&lt;p class="presenter-notes"></code> for presenter notes. You need at least one of these to have the plugin loaded.</li>
+			<li>Presenter view with <kbd>Ctrl</kbd><kbd>P</kbd> (or <kbd>Shift</kbd><kbd>P</kbd>)</li>
+			<li>Also timer, upcoming slide</li>
+		</ul>
 	</article>
 
-	<article class="slide">
+	<article class="slide" id="slidestyle">
 		<style data-slide>
-			h2 {
-				font-size: 200%;
-				font-weight: bold;
+			.slide {
+				background: rebeccapurple;
 			}
 		</style>
-		<h1>Slide-specific CSS Plugin</h1>
-		<p>You can use the <code>data-slide</code> attribute on style elements in slides, to only style the current slide or inside sections that include multiple slides to style all of them and nothing else.</p>
-		<p>For example, inspect this slide and then run <code>$$('style[scoped]')[0].sheet.cssRules[0].selectorText</code> in the console to see how the original selector gets changed.</p>
-	</article>
-
-	<article class="slide">
-		<h1>More features</h1>
-		<ul>
-			<li class="delayed">IDs are dynamically assigned by JavaScript&hellip;</li>
-			<li class="delayed">&hellip;but you can also assign your own, bringing the best of both worlds</li>
-			<li class="delayed">Incremental display of slide contents (just add <code>class="delayed"</code>)</li>
-			<li class="delayed">Slide scaling based on window size (size everything you want to be scalable in ems)</li>
-			<li class="delayed">Document.title changing according to slide title (fetched either from the <code>title</code> attribute or the slide's heading)</li>
-		</ul>
-	</article>
-
-	<article class="slide">
-		<h1>Drawbacks</h1>
-		<ul>
-			<li>Only supports modern browsers. Why?
-				<ul>
-					<li>More lightweight</li>
-					<li>Easier to understand code</li>
-					<li>It's a presentation, so the environment is controlled anyway</li>
-				</ul>
-			</li>
-			<li>No mouse click to advance to the next slide. I consider it annoying.</li>
-
-		</ul>
+		<h1>Slide-specific CSS</h1>
+		<p>You can use the <code>data-slide</code> attribute on <code>&lt;style></code> elements in slides, to only style the current slide or inside sections that include multiple slides to style all of them and nothing else.</p>
+		<p>For example, run <code class="language-js">$('#slidestyle style').sheet.cssRules[0].selectorText</code> in the console to see how the original selector gets changed.</p>
 	</article>
 </section>
 
 <footer class="slide" title="The End">
 	<h1>Thank you!</h1>
-	<p>Get it or contribute at <a href="http://github.com/LeaVerou/inspire.js">http://github.com/LeaVerou/inspire.js</a></p>
+	<p>Get it or contribute at <a href="https://github.com/LeaVerou/inspire.js">github.com/LeaVerou/inspire.js</a></p>
 </footer>
 
 <script src="inspire.js"></script>
