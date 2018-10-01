@@ -31,7 +31,7 @@ else {
 ids = [...ids];
 
 // Load languages
-await ids.map(id => $.include(`${PRISM_ROOT}/components/prism-${id}.js`));
+await Promise.all(ids.map(id => $.include(`${PRISM_ROOT}/components/prism-${id}.js`)));
 
 // Load plugins
 let plugins = Inspire.getAttribute("data-prism-plugins");
@@ -49,6 +49,10 @@ if (plugins.length) {
 
 console.log(`${message}, Prism languages: ${ids.join(", ")}, Prism plugins: ${plugins.join(", ")}`);
 
-Prism.highlightAll();
+Prism.highlightAllUnder(inspire.currentSlide); // slidechange has probably already fired for current slide
+
+document.addEventListener("slidechange", evt => {
+	Prism.highlightAllUnder(evt.target);
+});
 
 })();

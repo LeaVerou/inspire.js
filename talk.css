@@ -74,7 +74,7 @@
 .token.string,
 .token.char,
 .token.builtin {
-	color: hsl(335, 80%, 70%); /* deep pink */
+	color: var(--color-aqua);
 }
 
 .token.operator,
@@ -83,7 +83,8 @@
 .language-css > .token.string,
 .token.inserted,
 .token.function {
-	color: var(--color-aqua);
+
+	color: hsl(335, 80%, 70%); /* deep pink */
 }
 
 .token.attr-value,

@@ -377,6 +377,7 @@ var _ = class Inspire {
 				slide.dispatchEvent(new CustomEvent("slidechange", {
 					"bubbles": true
 				}));
+
 				_.hooks.run("slidechange-async", env);
 			});
 		}
