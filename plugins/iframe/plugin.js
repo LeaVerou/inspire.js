@@ -1,5 +1,5 @@
 Inspire.hooks.add({
-	"goto-slide-changed": function(env) {
+	"slidechange": function(env) {
 		var slide = env.slide;
 
 		if (slide.matches(".slide[data-src]:empty")) {
