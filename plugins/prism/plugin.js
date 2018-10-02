@@ -87,7 +87,7 @@ if (plugins.length) {
 		return !Prism.plugins[CamelCase];
 	});
 
-	await plugins.map(id => {
+	await Promise.all(plugins.map(id => {
 		if (!meta.plugins[id]) {
 			return;
 		}
@@ -97,7 +97,7 @@ if (plugins.length) {
 		}
 
 		return $.include(`${PRISM_ROOT}/plugins/${id}/prism-${id}.js`)
-	});
+	}));
 }
 
 var message = !prismAlreadyLoaded? ["Prism Core"] : [];
