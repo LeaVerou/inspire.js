@@ -544,7 +544,7 @@ Object.assign(_, {
 	pluginTest: {
 		timer: "[data-duration]",
 		presenter: ".presenter-notes",
-		slidescript: "slide-script",
+		lazyload: "[data-src]:not(.slide)",
 		slidestyle: "style[data-slide]",
 		overview: "body:not(.no-overview)",
 		iframe: ".slide[data-src], .iframe.slide",
