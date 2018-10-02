@@ -510,9 +510,14 @@ var _ = class Inspire {
 	}
 
 	static loadPlugin(id) {
-		_.load(`plugins/${id}/plugin.css`, scriptSrc).catch(e => e);
-		_.plugins[id] = {};
-		return _.load(`plugins/${id}/plugin.js`, scriptSrc).catch(() => delete _.plugins[id]);
+		if (!_.plugins[id]) {
+			_.load(`plugins/${id}/plugin.css`, scriptSrc).catch(e => e);
+			_.plugins[id] = {
+				loaded: _.load(`plugins/${id}/plugin.js`, scriptSrc).catch(() => delete _.plugins[id])
+			};
+		}
+
+		return _.plugins[id].loaded;
 	}
 
 	static init() {
