@@ -2,10 +2,9 @@
  * Autoload Prism and Prism plugins as needed
  */
 
-Inspire.plugins.prism.loaded = (async () => {
+Inspire.plugins.prism.loadedPrism = (async () => {
 
 const PRISM_ROOT = Inspire.getAttribute("data-prism-root") || "https://prismjs.com";
-var message = "Loaded ";
 
 // Which languages are used?
 var ids = $$("[class*='lang-'], [class*='language-']").map(e => {
@@ -19,6 +18,7 @@ if (ids.size) {
 	// Prism is used in the current slide deck!
 
 	if (window.Prism) {
+		var prismAlreadyLoaded = true;
 		// Drop languages already loaded
 		for (let id of ids) {
 			if (Prism.languages[id]) {
@@ -28,7 +28,6 @@ if (ids.size) {
 	}
 	else {
 		await $.include(`${PRISM_ROOT}/components/prism-core.js`);
-		message += "Prism Core";
 	}
 
 	// Load metadata
@@ -84,7 +83,13 @@ if (plugins.length) {
 	await plugins.map(id => $.include(`${PRISM_ROOT}/plugins/${id}/prism-${id}.js`));
 }
 
-console.log(`${message}, Prism languages: ${ids.join(", ")}, Prism plugins: ${plugins.join(", ")}`);
+var message = !prismAlreadyLoaded? ["Prism Core"] : [];
+ids.length && message.push(`Prism languages: ${ids.join(", ")}`);
+plugins.length && message.push(`Prism plugins: ${plugins.join(", ")}`);
+
+if (message.length) {
+	console.log(`Loaded ${message.join(", ")}`);
+}
 
 Prism.highlightAllUnder(inspire.currentSlide); // slidechange has probably already fired for current slide
 
@@ -92,6 +97,10 @@ document.addEventListener("slidechange", evt => {
 	Prism.highlightAllUnder(evt.target);
 });
 
+// Exports
+Object.assign(Inspire.plugins.prism, { components, languages: ids, plugins });
+
+// Utilities
 function toArray(arr) {
 	return arr === undefined? [] : Array.isArray(arr)? arr : [arr];
 }
