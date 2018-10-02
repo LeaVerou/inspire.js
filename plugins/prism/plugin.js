@@ -14,6 +14,10 @@ var ids = $$("[class*='lang-'], [class*='language-']").map(e => {
 // Drop duplicates
 ids = new Set(ids);
 
+// Which plugins to load?
+let plugins = Inspire.getAttribute("data-prism-plugins");
+plugins = plugins? plugins.split(/\s*,\s*/) : [];
+
 if (ids.size) {
 	// Prism is used in the current slide deck!
 
@@ -29,10 +33,16 @@ if (ids.size) {
 	else {
 		await $.include(`${PRISM_ROOT}/components/prism-core.js`);
 	}
+}
 
+if (ids.size || plugins.length) {
 	// Load metadata
 	await $.include(`${PRISM_ROOT}/components.js`);
-	var languages = components.languages;
+	var meta = components;
+}
+
+if (ids.size) {
+	var languages = meta.languages;
 
 	// Replace aliases with their canonical id
 	for (let [id, lang] of Object.entries(languages)) {
@@ -70,9 +80,6 @@ if (ids.size) {
 }
 
 // Load plugins
-let plugins = Inspire.getAttribute("data-prism-plugins");
-plugins = plugins? plugins.split(/\s*,\s*/) : [];
-
 if (plugins.length) {
 	// Drop plugins already loaded
 	plugins = plugins.filter(id => {
@@ -80,7 +87,17 @@ if (plugins.length) {
 		return !Prism.plugins[CamelCase];
 	});
 
-	await plugins.map(id => $.include(`${PRISM_ROOT}/plugins/${id}/prism-${id}.js`));
+	await plugins.map(id => {
+		if (!meta.plugins[id]) {
+			return;
+		}
+
+		if (!meta.plugins[id].noCSS) {
+			$.include(`${PRISM_ROOT}/plugins/${id}/prism-${id}.css`);
+		}
+
+		return $.include(`${PRISM_ROOT}/plugins/${id}/prism-${id}.js`)
+	});
 }
 
 var message = !prismAlreadyLoaded? ["Prism Core"] : [];
