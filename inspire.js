@@ -489,31 +489,13 @@ var _ = class Inspire {
 		return element && element.getAttribute(attribute);
 	}
 
-	static load(url, base = location.href) {
-		url = new URL(url, base);
-
-		if (/\.css$/.test(url.pathname)) {
-			// CSS file
-			return new Promise((resolve, reject) => {
-				$.create("link", {
-					"href": url,
-					"rel": "stylesheet",
-					"inside": document.head,
-					"onload": resolve,
-					"onerror": reject
-				});
-			});
-		}
-
-		// JS file
-		return $.include(url);
-	}
-
 	static loadPlugin(id) {
 		if (!_.plugins[id]) {
-			_.load(`plugins/${id}/plugin.css`, scriptSrc).catch(e => e);
 			_.plugins[id] = {
-				loaded: _.load(`plugins/${id}/plugin.js`, scriptSrc).catch(() => delete _.plugins[id])
+				loaded: Promise.all([
+					$.load(`plugins/${id}/plugin.css`, scriptSrc).catch(e => e),
+					$.load(`plugins/${id}/plugin.js`, scriptSrc).catch(() => delete _.plugins[id])
+				])
 			};
 		}
 
