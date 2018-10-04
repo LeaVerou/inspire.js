@@ -14,7 +14,7 @@ Inspire.hooks.add({
 		}
 
 		var evt = env.evt;
-		var headersOnly = evt.shiftKey && evt.ctrlKey;
+		var headersOnly = !(evt.shiftKey && evt.ctrlKey);
 
 		if (document.body.matches(".show-thumbnails")) {
 			if (env.evt.key === "Escape" || headersOnly === isHeadersOnly) {
