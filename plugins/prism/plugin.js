@@ -2,7 +2,7 @@
  * Autoload Prism and Prism plugins as needed
  */
 
-Inspire.plugins.prism.loadedPrism = (async () => {
+Inspire.plugins.prism.ready = (async () => {
 
 const PRISM_ROOT = Inspire.getAttribute("data-prism-root") || "https://prismjs.com";
 
@@ -35,49 +35,49 @@ if (ids.size) {
 	}
 }
 
-if (ids.size || plugins.length) {
-	// Load metadata
-	await $.include(`${PRISM_ROOT}/components.js`);
-	var meta = components;
-}
+// Load metadata
+await $.include(`${PRISM_ROOT}/components.js`);
+var meta = components;
 
-if (ids.size) {
-	var languages = meta.languages;
+var languages = meta.languages;
 
-	// Replace aliases with their canonical id
-	for (let [id, lang] of Object.entries(languages)) {
-		if (lang.alias) {
-			var alias = toArray(lang.alias);
+// Replace aliases with their canonical id
+for (let [id, lang] of Object.entries(languages)) {
+	lang.id = id;
 
-			for (let i of ids) {
-				if (alias.indexOf(i) > -1) {
-					ids.delete(i);
-					ids.add(id);
-				}
+	if (lang.alias) {
+		var alias = toArray(lang.alias);
+
+		alias.forEach(a => languages[a] = lang);
+
+		for (let i of ids) {
+			if (alias.indexOf(i) > -1) {
+				ids.delete(i);
+				ids.add(id);
 			}
 		}
 	}
-
-	// Load languages recursively, respecting dependencies
-	var ok = {};
-	var loadLanguage = async id => {
-		if (ok[id]) {
-			// Language already loading
-			return ok[id];
-		}
-
-		var deps = toArray(languages[id].require);
-		ok[id] = promise();
-
-		await Promise.all(deps.map(loadLanguage));
-
-		await $.include(`${PRISM_ROOT}/components/prism-${id}.js`);
-		ok[id].resolve(id);
-	};
-
-	ids = [...ids];
-	await Promise.all(ids.map(loadLanguage));
 }
+
+// Load languages recursively, respecting dependencies
+var ok = {};
+var loadLanguage = async id => {
+	if (ok[id]) {
+		// Language already loading
+		return ok[id];
+	}
+
+	var deps = toArray(languages[id].require);
+	ok[id] = promise();
+
+	await Promise.all(deps.map(loadLanguage));
+
+	await $.include(`${PRISM_ROOT}/components/prism-${id}.js`);
+	ok[id].resolve(id);
+};
+
+ids = [...ids];
+await Promise.all(ids.map(loadLanguage));
 
 // Load plugins
 if (plugins.length) {
@@ -108,14 +108,18 @@ if (message.length) {
 	console.log(`Loaded ${message.join(", ")}`);
 }
 
-Prism.highlightAllUnder(inspire.currentSlide); // slidechange has probably already fired for current slide
+if (window.inspire) {
+	// slidechange may have already fired for current slide
+	Prism.highlightAllUnder(inspire.currentSlide);
+}
+
 
 document.addEventListener("slidechange", evt => {
 	Prism.highlightAllUnder(evt.target);
 });
 
 // Exports
-Object.assign(Inspire.plugins.prism, { components, languages: ids, plugins });
+Object.assign(Inspire.plugins.prism, { meta, languages: ids, plugins });
 
 // Utilities
 function toArray(arr) {
