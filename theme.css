@@ -55,7 +55,7 @@ input[type="tel"] {
 
 code, textarea, pre {
 	margin: 0;
-	font: 100%/1.4 var(--font-mono);
+	font: 100%/1.5em var(--font-mono);
 	font-family: var(--font-mono);
 	tab-size: 4;
 	color: inherit;

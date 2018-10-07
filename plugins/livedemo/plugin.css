@@ -1,0 +1,229 @@
+.demo.slide {
+	padding-bottom: 0;
+	padding-left: 0;
+	align-items: stretch;
+	justify-content: space-between;
+	flex-flow: row;
+	font-size: 200%;
+}
+
+	.demo.slide .dynamic-contents {
+		flex: auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-flow: column;
+	}
+
+	.demo.slide:not(.horizontal) {
+		padding-top: 0;
+	}
+
+.isolated.demo.slide {
+	padding: 0;
+	flex-flow: row;
+	align-items: stretch;
+	justify-content: flex-start;
+	--division: 50;
+}
+
+	.isolated.demo.slide > iframe {
+		border: 0;
+		height: 100%;
+		position: static;
+		width: -webkit-fill-available;
+		width: fill;
+		max-width: calc(100% - var(--division) * 1%);
+		margin: 1.5em;
+		border-radius: 8px;
+		background: hsla(0,0%,100%,.8);
+		resize: both;
+	}
+
+	@supports not ((width: fill) or (width: -webkit-fill-available)) {
+		/* To allow resizing */
+		.isolated.demo.slide > iframe {
+			flex: 1;
+			width: auto;
+		}
+	}
+
+.horizontal.demo.slide {
+	flex-flow: column;
+	padding-right: 0;
+}
+
+		.isolated.horizontal.demo.slide > iframe {
+			margin-bottom: 0;
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+
+		.isolated:not(.horizontal).demo.slide > iframe {
+			margin-left: 0;
+			border-bottom-left-radius: 0;
+			border-top-left-radius: 0;
+			height: calc(100% - 3em);
+		}
+
+		.horizontal.demo.slide div.editor-container {
+			order: 9999;
+		}
+
+		.horizontal.demo.slide > div.editor-container:first-child,
+		.horizontal.demo.slide > style:first-child + div.editor-container {
+			margin-top: auto;
+		}
+
+.demo.slide details.notes,
+.demo.slide .button,
+.runnable.slide .button {
+	position: absolute;
+	top: .4em;
+	bottom: auto;
+	z-index: 2;
+}
+
+.demo.slide details.notes {
+	top: .25em;
+	right: 1.5em;
+	z-index: 2;
+	text-align: left;
+}
+
+.demo.slide .button.new-tab {
+	left: calc(var(--division, 60) * 1% + .5em);
+}
+
+.demo.slide .button.next {
+	left: calc(var(--division, 60) * 1% + 9.5em);
+	right: auto;
+}
+
+.demo.slide details.notes > summary,
+.demo.slide .button {
+	color: black;
+	border-color: rgba(0,0,0,.2);
+}
+
+.editor-container {
+	display: flex;
+	flex-flow: column;
+}
+
+.editor-container:only-child {
+	margin-right: auto;
+}
+
+	.editor-container div.prism-live {
+		flex: auto;
+	}
+
+	.demo.slide div.prism-live.collapsed {
+		--min-height: 1.6em;
+		max-height: var(--collapsed-height, var(--min-height));
+		min-height: var(--min-height);
+		overflow: hidden;
+	}
+
+		.demo.slide div.prism-live.collapsed pre {
+			opacity: .2;
+		}
+
+		.demo.slide div.prism-live.collapsed textarea,
+		.demo.slide div.prism-live.collapsed pre {
+			overflow: hidden;
+		}
+
+		.demo.slide:not(.horizontal) div.editor-container {
+			width: calc(var(--division, 60) * 1vw);
+			min-width: 15em;
+			order: -1;
+		}
+
+		.demo.slide:not(.horizontal):not(.isolated) div.editor-container {
+			margin-right: 1em;
+		}
+
+div.prism-live ::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+div.prism-live ::-webkit-scrollbar-track {
+	background: hsl(200, 10%, 30%);
+}
+
+div.prism-live ::-webkit-scrollbar-corner {
+	background: hsl(200, 10%, 25%);
+}
+
+div.prism-live ::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background: hsla(0,0%,100%,.05);
+	box-shadow: 0 0 .2em black;
+}
+
+div.prism-live ::-webkit-scrollbar-thumb:vertical {
+	background: hsla(0,0%,100%,.2);
+}
+
+div.prism-live ::-webkit-scrollbar-thumb:hover {
+	background: hsla(0,0%,100%,.3);
+}
+
+div.prism-live {
+	color: white;
+	font-size: calc(var(--font-size-multiplier, 1) * 100%);
+	line-height: 1.5em;
+	max-height: 100vh;
+	background: hsl(200, 10%, 15%);
+	transition: .2s;
+	transition-property: max-height, flex;
+}
+
+textarea.prism-live {
+	max-width: 100vw;
+	min-height: 1.6em;
+}
+
+.demo.slide:not(.horizontal) textarea.prism-live {
+	box-shadow: -.1em 0 .2em rgba(0,0,0,.3) inset;
+}
+
+.demo.slide.horizontal pre.prism-live {
+	max-height: calc(var(--division, 50) * 1vh);
+}
+
+.demo.slide.horizontal textarea.prism-live {
+	box-shadow: 0 .1em .2em rgba(0,0,0,.3) inset;
+}
+
+pre.prism-live {
+	height: 100%;
+	line-height: 1.5em;
+	background: hsl(200, 10%, 20%) linear-gradient(rgba(0,0,0,.1) 50%, transparent 0);
+	background-origin: content-box;
+	background-size: auto 3em;
+	background-attachment: local;
+}
+
+.prism-live label {
+	position: absolute;
+	top: .6rem;
+	right: 1rem;
+	z-index: 1;
+	padding: .1rem .5rem;
+	border-radius: .2em;
+	background: hsl(30, 100%, 50%);
+	color: white;
+	cursor: pointer;
+	text-transform: uppercase;
+	font: bold 1.2rem/1.5 var(--font-heading);
+	opacity: .5;
+}
+
+	.prism-live label:hover {
+		background: hsl(15, 100%, 45%);
+		opacity: 1;
+	}

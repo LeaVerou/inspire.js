@@ -531,7 +531,8 @@ Object.assign(_, {
 		overview: "body:not(.no-overview)",
 		iframe: ".slide[data-src], .iframe.slide",
 		prism: "[class*='lang-'], [class*='language-']",
-		media: "[data-video], .browser"
+		media: "[data-video], .browser",
+		livedemo: ".demo.slide"
 	},
 
 	// Plugins loaded
