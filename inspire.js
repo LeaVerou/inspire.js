@@ -524,7 +524,8 @@ var _ = self.Inspire = {
 	},
 
 	getSlideById(id) {
-		return $(".slide#" + id);
+		id = id[0] === "#"? id : "#" + id;
+		return $(".slide" + id);
 	},
 
 	// Get the slide an element belongs to
