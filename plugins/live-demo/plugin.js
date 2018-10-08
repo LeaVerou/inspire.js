@@ -151,9 +151,8 @@ var _ = self.Demo = class Demo {
 					},
 					{
 						tag: "button",
-						textContent: "Play!",
-						className: "play",
-						title: "Play with this example on codepen.io"
+						textContent: "Open in CodePen",
+						className: "play"
 					}
 				],
 				inside: this.controls

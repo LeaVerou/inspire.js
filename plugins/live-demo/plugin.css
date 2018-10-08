@@ -86,6 +86,11 @@
 		line-height: 1.5;
 	}
 
+	.demo-controls .button:not(:hover):not(:focus),
+	.demo-controls button:not(:hover):not(:focus) {
+		opacity: .6;
+	}
+
 .editor-container {
 	display: flex;
 	flex-flow: column;
