@@ -434,9 +434,9 @@ var _ = self.Inspire = {
 			}
 
 			requestAnimationFrame(() => {
-				slide.dispatchEvent(new CustomEvent("slidechange", {
-					"bubbles": true
-				}));
+				var evt = new CustomEvent("slidechange", {"bubbles": true});
+				$.extend(evt, {prevSlide, displayedBefore});
+				slide.dispatchEvent(evt);
 
 				_.hooks.run("slidechange-async", env);
 			});
