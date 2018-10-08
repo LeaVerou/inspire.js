@@ -1,41 +1,31 @@
 .demo.slide {
-	padding-bottom: 0;
-	padding-left: 0;
-	align-items: stretch;
-	justify-content: space-between;
-	flex-flow: row;
-	font-size: 200%;
-
+	padding: 0;
 	display: grid;
-
+	height: 100%;
+	box-sizing: border-box;
+	font-size: 200%;
+	align-items: stretch;
+	--padding: 1.5rem;
 }
 
 .horizontal.demo.slide {
-	flex-flow: column;
-	padding-right: 0;
-
 	grid-template: "controls" auto
-	                     "target"   1fr
-	                     "editor"   auto / auto 1fr;
+	               "target"   1fr
+	               "editor"   auto / auto 1fr;
 }
 
 .demo.slide:not(.horizontal) {
 	grid-template: "editor controls" auto
-	                     "editor target" 1fr / auto 1fr;
-	padding-top: 0;
+	               "editor target" 1fr / auto 1fr;
+	padding-right: var(--padding);
 }
 
 .isolated.demo.slide {
-	padding: 0;
-	flex-flow: row;
-	align-items: stretch;
-	justify-content: flex-start;
 	--division: 50;
 }
 
 	.isolated.demo.slide > iframe {
 		border: 0;
-		height: 100%;
 		width: 100%;
 		margin: 0;
 		border-radius: 8px;
@@ -49,17 +39,17 @@
 		}
 
 		.isolated:not(.horizontal).demo.slide > iframe {
+			margin-bottom: var(--padding);
 			border-bottom-left-radius: 0;
 			border-top-left-radius: 0;
 		}
 
 .demo-target {
-	flex: auto;
+	grid-area: target;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	flex-flow: column;
-	grid-area: target;
 }
 
 .demo-controls {
