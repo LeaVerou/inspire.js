@@ -47,15 +47,6 @@ var _ = self.Demo = class Demo {
 		this.isolated = this.slide.classList.contains("isolated");
 		this.editors = {};
 
-		$$("details.notes", this.slide).every(details => details.classList.add("top-right"));
-
-		if (this.isolated) {
-			this.iframe = $.create("iframe", {
-				name: "iframe-" + slide.id,
-				inside: this.slide
-			});
-		}
-
 		this.editorContainer = $.create({
 			className: "editor-container",
 			inside: this.slide
@@ -81,9 +72,19 @@ var _ = self.Demo = class Demo {
 			}
 		});
 
-		if (this.editors.markup) {
-			if (!this.isolated) {
-				this.element = $.create({start: this.slide, className: "dynamic-contents"});
+		var notes = $("details.notes", this.slide);
+
+		this.controls = $.create({
+			className: "demo-controls",
+			contents: notes,
+			after: this.editorContainer
+		});
+
+		if (!this.isolated) {
+			this.element = $.create({inside: this.slide, className: "demo-target"});
+
+			if (!this.editors.markup) {
+				this.element.append(...$$(".slide > :not(.editor-container):not(style):not(.demo-controls):not(.demo-target)", this.slide));
 			}
 		}
 
@@ -97,32 +98,76 @@ var _ = self.Demo = class Demo {
 		}
 
 		if (this.isolated) {
+			this.iframe = $.create("iframe", {
+				name: "iframe-" + slide.id,
+				className: "demo-target",
+				inside: this.slide
+			});
+
+			this.extraCSS = $$("style.demo", this.slide).map(s => {
+				s.remove();
+				return s.textContent;
+			}).join("\n");
+			this.extraCSS = Prism.plugins.NormalizeWhitespace.normalize(this.extraCSS);
+
 			this.ready = this.updateIframe();
+
+			var title = (slide.title || slide.dataset.title || "") + " Demo";
 
 			// Open in new Tab button
 			var a = $.create("a", {
 				className: "button new-tab",
 				textContent: "Open in new Tab",
-				inside: slide,
+				inside: this.controls,
 				target: "_blank",
 				events: {
 					"click mouseenter": evt => {
-						var title = (slide.title || slide.dataset.title || "") + " Demo";
-
 						a.href = Demo.createURL(this.getHTMLPage({inline: false}));
 					}
 				}
 			});
 
-			var styles = $$("style.demo", this.slide);
+			// Open in codepen button
+			$.create("form", {
+				action: "https://codepen.io/pen/define",
+				method: "POST",
+				target: "_blank",
+				contents: [
+					{
+						tag: "input",
+						type: "hidden",
+						name: "data",
+						value: JSON.stringify({
+							title,
+							html: this.html,
+							css: [
+								"/* Base styles, not related to demo */",
+								Demo.baseCSS + this.extraCSS,
+								"/* Our demo CSS */",
+								this.css].join("\n"),
+							editors: "1100",
+							head: `<base href="${location.href}" />`
+						})
+					},
+					{
+						tag: "button",
+						textContent: "Play!",
+						className: "play",
+						title: "Play with this example on codepen.io"
+					}
+				],
+				inside: this.controls
+			});
 
-			if (styles.length) {
-				styles.forEach(s => s.disabled = true);
-
-				this.ready.then(() => {
-					styles.forEach(s => this.iframe.contentDocument.head.append(s));
-				});
-			}
+			// Next slide button
+			$.create("button", {
+				className: "next",
+				textContent: "Next ▸",
+				inside: this.controls,
+				events: {
+					click: evt => Inspire.next()
+				}
+			});
 		}
 		else {
 			this.ready = Promise.resolve();
@@ -164,10 +209,7 @@ var _ = self.Demo = class Demo {
 		}
 	}
 
-	output(id) {
-		var editor = this.editors[id];
-		var code = editor.textarea.value;
-
+	fixCode(id, code) {
 		if (_.fixers[id] && _.fixers[id].length) {
 			for (let fixer of _.fixers[id]) {
 				var newCode = fixer(code);
@@ -177,6 +219,15 @@ var _ = self.Demo = class Demo {
 				}
 			}
 		}
+
+		return code;
+	}
+
+	output(id) {
+		var editor = this.editors[id];
+		var code = editor.textarea.value;
+
+		this.fixCode(id, code);
 
 		if (id === "markup") {
 			if (this.isolated) {
@@ -227,12 +278,29 @@ var _ = self.Demo = class Demo {
 		});
 	}
 
+	get html() {
+		return this.editors.markup? this.editors.markup.value : this.element.innerHTML;
+	}
+
+	get css() {
+		return $.value(this.editors.css, "value");
+	}
+
+	get js() {
+		return $.value(this.editors.js, "value");
+	}
+
+	get title() {
+		return (this.slide.title || this.slide.dataset.title || "") + " Demo";
+	}
+
 	getHTMLPage({title, inline} = {}) {
 		return Demo.getHTMLPage({
-			html: $.value(this.editors.markup, "value"),
-			css: $.value(this.editors.css, "value"),
-			js: $.value(this.editors.js, "value"),
-			title: title || (this.slide.title || this.slide.dataset.title || "") + " Demo",
+			html: this.html,
+			css: this.css,
+			extraCSS: this.extraCSS,
+			js: this.js,
+			title: title || this.title,
 			inline
 		});
 	}
@@ -241,31 +309,6 @@ var _ = self.Demo = class Demo {
 		for (let i in this.editors) {
 			this.editors[i].wrapper.classList.toggle("collapsed", i !== id);
 		}
-	}
-
-	static fixCodeFrom(code, lang) {
-		code = Prism.plugins.NormalizeWhitespace.normalize(code);
-
-		if (lang == "html") {
-			code = code.replace(/=""(?=\s|>)/g, "")
-			           .replace(/&gt;/g, ">")
-					   .replace(/><\/(circle|path|rect)>/, " />")
-					   ;
-		}
-
-		return code;
-	}
-
-	static fixCodeTo(code, lang) {
-		if (lang == "css") {
-			if (!/\{[\S\s]+\}/.test(code.replace(/'[\S\s]+'/g, ""))) {
-				code = `.slide {
-	${code}
-}`;
-			}
-		}
-
-		return code;
 	}
 
 	static createEditor(slide, label, o = {}) {
@@ -318,11 +361,7 @@ var _ = self.Demo = class Demo {
 		}
 	}
 
-	static getHTMLPage({html="", css="", js="", title="Demo", inline = true} = {}) {
-		if (Array.isArray(css)) {
-			css = css.join("</style><style>");
-		}
-
+	static getHTMLPage({html="", css="", extraCSS="", js="", title="Demo", inline = true} = {}) {
 		if (css !== "undefined") {
 			css = `<style id=live>
 ${css}
@@ -336,13 +375,9 @@ ${css}
 <meta charset="UTF-8">
 <title>${title}</title>
 <style>
-body {
-	font: 200% Helvetica Neue, sans-serif;
-}
-
-input, select, textarea, button {
-	font: inherit;
-}
+/* Base styles, not related to demo */
+${Demo.baseCSS}
+${extraCSS}
 </style>
 ${css}
 </head>
@@ -377,6 +412,15 @@ Demo.fixers = {
 		}
 	]
 };
+
+Demo.baseCSS = `body {
+	font: 200% Helvetica Neue, Segoe UI, sans-serif;
+}
+
+input, select, textarea, button {
+	font: inherit;
+}
+`;
 
 (function() {
 	$.ready().then(() => {
