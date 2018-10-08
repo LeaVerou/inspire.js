@@ -95,17 +95,17 @@
 		<h1>Syntax highlighting with PrismJS</h1>
 
 		<ul>
-			<li>Autoloads core & languages</li>
+			<li>Autoloads core & languages used</li>
 			<li>Load plugins by listing their ids in a <code>data-prism-plugins</code> attribute, on any element (first one will be used).</li>
 			<li>Automatically figures out dependencies & aliases</li>
 			<li>CSS is up to you!</li>
 		</ul>
 		<pre class="language-jsx"><code>var start = new Date().getTime();
-	setInterval(function() {
-		React.render(
-			&lt;ExampleApplication elapsed={new Date().getTime() - start} />,
-			document.getElementById('container')
-		);
+setInterval(function() {
+	React.render(
+		&lt;ExampleApplication elapsed={new Date().getTime() - start} />,
+		document.getElementById('container')
+	);
 }, 50);</code></pre>
 	</article>
 
@@ -141,11 +141,12 @@
 		</ul>
 	</article>
 
-	<article class="slide">
-		<h1>Force Resolution</h1>
+	<article class="slide" data-resolution="1024 768">
+		<h1>Resolution</h1>
 		<ul>
-			<li>Define the target resolution with the attribute <code>data-resolution</code> on the <code>body</code>.</li>
-			<li></li>
+			<li>Design for a specific resolution, and have slides scale up and down based on the viewport.</li>
+			<li>Define with the attribute <code>data-resolution</code> on the <code>&lt;body></code> for all slides, a grouping element, or individual slides (like this one!).</li>
+			<li>Try resizing the viewport, note how the slide size adapts!</li>
 		</ul>
 	</article>
 
