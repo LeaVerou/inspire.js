@@ -28,7 +28,7 @@ let width, height;
 
 var adjustZoom = () => {
 	let zoom = "";
-console.count()
+
 	if (width && height) {
 		let [wratio, hratio] = [innerWidth / width, innerHeight / height];
 
