@@ -163,9 +163,9 @@ var _ = self.Inspire = {
 				slide.id = "slide" + (i+1);
 			}
 
-			// TODO data-import and data-steps should probably move to a plugin
+			// TODO demo-repeat and data-steps should probably move to a plugin
 			slide.setAttribute("data-index", i);
-			var imp = slide.getAttribute("data-import"),
+			var imp = slide.getAttribute("data-repeat"),
 				imported = imp? this.getSlideById(imp) : null;
 
 			this.order.push(imported? +imported.getAttribute("data-index") : i);

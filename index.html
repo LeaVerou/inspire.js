@@ -65,13 +65,45 @@
 			<li><kbd>Ctrl</kbd><kbd>G</kbd> to jump to an arbitrary slide (by slide number or identifier)</li>
 		</ul>
 	</article>
+</section>
+
+<section>
+	<header class="slide">
+		<h1>Features</h1>
+	</header>
+
+	<article class="slide" id="data-repeat">
+		<h1>Repeated slides</h1>
+
+		<ul>
+			<li>Use attribute <code>data-import</code> on an empty slide to re-insert it later in the slideshow</li>
+			<li>Notice how this slide will also be re-inserted after the next one!</li>
+		</ul>
+	</article>
 
 	<article class="slide">
-		<h1>Features</h1>
+		<h1>IDs and titles</h1>
 		<ul>
 			<li>IDs are dynamically assigned by JavaScript, but you can also use your own</li>
-			<li class="delayed">Incremental display of slide contents (just add <code>class="delayed"</code>)</li>
-			<li>Slide scaling based on window size (size everything you want to be scalable in ems)</li>
+			<li>Slide titles (used in the browser tab when the slide is active, and in the <a href="#overview">Overview</a>) via the <code>title</code> or <code>data-title</code> attributes or headings in the slide.</li>
+			<li>If only an id or only a title is provided, the other is extracted from it.</li>
+		</ul>
+	</article>
+
+	<article class="slide" data-repeat="data-repeat"></article>
+
+	<article class="slide">
+		<h1>Incremental display</h1>
+
+		<ul class="delayed-children">
+			<li>Incremental display of slide contents (just add <code>class="delayed"</code>)</li>
+			<li>Use selector <code>.delayed:not(.current):not(.displayed)</code> to change the style of undisplayed items</li>
+			<li>Use selector <code>.delayed.displayed</code> to change the style of displayed items</li>
+			<li>Use selector <code>.delayed.current</code> to change the style of current items</li>
+			<li>Use <code>class="delayed-children"</code> to apply the <code>delayed</code> class to all of an element’s children</li>
+			<li>
+				Nested delayed items <strong class="delayed">are possible</strong>!
+			</li>
 		</ul>
 	</article>
 </section>
@@ -81,7 +113,7 @@
 		<h1>Plugins</h1>
 	</header>
 
-	<article class="slide">
+	<article class="slide" id="overview">
 		<h1>Overview</h1>
 
 		<ul>
