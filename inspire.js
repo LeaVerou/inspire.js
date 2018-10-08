@@ -62,6 +62,9 @@ var _ = self.Inspire = {
 			console.log("Inspire.js plugins loaded:", loaded.length? loaded.join(", ") : "none");
 			_.init();
 		});
+
+		// Make all external slides open in a new window
+		$$('a[href^="http"]:not([target])').forEach(a => a.target = "_blank");
 	},
 
 	init() {
@@ -117,34 +120,51 @@ var _ = self.Inspire = {
 		this.order = [];
 
 		for (var i=0; i<this.slides.length; i++) {
-			var slide = this.slides[i]; // to speed up references
+			var slide = this.slides[i];
+
+			// Set data-title attribute to the title of the slide
+			var title = slide.title || slide.getAttribute("data-title");
+
+			if (title) {
+				slide.removeAttribute("title");
+			}
+			else {
+				// no title attribute, fetch title from heading(s)
+				var heading = $("h1, h2, h3, h4, h5, h6", slide);
+
+				if (heading && heading.textContent.trim()) {
+					title = heading.textContent;
+				}
+
+				if (!title && slide.id) {
+					// Still no title, but it has an id, try from that
+					title = slide.id.replace(/-(\w)/g, ($0, $1) => " " + $1.toUpperCase())
+					                .replace(/^./, a => a.toUpperCase());
+				}
+			}
+
+			if (title) {
+				slide.setAttribute("data-title", title);
+
+				if (!slide.id) {
+					// If a slide has a title but not an id, get its id from that
+					var id = slide.title.replace(/[^\w\s-]/g, "") // Remove non-ASCII characters
+							.trim().replace(/\s+/g, "-") // Convert whitespace to hyphens
+							.toLowerCase();
+
+					if (!window[id]) {
+						slide.id = id;
+					}
+				}
+			}
 
 			// Asign ids to slides that don"t have one
 			if (!slide.id) {
 				slide.id = "slide" + (i+1);
 			}
 
-		// Set data-title attribute to the title of the slide
-		var title = slide.title || slide.getAttribute("data-title");
-
-		if (title) {
-			slide.removeAttribute("title");
-		}
-		else {
-			// no title attribute, fetch title from heading(s)
-			var heading = $("h1, h2, h3, h4, h5, h6", slide);
-
-			if (heading && heading.textContent.trim()) {
-				title = heading.textContent;
-			}
-		}
-
-		if (title) {
-			slide.setAttribute("data-title", title);
-		}
-
-		// TODO data-import and data-steps should probably move to a plugin
-		slide.setAttribute("data-index", i);
+			// TODO data-import and data-steps should probably move to a plugin
+			slide.setAttribute("data-index", i);
 			var imp = slide.getAttribute("data-import"),
 				imported = imp? this.getSlideById(imp) : null;
 
