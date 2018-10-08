@@ -17,4 +17,4 @@ Code cleanup in progress. Visit later. If you were using CSSS and would rather s
 - The CSS Snippets plugin is now gone. We will soon add a much better one, extracted based on the live demo script in https://github.com/leaverou/talks.
 - Incrementable is no longer a plugin. Use the separate script from https://github.com/leaverou/incrementable.
 - `reusable.css` has now been merged into the default theme, `theme.css`.
-- `data-import` is now `data-repeat`
+- `data-import` is now `data-insert`
