@@ -1,8 +1,8 @@
 Inspire.hooks.add({
 	"init-end": me => {
-		if (window.name === "projector" && window.opener && opener.inspire) {
+		if (window.name === "projector" && window.opener && opener.Inspire) {
 			body.classList.add("projector");
-			this.presenter = opener.inspire;
+			this.presenter = opener.Inspire;
 			this.presenter.projector = this;
 		}
 	},

@@ -108,10 +108,8 @@ if (message.length) {
 	console.log(`Loaded ${message.join(", ")}`);
 }
 
-if (window.inspire) {
-	// slidechange may have already fired for current slide
-	Prism.highlightAllUnder(inspire.currentSlide);
-}
+// slidechange may have already fired for current slide
+Prism.highlightAllUnder(Inspire.currentSlide);
 
 
 document.addEventListener("slidechange", evt => {

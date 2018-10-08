@@ -27,10 +27,43 @@ if (!window.Bliss) {
 window.$ = Bliss;
 window.$$ = $.$;
 
-var _ = class Inspire {
-	constructor() {
-		var me = this;
+var _ = self.Inspire = {
+	// Plugin ids and selectors
+	// If selector matches anything, plugin is loaded
+	pluginTest: {
+		timer: "[data-duration]",
+		presenter: ".presenter-notes",
+		"lazy-load": "[data-src]:not(.slide)",
+		"slide-style": "style[data-slide]",
+		overview: "body:not(.no-overview)",
+		iframe: ".slide[data-src], .iframe.slide",
+		prism: "[class*='lang-'], [class*='language-']",
+		media: "[data-video], .browser",
+		"live-demo": ".demo.slide",
+	},
 
+	// Plugins loaded
+	plugins: {},
+
+	hooks: new $.Hooks(),
+
+	setup() {
+		var dependencies = [];
+
+		for (let id in _.pluginTest) {
+			if ($(_.pluginTest[id])) {
+				dependencies.push(_.loadPlugin(id));
+			}
+		}
+
+		_.ready = Promise.all(dependencies).then(() => {
+			var loaded = Object.keys(_.plugins);
+			console.log("Inspire.js plugins loaded:", loaded.length? loaded.join(", ") : "none");
+			_.init();
+		});
+	},
+
+	init() {
 		// Current slide
 		this.index = 0;
 
@@ -57,7 +90,7 @@ var _ = class Inspire {
 					textContent: "◂",
 					type: "button",
 					events: {
-						click: evt => me.previous()
+						click: evt => _.previous()
 					}
 				},
 				{
@@ -66,7 +99,7 @@ var _ = class Inspire {
 					textContent: "Next ▸",
 					type: "button",
 					events: {
-						click: evt => me.next()
+						click: evt => _.next()
 					}
 				}
 			]
@@ -156,7 +189,7 @@ var _ = class Inspire {
 
 					if (letter === "G" && (evt.ctrlKey || evt.shiftKey) && !evt.altKey) {
 						var slide = prompt("Which slide?");
-						me.goto(+slide? slide - 1 : slide);
+						_.goto(+slide? slide - 1 : slide);
 					}
 					else {
 						_.hooks.run("keyup", {evt, letter, context: this});
@@ -181,10 +214,10 @@ var _ = class Inspire {
 
 					switch (evt.key) {
 						case "PageUp":
-							this.previous();
+							_.previous();
 							break;
 						case "PageDown":
-							this.next();
+							_.next();
 							break;
 						case "End":
 							this.end();
@@ -194,39 +227,41 @@ var _ = class Inspire {
 							break;
 						case "ArrowLeft": // <-
 						case "ArrowUp":
-							this.previous(evt.ctrlKey || evt.shiftKey);
+							_.previous(evt.ctrlKey || evt.shiftKey);
 							break;
 						case " ": // space
 						case "ArrowRight": // ->
 						case "ArrowDown":
-							this.next(evt.ctrlKey || evt.shiftKey);
+							_.next(evt.ctrlKey || evt.shiftKey);
 							break;
 					}
 				}
 			}
 		});
 
-		addEventListener("hashchange", this);
+		addEventListener("hashchange", _.hashchange);
 
 		_.hooks.run("init-before-first-goto", this);
 
 		// If there"s already a hash, update current slide number
-		this.goto(location.hash.substr(1) || 0);
+		_.goto(location.hash.substr(1) || 0);
 
 		_.hooks.run("init-end", this);
-	}
 
-	handleEvent(evt) {
-		this.goto(location.hash.substr(1) || 0);
-	}
+		return this;
+	},
+
+	hashchange(evt) {
+		_.goto(location.hash.substr(1) || 0);
+	},
 
 	start() {
-		this.goto(0);
-	}
+		_.goto(0);
+	},
 
 	end() {
-		this.goto(this.slides.length - 1);
-	}
+		_.goto(this.slides.length - 1);
+	},
 
 	/**
 		@param hard {Boolean} Whether to advance to the next slide (true) or
@@ -234,10 +269,10 @@ var _ = class Inspire {
 	 */
 	next(hard) {
 		if (!hard && this.items.length) {
-			this.nextItem();
+			_.nextItem();
 		}
 		else {
-			this.goto(this.index + 1);
+			_.goto(this.index + 1);
 
 			this.item = 0;
 
@@ -250,7 +285,7 @@ var _ = class Inspire {
 				}
 			}
 		}
-	}
+	},
 
 	nextItem() {
 		if (this.item < this.items.length) {
@@ -258,16 +293,16 @@ var _ = class Inspire {
 		}
 		else {
 			this.item = 0;
-			this.next(true);
+			_.next(true);
 		}
-	}
+	},
 
 	previous(hard) {
 		if (!hard && this.item > 0) {
-			this.previousItem();
+			_.previousItem();
 		}
 		else {
-			this.goto(this.index - 1);
+			_.goto(this.index - 1);
 
 			this.item = this.items.length;
 
@@ -286,15 +321,15 @@ var _ = class Inspire {
 				lastItem.classList.add("current");
 			}
 		}
-	}
+	},
 
 	previousItem() {
 		this.gotoItem(--this.item);
-	}
+	},
 
 	getSlideById(id) {
 		return $(".slide#" + id);
-	}
+	},
 
 	/**
 		Go to an aribtary slide
@@ -306,7 +341,7 @@ var _ = class Inspire {
 
 		// We have to remove it to prevent multiple calls to goto messing up
 		// our current item (and there"s no point either, so we save on performance)
-		window.removeEventListener("hashchange", this);
+		window.removeEventListener("hashchange", _.hashchange);
 
 		var id;
 
@@ -385,8 +420,8 @@ var _ = class Inspire {
 
 		// If you attach the listener immediately again then it will catch the event
 		// We have to do it asynchronously
-		requestAnimationFrame(() => addEventListener("hashchange", this));
-	}
+		requestAnimationFrame(() => addEventListener("hashchange", _.hashchange));
+	},
 
 	gotoItem(which) {
 		this.item = which;
@@ -428,7 +463,7 @@ var _ = class Inspire {
 		}
 
 		_.hooks.run("gotoitem-end", {which, context: this});
-	}
+	},
 
 	adjustFontSize() {
 		var slide = this.currentSlide;
@@ -457,19 +492,19 @@ var _ = class Inspire {
 				prev = null;
 			}
 		}
-	}
+	},
 
 	// Get current slide as an element
 	get currentSlide() {
 		return this.slides[this.slide];
-	}
+	},
 
-	static getSlide(element) {
+	getSlide(element) {
 		return element.closest(".slide");
-	}
+	},
 
 	// http://ichuan.net/post/52/stable-sort-of-javascript-array/
-	static stableSort(arr, fn) {
+	stableSort(arr, fn) {
 		if (!fn) {
 			return arr.sort();
 		}
@@ -482,14 +517,14 @@ var _ = class Inspire {
 			var result = fn(a.i, b.i);
 			return result === 0? a.j - b.j : result;
 		}).map(i => i.i);
-	}
+	},
 
-	static getAttribute(attribute) {
+	getAttribute(attribute) {
 		var element = $(`[${attribute}]`);
 		return element && element.getAttribute(attribute);
-	}
+	},
 
-	static loadPlugin(id) {
+	loadPlugin(id) {
 		if (!_.plugins[id]) {
 			_.plugins[id] = {
 				loaded: Promise.all([
@@ -501,47 +536,9 @@ var _ = class Inspire {
 
 		return _.plugins[id].loaded;
 	}
-
-	static init() {
-		var dependencies = [];
-
-		for (let id in _.pluginTest) {
-			if ($(_.pluginTest[id])) {
-				dependencies.push(_.loadPlugin(id));
-			}
-		}
-
-		Promise.all(dependencies).then(() => {
-			var loaded = Object.keys(_.plugins);
-			console.log("Inspire.js plugins loaded:", loaded.length? loaded.join(", ") : "none");
-			window.inspire = new _();
-		});
-	}
 };
 
-// Static properties
-Object.assign(_, {
-	// Plugin ids and selectors
-	// If selector matches anything, plugin is loaded
-	pluginTest: {
-		timer: "[data-duration]",
-		presenter: ".presenter-notes",
-		"lazy-load": "[data-src]:not(.slide)",
-		"slide-style": "style[data-slide]",
-		overview: "body:not(.no-overview)",
-		iframe: ".slide[data-src], .iframe.slide",
-		prism: "[class*='lang-'], [class*='language-']",
-		media: "[data-video], .browser",
-		"live-demo": ".demo.slide",
-	},
-
-	// Plugins loaded
-	plugins: {},
-
-	hooks: new $.Hooks()
-});
-
-$.ready().then(_.init);
+$.ready().then(_.setup);
 
 window.Inspire = _;
 
