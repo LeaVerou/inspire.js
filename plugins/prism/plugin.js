@@ -4,7 +4,7 @@
 
 Inspire.plugins.prism.ready = (async () => {
 
-const PRISM_ROOT = Inspire.getAttribute("data-prism-root") || "https://prismjs.com";
+const PRISM_ROOT = Inspire.u.getAttribute("data-prism-root") || "https://prismjs.com";
 
 // Which languages are used?
 var ids = $$("[class*='lang-'], [class*='language-']").map(e => {
@@ -15,7 +15,7 @@ var ids = $$("[class*='lang-'], [class*='language-']").map(e => {
 ids = new Set(ids);
 
 // Which plugins to load?
-let plugins = Inspire.getAttribute("data-prism-plugins");
+let plugins = Inspire.u.getAttribute("data-prism-plugins");
 plugins = plugins? plugins.split(/\s*,\s*/) : [];
 
 if (ids.size) {

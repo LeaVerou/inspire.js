@@ -71,6 +71,9 @@ var _ = self.Inspire = {
 		// Current .delayed item in the slide
 		this.item = 0;
 
+		// Slides that have been displayed at least once
+		this.displayed = new Set();
+
 		_.hooks.run("init-start");
 
 		// Create slide indicator
@@ -328,15 +331,11 @@ var _ = self.Inspire = {
 		this.gotoItem(--this.item);
 	},
 
-	getSlideById(id) {
-		return $(".slide#" + id);
-	},
-
 	/**
 		Go to an aribtary slide
 		@param which {String|Integer} Which slide (identifier or slide number)
 	*/
-	goto(which) {
+	goto: function(which) {
 		var slide;
 		var prev = this.slide;
 
@@ -376,7 +375,11 @@ var _ = self.Inspire = {
 		if (prev !== this.slide) { // Slide actually changed, perform any other tasks needed
 			document.title = slide.getAttribute("data-title") || documentTitle;
 
-			var env = {slide, prevSlide: this.slides[prev], which, context: this};
+			var prevSlide = _.slides[prev];
+			var displayedBefore = _.displayed.has(slide);
+			_.displayed.add(slide);
+
+			var env = {slide, prevSlide, displayedBefore, which, context: this};
 			_.hooks.run("slidechange", env);
 
 			this.adjustFontSize();
@@ -387,7 +390,7 @@ var _ = self.Inspire = {
 
 			// Update items collection
 			this.items = $$(".delayed, .delayed-children > *", this.currentSlide);
-			_.stableSort(this.items, function(a, b) {
+			_.u.stableSort(this.items, function(a, b) {
 				return (a.getAttribute("data-index") || 0) - (b.getAttribute("data-index") || 0);
 			});
 			this.item = 0;
@@ -500,29 +503,13 @@ var _ = self.Inspire = {
 		return this.slides[this.slide];
 	},
 
+	getSlideById(id) {
+		return $(".slide#" + id);
+	},
+
+	// Get the slide an element belongs to
 	getSlide(element) {
 		return element.closest(".slide");
-	},
-
-	// http://ichuan.net/post/52/stable-sort-of-javascript-array/
-	stableSort(arr, fn) {
-		if (!fn) {
-			return arr.sort();
-		}
-
-		var newArr = arr.map((i, j) => {
-			return {i, j};
-		});
-
-		return newArr.sort((a, b) => {
-			var result = fn(a.i, b.i);
-			return result === 0? a.j - b.j : result;
-		}).map(i => i.i);
-	},
-
-	getAttribute(attribute) {
-		var element = $(`[${attribute}]`);
-		return element && element.getAttribute(attribute);
 	},
 
 	loadPlugin(id) {
@@ -536,7 +523,34 @@ var _ = self.Inspire = {
 		}
 
 		return _.plugins[id].loaded;
-	}
+	},
+
+	// Utilities
+	u: {
+		// http://ichuan.net/post/52/stable-sort-of-javascript-array/
+		// TODO Once usage of Chrome < 69 drops below 1%, ditch this and just use the native array.sort()
+		stableSort(arr, fn) {
+			if (!fn) {
+				return arr.sort();
+			}
+
+			var newArr = arr.map((i, j) => {
+				return {i, j};
+			});
+
+			return newArr.sort((a, b) => {
+				var result = fn(a.i, b.i);
+				return result === 0? a.j - b.j : result;
+			}).map(i => i.i);
+		},
+
+		// Get attribute value, from the first element it's defined on
+		// Useful for things like global settings where we don't care where the attribute is on
+		getAttribute(attribute) {
+			var element = $(`[${attribute}]`);
+			return element && element.getAttribute(attribute);
+		},
+	},
 };
 
 $.ready().then(_.setup);
