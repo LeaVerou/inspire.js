@@ -526,13 +526,13 @@ Object.assign(_, {
 	pluginTest: {
 		timer: "[data-duration]",
 		presenter: ".presenter-notes",
-		lazyload: "[data-src]:not(.slide)",
-		slidestyle: "style[data-slide]",
+		"lazy-load": "[data-src]:not(.slide)",
+		"slide-style": "style[data-slide]",
 		overview: "body:not(.no-overview)",
 		iframe: ".slide[data-src], .iframe.slide",
 		prism: "[class*='lang-'], [class*='language-']",
 		media: "[data-video], .browser",
-		livedemo: ".demo.slide"
+		"live-demo": ".demo.slide",
 	},
 
 	// Plugins loaded
