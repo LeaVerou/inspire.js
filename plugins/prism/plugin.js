@@ -111,9 +111,11 @@ if (message.length) {
 // slidechange may have already fired for current slide
 Prism.highlightAllUnder(Inspire.currentSlide);
 
+Inspire.hooks.add("slidechange", env => {
+	if (!env.displayedBefore) {
+		Prism.highlightAllUnder(env.slide);
+	}
 
-document.addEventListener("slidechange", evt => {
-	Prism.highlightAllUnder(evt.target);
 });
 
 // Exports
