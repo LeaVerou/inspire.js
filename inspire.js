@@ -660,6 +660,14 @@ var _ = self.Inspire = {
 	},
 };
 
+var url = new URL(location);
+var profile = url.searchParams && url.searchParams.get("profile");
+
+if (profile) {
+	_.profile = profile;
+	document.documentElement.dataset.profile = profile;
+}
+
 $.ready().then(_.setup);
 
 window.Inspire = _;
