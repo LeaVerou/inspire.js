@@ -13,9 +13,10 @@
 body {
 	font: 300 100%/1.5 var(--font-body);
 	font-family: var(--font-body);
-	background: linear-gradient(45deg, silver 25%, transparent 25%, transparent 75%, silver 75%),
-	            linear-gradient(45deg, silver 25%, transparent 25%, transparent 75%, silver 75%) 20px 20px;
-	background-color: #eee;
+	--darker: rgba(0,0,0,.12);
+	background: linear-gradient(45deg, var(--darker) 25%, transparent 25%, transparent 75%, var(--darker) 75%),
+	            linear-gradient(45deg, var(--darker) 25%, transparent 25%, transparent 75%, var(--darker) 75%) 20px 20px;
+	background-color: hsl(220, 10%, 97%);
 	background-size: 40px 40px;
 	font-synthesis: none;
 }
@@ -156,7 +157,7 @@ blockquote {
 		top: -.3em;
 		margin-right: .2em;
 		font-size: 300%;
-		color: var(--color-magenta);
+		color: var(--color3);
 		font-style: normal;
 	}
 
@@ -165,7 +166,7 @@ blockquote {
 		font-style: normal;
 		font-size: 60%;
 		font-weight: bold;
-		color: var(--color-magenta);
+		color: var(--color3);
 	}
 
 		blockquote .cite a:not(:hover) {
@@ -377,7 +378,7 @@ kbd {
 .token.number,
 .token.constant,
 .token.symbol {
-	color: var(--color-green);
+	color: var(--color2);
 }
 
 .token.selector,
@@ -385,7 +386,7 @@ kbd {
 .token.string,
 .token.char,
 .token.builtin {
-	color: var(--color-aqua);
+	color: var(--color3);
 }
 
 .token.operator,
@@ -401,7 +402,7 @@ kbd {
 .token.attr-value,
 .token.keyword,
 .token.variable {
-	color: var(--color-yellow);
+	color: var(--color1);
 }
 
 .token.atrule,
