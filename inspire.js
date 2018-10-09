@@ -55,7 +55,7 @@ var _ = self.Inspire = {
 	async setup() {
 		var dependencies = [];
 
-		await _.loadImports();
+		await _.importsLoaded;
 
 		for (let id in _.pluginTest) {
 			if ($(_.pluginTest[id])) {
@@ -542,6 +542,12 @@ var _ = self.Inspire = {
 
 	imports: {},
 
+	importsLoaded: new Promise(async resolve => {
+		await $.ready();
+		await _.loadImports();
+		resolve();
+	}),
+
 	loadImports() {
 		let parser = new DOMParser();
 
@@ -593,8 +599,7 @@ var _ = self.Inspire = {
 
 				if (inserted[insert]) {
 					// Already inserted, just link to it
-					var original = $(`[data-import-id="${id}"]`);
-					slide.dataset.insert = original.id;
+					slide.dataset.insert = inserted[insert].id || id;
 				}
 				else {
 					inserted[insert] = slide;
