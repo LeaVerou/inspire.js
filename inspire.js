@@ -5,7 +5,7 @@
  * Copyright (C) 2010-2018 Lea Verou, http://lea.verou.me
  */
 
-(async function(body, html){
+(async function(){
 
 // Cache <title> element, we may need it for slides that don"t have titles
 var documentTitle = document.title + "";
@@ -69,27 +69,27 @@ var _ = self.Inspire = {
 
 	init() {
 		// Current slide
-		this.index = 0;
+		_.index = 0;
 
 		// Current .delayed item in the slide
-		this.item = 0;
+		_.item = 0;
 
 		// Slides that have been displayed at least once
-		this.displayed = new Set();
+		_.displayed = new Set();
 
 		_.hooks.run("init-start");
 
 		// Create slide indicator
-		this.indicator = $.create({
+		_.indicator = $.create({
 			id: "indicator",
-			inside: body
+			inside: document.body
 		});
 
 		// Add on screen navigation
 		var onscreen = $.create("nav", {
 			id: "onscreen-nav",
 			className: "hidden",
-			inside: body,
+			inside: document.body,
 			contents: [
 				{
 					tag: "button",
@@ -113,14 +113,19 @@ var _ = self.Inspire = {
 		});
 
 		// Get the slide elements into an array
-		this.slides = $$(".slide", body);
-		this.indicator.style.setProperty("--total", this.slides.length);
+		_.slides = $$(".slide", document.body);
+		_.indicator.style.setProperty("--total", _.slides.length);
 
 		// Order of the slides
-		this.order = [];
+		_.order = [];
 
-		for (var i=0; i<this.slides.length; i++) {
-			var slide = this.slides[i];
+		if (!_.slides.length) {
+			console.warn('[Inspire.js] There are no slides! Add some elements with class="slide" to create a presentation.')
+			return;
+		}
+
+		for (var i=0; i<_.slides.length; i++) {
+			var slide = _.slides[i];
 
 			// Set data-title attribute to the title of the slide
 			var title = slide.title || slide.getAttribute("data-title");
@@ -166,9 +171,9 @@ var _ = self.Inspire = {
 			// TODO data-insert and data-steps should probably move to a plugin
 			slide.setAttribute("data-index", i);
 			var imp = slide.getAttribute("data-insert"),
-				imported = imp? this.getSlideById(imp) : null;
+				imported = imp? _.getSlideById(imp) : null;
 
-			this.order.push(imported? +imported.getAttribute("data-index") : i);
+			_.order.push(imported? +imported.getAttribute("data-index") : i);
 
 			// [data-steps] can be used to define steps (applied through the data-step
 			// property), used in CSS to go through multiple states for an element
@@ -199,9 +204,16 @@ var _ = self.Inspire = {
 			});
 		}
 
+		addEventListener("hashchange", _.hashchange);
+
+		_.hooks.run("init-before-first-goto", this);
+
+		// If there"s already a hash, update current slide number
+		_.goto(location.hash.substr(1) || 0);
+
 		$.bind(window, {
 			// Adjust the font-size when the window is resized
-			"load resize": evt => this.adjustFontSize(),
+			"load resize": evt => _.adjustFontSize(),
 			/**
 				Keyboard navigation
 				Ctrl+G : Go to slide...
@@ -231,7 +243,7 @@ var _ = self.Inspire = {
 				(Shift instead of Ctrl works too)
 			*/
 			"keydown": evt => {
-				if (evt.target === body || evt.target === body.parentNode || evt.altKey) {
+				if (evt.target === document.body || evt.target === document.body.parentNode || evt.altKey) {
 					if (evt.keyCode >= 32 && evt.keyCode <= 40) {
 						evt.preventDefault();
 					}
@@ -244,10 +256,10 @@ var _ = self.Inspire = {
 							_.next();
 							break;
 						case "End":
-							this.end();
+							_.end();
 							break;
 						case "Home":
-							this.start();
+							_.start();
 							break;
 						case "ArrowLeft": // <-
 						case "ArrowUp":
@@ -263,13 +275,6 @@ var _ = self.Inspire = {
 			}
 		});
 
-		addEventListener("hashchange", _.hashchange);
-
-		_.hooks.run("init-before-first-goto", this);
-
-		// If there"s already a hash, update current slide number
-		_.goto(location.hash.substr(1) || 0);
-
 		_.hooks.run("init-end", this);
 
 		return this;
@@ -284,7 +289,7 @@ var _ = self.Inspire = {
 	},
 
 	end() {
-		_.goto(this.slides.length - 1);
+		_.goto(_.slides.length - 1);
 	},
 
 	/**
@@ -292,17 +297,17 @@ var _ = self.Inspire = {
 			just the next step (which could very well be showing a list item)
 	 */
 	next(hard) {
-		if (!hard && this.items.length) {
+		if (!hard && _.items.length) {
 			_.nextItem();
 		}
 		else {
-			_.goto(this.index + 1);
+			_.goto(_.index + 1);
 
-			this.item = 0;
+			_.item = 0;
 
 			// Mark all items as not displayed, if there are any
-			for (var i=0; i<this.items.length; i++) {
-				var classes = this.items[i].classList;
+			for (var i=0; i<_.items.length; i++) {
+				var classes = _.items[i].classList;
 				if (classes) {
 					classes.remove("displayed");
 					classes.remove("current");
@@ -312,34 +317,34 @@ var _ = self.Inspire = {
 	},
 
 	nextItem() {
-		if (this.item < this.items.length) {
-			this.gotoItem(++this.item);
+		if (_.item < _.items.length) {
+			_.gotoItem(++_.item);
 		}
 		else {
-			this.item = 0;
+			_.item = 0;
 			_.next(true);
 		}
 	},
 
 	previous(hard) {
-		if (!hard && this.item > 0) {
+		if (!hard && _.item > 0) {
 			_.previousItem();
 		}
 		else {
-			_.goto(this.index - 1);
+			_.goto(_.index - 1);
 
-			this.item = this.items.length;
+			_.item = _.items.length;
 
 			// Mark all items as displayed, if there are any
-			if (this.items.length) {
-				for (var i=0; i<this.items.length; i++) {
-					if (this.items[i].classList) {
-						this.items[i].classList.add("displayed");
+			if (_.items.length) {
+				for (var i=0; i<_.items.length; i++) {
+					if (_.items[i].classList) {
+						_.items[i].classList.add("displayed");
 					}
 				}
 
 				// Mark the last one as current
-				var lastItem = this.items[this.items.length - 1];
+				var lastItem = _.items[_.items.length - 1];
 
 				lastItem.classList.remove("displayed");
 				lastItem.classList.add("current");
@@ -348,7 +353,7 @@ var _ = self.Inspire = {
 	},
 
 	previousItem() {
-		this.gotoItem(--this.item);
+		_.gotoItem(--_.item);
 	},
 
 	/**
@@ -357,7 +362,7 @@ var _ = self.Inspire = {
 	*/
 	goto: function(which) {
 		var slide;
-		var prev = this.slide;
+		var prev = _.slide;
 
 		// We have to remove it to prevent multiple calls to goto messing up
 		// our current item (and there"s no point either, so we save on performance)
@@ -366,10 +371,10 @@ var _ = self.Inspire = {
 		var id;
 
 		if (which + "" === which) { // Argument is a slide id
-			slide = this.getSlideById(which);
+			slide = _.getSlideById(which);
 
 			if (slide) {
-				this.slide = this.index = +slide.getAttribute("data-index");
+				_.slide = _.index = +slide.getAttribute("data-index");
 
 				location.hash = ""; // See https://twitter.com/LeaVerou/status/1046114577648422912
 				location.hash = which;
@@ -382,17 +387,17 @@ var _ = self.Inspire = {
 			}
 		}
 
-		if (which + 0 === which && which in this.slides) {
+		if (which + 0 === which && which in _.slides) {
 			// Argument is a valid slide number
-			this.index = which;
-			this.slide = this.order[which];
+			_.index = which;
+			_.slide = _.order[which];
 
-			slide = this.currentSlide;
+			slide = _.currentSlide;
 
 			location.hash = "#" + slide.id;
 		}
 
-		if (prev !== this.slide) { // Slide actually changed, perform any other tasks needed
+		if (prev !== _.slide) { // Slide actually changed, perform any other tasks needed
 			document.title = slide.getAttribute("data-title") || documentTitle;
 
 			var prevSlide = _.slides[prev];
@@ -402,34 +407,34 @@ var _ = self.Inspire = {
 			var env = {slide, prevSlide, displayedBefore, which, context: this};
 			_.hooks.run("slidechange", env);
 
-			this.adjustFontSize();
+			_.adjustFontSize();
 
 			$("#onscreen-nav").classList.toggle("hidden", !slide.matches(".onscreen-nav"));
 
-			this.indicator.textContent = this.index + 1;
+			_.indicator.textContent = _.index + 1;
 
 			// Update items collection
-			this.items = $$(".delayed, .delayed-children > *", this.currentSlide);
-			_.u.stableSort(this.items, function(a, b) {
+			_.items = $$(".delayed, .delayed-children > *", _.currentSlide);
+			_.u.stableSort(_.items, function(a, b) {
 				return (a.getAttribute("data-index") || 0) - (b.getAttribute("data-index") || 0);
 			});
-			this.item = 0;
+			_.item = 0;
 
 			// Update next/previous
-			var previousPrevious = this.slides.previous;
-			var previousNext = this.slides.next;
+			var previousPrevious = _.slides.previous;
+			var previousNext = _.slides.next;
 
-			this.slides.previous = this.slides[this.order[this.index - 1]];
-			this.slides.next = this.slides[this.order[this.index + 1]];
+			_.slides.previous = _.slides[_.order[_.index - 1]];
+			_.slides.next = _.slides[_.order[_.index + 1]];
 
-			this.slides.previous && this.slides.previous.classList.add("previous");
-			this.slides.next && this.slides.next.classList.add("next");
+			_.slides.previous && _.slides.previous.classList.add("previous");
+			_.slides.next && _.slides.next.classList.add("next");
 
-			if (previousPrevious && previousPrevious != this.slides.previous) {
+			if (previousPrevious && previousPrevious != _.slides.previous) {
 				previousPrevious.classList.remove("previous");
 			}
 
-			if (previousNext && previousNext != this.slides.next) {
+			if (previousNext && previousNext != _.slides.next) {
 				previousNext.classList.remove("next");
 			}
 
@@ -448,12 +453,12 @@ var _ = self.Inspire = {
 	},
 
 	gotoItem(which) {
-		this.item = which;
+		_.item = which;
 
-		var items = this.items, classes;
+		var items = _.items, classes;
 
 		for (var i=items.length; i-- > 0;) {
-			classes = this.items[i].classList;
+			classes = _.items[i].classList;
 
 			classes.remove("current");
 			classes.remove("displayed");
@@ -463,17 +468,17 @@ var _ = self.Inspire = {
 			}
 		}
 
-		for (var i=this.item - 1; i-- > 0;) {
+		for (var i=_.item - 1; i-- > 0;) {
 			items[i].classList.add("displayed");
 		}
 
-		if (this.item > 0) { // this.item can be zero, at which point no items are current
-			var item = items[this.item - 1];
+		if (_.item > 0) { // _.item can be zero, at which point no items are current
+			var item = items[_.item - 1];
 
 			item.classList.add("current");
 
 			// support for nested lists
-			for (var i = this.item - 1, cur = items[i], j; i > 0; i--) {
+			for (var i = _.item - 1, cur = items[i], j; i > 0; i--) {
 			  j = items[i - 1];
 			  if (j.contains(cur)) {
 				j.classList.remove("displayed");
@@ -490,9 +495,9 @@ var _ = self.Inspire = {
 	},
 
 	adjustFontSize() {
-		var slide = this.currentSlide;
+		var slide = _.currentSlide;
 
-		if (body.matches(".show-thumbnails") || slide.matches(".dont-resize")
+		if (document.body.matches(".show-thumbnails") || slide.matches(".dont-resize")
 		    || slide.scrollHeight <= innerHeight || slide.scrollWidth <= innerWidth) {
 			return;
 		}
@@ -520,7 +525,7 @@ var _ = self.Inspire = {
 
 	// Get current slide as an element
 	get currentSlide() {
-		return this.slides[this.slide];
+		return _.slides[_.slide];
 	},
 
 	getSlideById(id) {
@@ -578,4 +583,4 @@ $.ready().then(_.setup);
 
 window.Inspire = _;
 
-})(document.body, document.documentElement);
+})();
