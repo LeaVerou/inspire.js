@@ -175,10 +175,17 @@ var _ = self.Inspire = {
 				slide.id = "slide" + (i+1);
 			}
 
-			// TODO data-insert and data-steps should probably move to a plugin
 			slide.setAttribute("data-index", i);
 			var imp = slide.getAttribute("data-insert"),
 				imported = imp? _.getSlideById(imp) : null;
+
+			if (imp && !imported) {
+				// data-insert to slide that does not exist, remove slide
+				slide.remove();
+				_.slides.splice(i, 1);
+				i--;
+				continue;
+			}
 
 			_.order.push(imported? +imported.getAttribute("data-index") : i);
 
