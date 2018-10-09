@@ -35,7 +35,7 @@ Inspire.hooks.add({
 				var slide = evt.target.closest(".slide");
 
 				if (slide) {
-					this.goto(slide.id);
+					Inspire.goto(slide.id);
 				}
 
 				exitOverview();
