@@ -253,7 +253,7 @@ var _ = self.Demo = class Demo {
 				}
 
 				if (this.style.sheet) {
-					let scope = this.editors.css.textarea.getAttribute("data-scope") || `#${this.slide.id}`;
+					let scope = this.editors.css.textarea.getAttribute("data-scope") || `#${this.slide.id} .demo-target `;
 
 					for (let rule of this.style.sheet.cssRules) {
 						_.scopeRule(rule, this.slide, scope);
@@ -397,6 +397,14 @@ ${inline? `document.addEventListener("click", evt => {
 </body>
 </html>`;
 	}
+
+	static init() {
+		$$(".demo.slide").forEach(slide => {
+			if (!slide.demo) {
+				slide.demo = new Demo(slide);
+			}
+		});
+	}
 };
 
 Demo.fixers = {
@@ -423,9 +431,7 @@ input, select, textarea, button {
 
 (function() {
 	$.ready().then(() => {
-		$$(".demo.slide").forEach(slide => {
-			slide.demo = new Demo(slide);
-		});
+		Demo.init();
 	});
 })();
 
