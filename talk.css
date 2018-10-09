@@ -14,12 +14,12 @@
 	margin-top: auto;
 	color: var(--color-aqua);
 	letter-spacing: -.04em;
+	font-size: calc(400% + 15vh);
 }
 
 @supports (-webkit-background-clip: text) {
 	#intro h1 {
 		background: linear-gradient(to bottom right, var(--color1), var(--color2), var(--color3), var(--color2), var(--color1));
-		font-size: calc(400% + 15vh);
 		-webkit-background-clip: text;
 		color: transparent;
 	}
