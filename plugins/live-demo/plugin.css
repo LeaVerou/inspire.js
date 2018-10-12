@@ -70,6 +70,7 @@
 	.demo-controls .button,
 	.demo-controls button {
 		all: unset;
+		display: block;
 		padding: .1em .4em;
 		margin: 0 .2em;
 		box-shadow: 0 0 1px inset;
@@ -83,6 +84,78 @@
 	.demo-controls .button:not(:hover):not(:focus),
 	.demo-controls button:not(:hover):not(:focus) {
 		opacity: .6;
+	}
+
+details.notes {
+	position: relative;
+	font-weight: 400;
+	text-align: left;
+}
+
+details.notes:not([open]) {
+	display: contents;
+}
+
+	details.notes:not([open]) > summary,
+	details.notes {
+		margin-left: auto;
+		order: 9;
+	}
+
+	details.notes div > ul {
+		padding-left: 1em;
+	}
+
+	details.notes[open]::before,
+	details.notes > div {
+		background: hsla(0,0%,100%,.95);
+		border: 1px solid rgba(0,0,0,.3);
+	}
+
+	details.notes > div {
+		position: absolute;
+		top: 1.86em;
+		left: auto;
+		right: 0;
+		box-shadow: .05em .1em .4em rgba(0,0,0,.2);
+		width: 50vw;
+		min-width: 280px;
+		max-width: calc(100vw - 4em);
+		max-height: calc(100vh - 6em);
+		overflow: auto;
+		padding: .8em 1em;
+		border-radius: .5em;
+		color: black;
+		text-shadow: 0 .1em .1em white;
+		font-size: 60%;
+	}
+
+		details.notes > div > * {
+			margin: 0;
+		}
+
+		details.notes > div a {
+			--color: 200, 50%, 40%;
+			color: hsl(var(--color));
+			text-decoration-color: hsla(var(--color), .5);
+		}
+
+	details.notes[open]::before {
+		content: '';
+		position: absolute;
+		top: .9em;
+		right: 40%;
+		z-index: 1;
+		width: 14px;
+		height: 14px;
+		transform: rotate(45deg);
+		border-bottom: none;
+		border-right: none;
+	}
+
+	details.notes a,
+	details.notes code {
+		font-weight: bold;
 	}
 
 .editor-container {

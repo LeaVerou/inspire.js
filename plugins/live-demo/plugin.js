@@ -74,6 +74,21 @@ var _ = self.Demo = class Demo {
 
 		var notes = $("details.notes", this.slide);
 
+		if (notes) {
+			var div = document.createElement("div");
+			div.append(...$$(notes.childNodes));
+			notes.append(div);
+
+			var summary = $("summary", notes);
+
+			if (!summary) {
+				var slide = notes.closest(".slide");
+				summary = $.create("summary", {textContent: slide.title || "Notes"});
+			}
+
+			notes.prepend(summary);
+		}
+
 		this.controls = $.create({
 			className: "demo-controls",
 			contents: notes,
