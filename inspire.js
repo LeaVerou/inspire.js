@@ -160,7 +160,7 @@ var _ = self.Inspire = {
 
 				if (!slide.id) {
 					// If a slide has a title but not an id, get its id from that
-					var id = slide.title.replace(/[^\w\s-]/g, "") // Remove non-ASCII characters
+					var id = title.replace(/[^\w\s-]/g, "") // Remove non-ASCII characters
 							.trim().replace(/\s+/g, "-") // Convert whitespace to hyphens
 							.toLowerCase();
 
