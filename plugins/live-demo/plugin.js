@@ -7,6 +7,8 @@ $$(".demo.slide").forEach(slide => {
 	slide.classList.add("dont-resize");
 });
 
+$$("style.demo").forEach(style => style.dataset.slide = "");
+
 await Inspire.loadPlugin("prism");
 await Inspire.plugins.prism.ready;
 
@@ -444,10 +446,8 @@ input, select, textarea, button {
 }
 `;
 
-(function() {
-	$.ready().then(() => {
-		Demo.init();
-	});
-})();
+$.ready().then(() => {
+	Demo.init();
+});
 
 })();
