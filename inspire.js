@@ -579,6 +579,19 @@ var _ = self.Inspire = {
 				}
 			});
 
+			// Absolutize any URLs in style attributes
+			for (let element of $$('[style*="url("]', doc)) {
+				let style = element.getAttribute("style");
+				let newStyle = style.replace(/url\(('|")?(.+?)\1\)/, ($0, quote, url) => {
+					quote = quote || "'";
+					return `url(${quote}${new URL(url, link.href)}${quote})`;
+				});
+				
+				if (style !== newStyle) {
+					element.setAttribute("style", newStyle);
+				}
+			}
+
 			// Load stylesheets and talk.js from import
 			var inspireCSS = $('link[href$="inspire.css"]');
 
