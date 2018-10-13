@@ -40,7 +40,8 @@ var _ = self.Inspire = {
 		prism: "[class*='lang-'], [class*='language-']",
 		media: "[data-video], .browser",
 		"live-demo": ".demo.slide",
-		"resolution": "[data-resolution]"
+		"resolution": "[data-resolution]",
+		"docs": "code.property, code.css, code.function, code.element, code.attribute, [data-mdn] code, code[data-mdn]"
 	},
 
 	// Plugins loaded

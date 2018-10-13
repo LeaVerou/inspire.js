@@ -1,0 +1,24 @@
+a[href^="https://developer.mozilla.org/en-US/docs/"]::before,
+a[href^="https://www.w3.org/"]::before,
+a[href*="whatwg.org"]::before {
+	content: "";
+	display: inline-block;
+	vertical-align: -.1em;
+	border-radius: 3px;
+	margin-right: .2em;
+	width: .8em;
+	height: .8em;
+	background: var(--image) bottom / contain no-repeat;
+}
+
+a[href^="https://developer.mozilla.org/en-US/docs/"]::before {
+	--image: url("https://cdn.mdn.mozilla.net/static/img/favicon32.7f3da72dcea1.png");
+}
+
+a[href^="https://www.w3.org/"]::before {
+	--image: url("https://www.w3.org/favicon.ico");
+}
+
+a[href*="whatwg.org"]::before {
+	--image: url("https://resources.whatwg.org/logo.svg");
+}
