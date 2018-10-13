@@ -60,7 +60,7 @@ for (let [id, lang] of Object.entries(languages)) {
 }
 
 // Load languages recursively, respecting dependencies
-var ok = {};
+var ok = {none: Promise.resolve()};
 var loadLanguage = async id => {
 	if (ok[id]) {
 		// Language already loading
@@ -109,7 +109,9 @@ if (message.length) {
 }
 
 // slidechange may have already fired for current slide
-Prism.highlightAllUnder(Inspire.currentSlide);
+if (Inspire.slide !== undefined) {
+	Prism.highlightAllUnder(Inspire.currentSlide);
+}
 
 Inspire.hooks.add("slidechange", env => {
 	if (!env.displayedBefore) {
