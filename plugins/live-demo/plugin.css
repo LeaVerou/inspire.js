@@ -88,6 +88,7 @@
 
 details.notes {
 	position: relative;
+	z-index: 1;
 	font-weight: 400;
 	text-align: left;
 }
@@ -100,10 +101,6 @@ details.notes:not([open]) {
 	details.notes {
 		margin-left: auto;
 		order: 9;
-	}
-
-	details.notes div > ul {
-		padding-left: 1em;
 	}
 
 	details.notes[open]::before,
@@ -138,6 +135,10 @@ details.notes:not([open]) {
 			--color: 200, 50%, 40%;
 			color: hsl(var(--color));
 			text-decoration-color: hsla(var(--color), .5);
+		}
+
+		details.notes div > ul {
+			padding-left: 1em;
 		}
 
 	details.notes[open]::before {
@@ -273,7 +274,7 @@ pre.prism-live {
 	color: white;
 	cursor: pointer;
 	text-transform: uppercase;
-	font: bold 1.2rem/1.5 var(--font-heading);
+	font: bold 1.2rem/1.5 var(--font-heading, var(--heading-font, Helvetica Neue, Segoe UI, sans-serif));
 	opacity: .5;
 }
 
