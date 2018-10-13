@@ -40,7 +40,8 @@ strong, b {
 }
 
 input:not([type=file]),
-button {
+button,
+select {
 	font: inherit;
 	color: inherit;
 }

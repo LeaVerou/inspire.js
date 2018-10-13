@@ -53,17 +53,17 @@ var _ = self.Inspire = {
 	delayInit: [],
 
 	async setup() {
-		var dependencies = [];
+		_.dependencies = [];
 
 		await _.importsLoaded;
 
 		for (let id in _.pluginTest) {
 			if ($(_.pluginTest[id])) {
-				dependencies.push(_.loadPlugin(id));
+				_.dependencies.push(_.loadPlugin(id));
 			}
 		}
 
-		_.ready = Promise.all(dependencies).then(() => {
+		_.ready = Promise.all(_.dependencies).then(() => {
 			var loaded = Object.keys(_.plugins);
 			console.log("Inspire.js plugins loaded:", loaded.length? loaded.join(", ") : "none");
 
@@ -181,6 +181,7 @@ var _ = self.Inspire = {
 
 			if (imp && !imported) {
 				// data-insert to slide that does not exist, remove slide
+				console.warn(`Slide not found for data-insert="${imp}", ignoring.`);
 				slide.remove();
 				_.slides.splice(i, 1);
 				i--;
@@ -611,14 +612,21 @@ var _ = self.Inspire = {
 				else {
 					inserted[insert] = slide;
 					let remoteSlide = doc.querySelector(id);
-					remoteSlide.setAttribute("data-import-id", remoteSlide.id);
 
-					if ($(id)) {
-						// Imported slide's id exists in the document already, prepend with import name
-						remoteSlide.id = link.id + "-" + remoteSlide.id;
+					if (remoteSlide) {
+						remoteSlide.setAttribute("data-import-id", remoteSlide.id);
+
+						if ($(id)) {
+							// Imported slide's id exists in the document already, prepend with import name
+							remoteSlide.id = link.id + "-" + remoteSlide.id;
+						}
+
+						slide.replaceWith(remoteSlide);
 					}
-
-					slide.replaceWith(remoteSlide);
+					else {
+						console.warn(`${id} not found in ${link.id} import, ignoring.`);
+						slide.remove();
+					}
 				}
 			}
 
