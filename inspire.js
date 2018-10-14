@@ -35,7 +35,7 @@ var _ = self.Inspire = {
 		presenter: ".presenter-notes",
 		"lazy-load": "[data-src]:not(.slide)",
 		"slide-style": "style[data-slide]",
-		overview: "body:not(.no-overview)",
+		overview: "*",
 		iframe: ".slide[data-src], .iframe.slide",
 		prism: "[class*='lang-'], [class*='language-']",
 		media: "[data-video], .browser",
@@ -59,7 +59,7 @@ var _ = self.Inspire = {
 		await _.importsLoaded;
 
 		for (let id in _.pluginTest) {
-			if ($(_.pluginTest[id])) {
+			if ($(_.pluginTest[id]) && !document.body.matches(`.no-${id}`)) {
 				_.dependencies.push(_.loadPlugin(id));
 			}
 		}
@@ -586,7 +586,7 @@ var _ = self.Inspire = {
 					quote = quote || "'";
 					return `url(${quote}${new URL(url, link.href)}${quote})`;
 				});
-				
+
 				if (style !== newStyle) {
 					element.setAttribute("style", newStyle);
 				}
