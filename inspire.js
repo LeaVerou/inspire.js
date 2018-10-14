@@ -553,8 +553,6 @@ var _ = self.Inspire = {
 		return element.closest(".slide");
 	},
 
-	imports: {},
-
 	importsLoaded: new Promise(async resolve => {
 		await $.ready();
 		await _.loadImports();
@@ -564,10 +562,20 @@ var _ = self.Inspire = {
 	loadImports() {
 		let parser = new DOMParser();
 
-		return Promise.all($$('link[rel="inspire-import"]').map(async link => {
+		_.imports = $$('link[rel="inspire-import"]').map(async link => {
 			var response = await fetch(link.href);
 			var text = await response.text();
-			var doc = _.imports[link.id] = parser.parseFromString(text, "text/html");
+			return {
+				id: link.id,
+				doc: parser.parseFromString(text, "text/html"),
+				link
+			};
+		});
+
+		return Promise.all(_.imports.map(async imported => {
+			var info = await imported;
+			var link = info.link;
+			var doc = info.doc;
 
 			// Make sure local links in the import resolve correctly
 			doc.head.append($.create(doc.createElement("base"), {href: link.href}));
