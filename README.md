@@ -9,7 +9,7 @@ Code cleanup in progress. Visit later. If you were using CSSS and would rather s
 - Almost all HTML syntax is the same! The same JS events are still fired. So, very little should break.
 - `slideshow.css` is now `inspire.css`
 - `slideshow.js` is now `inspire.js`
-- You dot need to run JS to create a slideshow, it is created automatically.
+- You don't need to run JS to create a slideshow, it is created automatically.
 - The `SlideShow` JS class is now `Inspire`
 - The `slideshow` JS variable is now `Inspire`
 - Presenter view will not be loaded unless there is at least one `class="presenter-notes"` item.
