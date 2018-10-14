@@ -364,7 +364,7 @@ var _ = self.Inspire = {
 
 	/**
 		Go to an aribtary slide
-		@param which {String|Integer} Which slide (identifier or slide number)
+		@param which {Element|String|Integer} Which slide (identifier or slide number)
 	*/
 	goto: function(which) {
 		var slide;
@@ -374,27 +374,30 @@ var _ = self.Inspire = {
 		// our current item (and there"s no point either, so we save on performance)
 		window.removeEventListener("hashchange", _.hashchange);
 
-		var id;
+		if (which + "" === which) {
+			// Argument is a slide id
+			which = $(which[0] === "#"? which : "#" + which);
 
-		if (which + "" === which) { // Argument is a slide id
-			slide = _.getSlideById(which);
-
-			if (slide) {
-				_.slide = _.index = +slide.getAttribute("data-index");
-
-				location.hash = ""; // See https://twitter.com/LeaVerou/status/1046114577648422912
-				location.hash = which;
-			}
-			else if (/^slide(\d+)$/.test(which)) { // No slide found with that id. Perhaps it's in the slideN format?
+			if (!slide && /^slide(\d+)$/.test(which)) {
 				which = which.slice(5) - 1;
-			}
-			else {
-				// No slide found
-				which = 0;
 			}
 		}
 
-		if (which + 0 === which && which in _.slides) {
+		if (which instanceof Element) {
+			// Argument is an element
+			// Is it a slide? Inside a slide? Contains a slide?
+			slide = which.closest(".slide") || $(".slide", which);
+		}
+
+		if (slide) {
+			if (!slide.matches(":target") || location.hash !== "#" + slide.id) {
+				location.hash = ""; // See https://twitter.com/LeaVerou/status/1046114577648422912
+				location.hash = slide.id;
+			}
+
+			_.slide = _.index = +slide.getAttribute("data-index");
+		}
+		else if (which + 0 === which && which in _.slides) {
 			// Argument is a valid slide number
 			_.index = which;
 			_.slide = _.order[which];
@@ -574,7 +577,7 @@ var _ = self.Inspire = {
 				for (let attribute of attributes) {
 					if (resource.hasAttribute(attribute)) {
 						var url = new URL(resource.getAttribute(attribute), link.href);
-						resource.setAttribute(attribute, url)
+						resource.setAttribute(attribute, url);
 					}
 				}
 			});
