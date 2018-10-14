@@ -3,11 +3,20 @@
 	--font-body: 'Helvetica Neue', Helvetica, Segoe UI, sans-serif;
 	--font-heading: var(--font-body);
 	--color-yellow: hsl(50, 100%, 50%);
-	--color-green: hsl(150, 90%, 40%);
+	--color-green: hsl(100, 60%, 50%);
 	--color-aqua: hsl(190, 100%, 40%);
 	--color1: var(--color-yellow);
 	--color2: var(--color-green);
 	--color3: var(--color-aqua);
+	--accent1: var(--color-aqua);
+	--accent2: var(--color-green);
+	--accent3: var(--color-yellow);
+	--accent4: hsl(336, 100%, 60%);
+	--light1: hsl(200, 40%, 80%);
+	--medium1: var(--color-yellow);
+	--dark1: hsl(200, 15%, 20%);
+	--dark2: hsl(335, 100%, 35%);
+
 }
 
 body {
@@ -52,7 +61,7 @@ input[type="email"],
 input[type="tel"] {
 	background: transparent;
 	padding: 0 .3em;
-	border: .05em solid hsl(200, 40%, 80%);
+	border: .05em solid var(--light1);
 }
 
 code, textarea, pre {
@@ -88,7 +97,7 @@ img {
 }
 
 ::selection {
-	background: hsl(335, 100%, 40%);
+	background: var(--dark1);
 	color: white;
 }
 
@@ -98,7 +107,7 @@ img {
 	align-items: center;
 	justify-content: center;
 	padding: 2.5rem;
-	background: radial-gradient(transparent, rgba(0,0,0,.7)) hsl(200, 15%, 20%);
+	background: radial-gradient(transparent, rgba(0,0,0,.7)) var(--dark1);
 	color: white;
 }
 
@@ -110,7 +119,7 @@ img {
 
 	.light.slide,
 	.example.slide {
-		background: hsl(200, 40%, 90%);
+		background: var(--light1);
 		color: black;
 	}
 
@@ -121,12 +130,12 @@ img {
 	}
 
 	.slide h2 {
-		color: yellowgreen;
+		color: var(--accent2);
 		font-size: 120%;
 	}
 
 section > header.slide {
-	background: linear-gradient(to bottom right, var(--color1), var(--color2), var(--color3), var(--color2), var(--color1));
+	background: linear-gradient(to bottom right, var(--accent3), var(--accent2), var(--accent1), var(--accent2), var(--accent3));
 }
 
 	section > header.slide > h1 {
@@ -158,7 +167,7 @@ blockquote {
 		top: -.3em;
 		margin-right: .2em;
 		font-size: 300%;
-		color: var(--color3);
+		color: var(--accent1);
 		font-style: normal;
 	}
 
@@ -167,7 +176,7 @@ blockquote {
 		font-style: normal;
 		font-size: 60%;
 		font-weight: bold;
-		color: var(--color3);
+		color: var(--accent1);
 	}
 
 		blockquote .cite a:not(:hover) {
@@ -206,7 +215,7 @@ blockquote {
 	thead th {
 		vertical-align: top;
 		font-size: 75%;
-		background: var(--color-orange);
+		background: var(--accent1);
 		padding: .3em .5em;
 	}
 
@@ -248,7 +257,7 @@ blockquote {
 	text-align: center;
 	text-transform: uppercase;
 	font-weight: bold;
-	background: hsl(85, 80%, 45%);
+	background: var(--accent2);
 	background-image: linear-gradient(rgba(255, 255, 255, .3), rgba(255, 255, 255, 0));
 	font-size: 80%;
 	line-height: 1.6;
@@ -379,7 +388,7 @@ kbd {
 .token.number,
 .token.constant,
 .token.symbol {
-	color: var(--color2);
+	color: var(--accent2);
 }
 
 .token.selector,
@@ -387,7 +396,7 @@ kbd {
 .token.string,
 .token.char,
 .token.builtin {
-	color: var(--color3);
+	color: var(--accent1);
 }
 
 .token.operator,
@@ -396,14 +405,13 @@ kbd {
 .language-css > .token.string,
 .token.inserted,
 .token.function {
-
-	color: hsl(335, 80%, 70%); /* deep pink */
+	color: var(--accent4); /* deep pink */
 }
 
 .token.attr-value,
 .token.keyword,
 .token.variable {
-	color: var(--color1);
+	color: var(--accent3);
 }
 
 .token.atrule,
