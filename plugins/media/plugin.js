@@ -8,6 +8,8 @@
 
 var $ = Bliss, $$ = $.$;
 
+$$(".slide[data-video]").forEach(slide => slide.classList.add("dont-resize"));
+
 $.events(document, "slidechange", evt => {
 	var slide = evt.target;
 
