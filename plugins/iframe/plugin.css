@@ -10,9 +10,17 @@
 	.iframe.slide > h1 {
 		position: absolute;
 		bottom: 0; right: 0; left: 0;
-		background: rgba(0,0,0,.4);
+		background: linear-gradient(to right, transparent, rgba(0,0,0,.3), transparent) rgba(0,0,0,.4);
 		font-size: 150%;
 		font-weight: inherit;
+		text-shadow: 0 0 .2em rgba(0,0,0,.2);
+	}
+
+	@supports(backdrop-filter: blur(1px)) {
+		.iframe.slide > h1 {
+			background-color: rgba(0,0,0,.25);
+			backdrop-filter: blur(4px);
+		}
 	}
 
 		.iframe.slide > h1 > a {
