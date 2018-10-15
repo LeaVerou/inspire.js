@@ -9,10 +9,6 @@
 
 	.video.slide video {
 		max-width: 96vw;
-		max-height: calc(100vh - 6vw);
-		max-height: -webkit-fill-available;
-		max-height: -moz-available;
-		max-height: fill;
 	}
 
 	.video.slide.cover > video {
@@ -54,6 +50,10 @@
 		.media-frame.media-frame > :first-child {
 			display: block;
 			max-width: 100%;
+			max-height: calc(100vh - 6vw);
+			max-height: -webkit-fill-available;
+			max-height: -moz-available;
+			max-height: fill;
 			border-bottom-left-radius: inherit;
 			border-bottom-right-radius: inherit;
 		}
@@ -67,8 +67,6 @@
 		color: black;
 		font-weight: 400;
 	}
-
-
 
 .media-frame .annotation {
 	background: rgba(0,0,0,.6);
