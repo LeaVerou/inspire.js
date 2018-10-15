@@ -377,10 +377,11 @@ var _ = self.Inspire = {
 
 		if (which + "" === which) {
 			// Argument is a slide id
+			var id = which;
 			which = $(which[0] === "#"? which : "#" + which);
 
-			if (!slide && /^slide(\d+)$/.test(which)) {
-				which = which.slice(5) - 1;
+			if (!which && /^slide(\d+)$/.test(id)) {
+				which = id.slice(5) - 1;
 			}
 		}
 
