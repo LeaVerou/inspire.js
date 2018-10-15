@@ -572,6 +572,8 @@ var _ = self.Inspire = {
 			};
 		});
 
+		var talkCSS = $('link[href$="talk.css"]');
+
 		return Promise.all(_.imports.map(async imported => {
 			var info = await imported;
 			var link = info.link;
@@ -610,8 +612,8 @@ var _ = self.Inspire = {
 			for (let link of $$('link[href$="talk.css"]', doc)) {
 				let copy = link.cloneNode();
 
-				if (inspireCSS) {
-					inspireCSS.after(copy);
+				if (talkCSS) {
+					talkCSS.before(copy);
 				}
 				else {
 					document.head.prepend(copy);
