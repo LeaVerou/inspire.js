@@ -19,7 +19,8 @@ $$(Inspire.pluginTest.docs).forEach(code => {
 			path = `API/${category}`;
 			break;
 		default:
-			path = code.dataset.mdn || code.closest("[data-mdn]").dataset.mdn;
+			var mdn = code.closest("[data-mdn]");
+			path = mdn? mdn.dataset.mdn : "";
 	}
 
 	$.create("a", {
