@@ -59,9 +59,7 @@ input:not([type]),
 input[type="text"],
 input[type="email"],
 input[type="tel"] {
-	background: transparent;
 	padding: 0 .3em;
-	border: .05em solid var(--light1);
 }
 
 code, textarea, pre {
