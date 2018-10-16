@@ -14,6 +14,10 @@ $$(Inspire.pluginTest.docs).forEach(code => {
 			path = "HTML/Element";
 			code.textContent = "<" + text + ">";
 			break;
+		case "svg element":
+			path = "SVG/Element";
+			code.textContent = "<" + text + ">";
+			break;
 		case "attribute":
 			var category = code.dataset.category || "Global_attributes";
 			path = `API/${category}`;
