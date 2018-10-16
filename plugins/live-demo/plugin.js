@@ -243,7 +243,7 @@ var _ = self.Demo = class Demo {
 		var editor = this.editors[id];
 		var code = editor.textarea.value;
 
-		this.fixCode(id, code);
+		code = this.fixCode(id, code);
 
 		if (id === "markup") {
 			if (this.isolated) {
