@@ -446,8 +446,17 @@ input, select, textarea, button {
 }
 `;
 
-$.ready().then(() => {
-	Demo.init();
+document.addEventListener("slidechange", evt => {
+	var slide = evt.target;
+	if (slide.matches(".demo") && !slide.demo) {
+		slide.demo = new Demo(slide);
+	}
 });
+
+if (Inspire.currentSlide) {
+	$.ready().then(() => {
+		Inspire.currentSlide = new Demo(Inspire.currentSlide);
+	});
+}
 
 })();
