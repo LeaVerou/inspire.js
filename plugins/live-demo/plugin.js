@@ -415,7 +415,13 @@ ${inline? `document.addEventListener("click", evt => {
 </html>`;
 	}
 
-	static init() {
+	static init(slide) {
+		if (slide.matches(".demo") && !slide.demo) {
+			slide.demo = new Demo(slide);
+		}
+	}
+
+	static initAll() {
 		$$(".demo.slide").forEach(slide => {
 			if (!slide.demo) {
 				slide.demo = new Demo(slide);
@@ -447,15 +453,12 @@ input, select, textarea, button {
 `;
 
 document.addEventListener("slidechange", evt => {
-	var slide = evt.target;
-	if (slide.matches(".demo") && !slide.demo) {
-		slide.demo = new Demo(slide);
-	}
+	Demo.init(evt.target);
 });
 
 if (Inspire.currentSlide) {
 	$.ready().then(() => {
-		Inspire.currentSlide = new Demo(Inspire.currentSlide);
+		Demo.init(Inspire.currentSlide);
 	});
 }
 
