@@ -114,7 +114,7 @@ if (Inspire.slide !== undefined) {
 }
 
 Inspire.hooks.add("slidechange", env => {
-	if (!env.displayedBefore) {
+	if (env.firstTime) {
 		Prism.highlightAllUnder(env.slide);
 	}
 

@@ -413,10 +413,10 @@ var _ = self.Inspire = {
 			document.title = slide.getAttribute("data-title") || documentTitle;
 
 			var prevSlide = _.slides[prev];
-			var displayedBefore = _.displayed.has(slide);
+			var firstTime = !_.displayed.has(slide);
 			_.displayed.add(slide);
 
-			var env = {slide, prevSlide, displayedBefore, which, context: this};
+			var env = {slide, prevSlide, firstTime, which, context: this};
 			_.hooks.run("slidechange", env);
 
 			_.adjustFontSize();
@@ -449,7 +449,7 @@ var _ = self.Inspire = {
 
 			requestAnimationFrame(() => {
 				var evt = new CustomEvent("slidechange", {"bubbles": true});
-				$.extend(evt, {prevSlide, displayedBefore});
+				$.extend(evt, {prevSlide, firstTime});
 				slide.dispatchEvent(evt);
 
 				_.hooks.run("slidechange-async", env);
