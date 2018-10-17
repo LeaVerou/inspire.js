@@ -2,17 +2,23 @@
 $$(Inspire.pluginTest.docs).forEach(code => {
 	var text = code.dataset.mdn? "" : code.textContent;
 	var path;
+	var svg = code.matches(".svg");
 
 	if (code.matches(".element")) {
-		path = code.matches(".svg")? "SVG/Element" : "HTML/Element"
+		path = svg? "SVG/Element" : "HTML/Element"
 		code.textContent = "<" + text + ">";
 	}
 	else if (code.matches(".function, .property, .css")) {
 		path = "CSS";
 	}
 	else if (code.matches(".attribute")) {
-		var category = code.dataset.category || "Global_attributes";
-		path = `API/${category}`;
+		if (svg) {
+			path = "SVG/Attribute"
+		}
+		else {
+			var category = code.dataset.category || "Global_attributes";
+			path = `API/${category}`;
+		}
 	}
 	else {
 		var mdn = code.closest("[data-mdn]");
@@ -20,7 +26,7 @@ $$(Inspire.pluginTest.docs).forEach(code => {
 	}
 
 	if (code.matches(".function")) {
-		code.textContent += "()";	
+		code.textContent += "()";
 	}
 
 	$.create("a", {
