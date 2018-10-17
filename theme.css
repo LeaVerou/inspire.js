@@ -11,7 +11,7 @@
 	--accent1: var(--color-aqua);
 	--accent2: var(--color-green);
 	--accent3: var(--color-yellow);
-	--accent4: hsl(336, 100%, 60%);
+	--accent4: hsl(336, 100%, 55%);
 	--light1: hsl(200, 40%, 80%);
 	--medium1: var(--color-yellow);
 	--dark1: hsl(200, 15%, 20%);
@@ -134,6 +134,10 @@ img {
 
 section > header.slide {
 	background: linear-gradient(to bottom right, var(--accent3), var(--accent2), var(--accent1), var(--accent2), var(--accent3));
+}
+
+section > section > header.slide {
+	background: linear-gradient(to bottom right, var(--accent4), var(--accent3), var(--accent1), var(--accent3), var(--accent4));
 }
 
 	section > header.slide > h1 {
