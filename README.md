@@ -1,8 +1,9 @@
 # Inspire.js
 ### Lean, hackable, extensible slide deck framework. Create basic slides by just writing HTML and CSS, do fancy custom stuff with JS, the sky is the limit!
-### Previously known as CSSS.
 
-Code cleanup in progress. Visit later. If you were using CSSS and would rather stay at it, run `git checkout v1.0.0` and stay there.
+## Previously known as CSSS.
+
+If you were using CSSS and would rather stay at it, run `git checkout v1.0.0` and stay there.
 
 ## Migrating from CSSS
 
@@ -18,3 +19,31 @@ Code cleanup in progress. Visit later. If you were using CSSS and would rather s
 - Incrementable is no longer a plugin. Use the separate script from https://github.com/leaverou/incrementable.
 - `reusable.css` has now been merged into the default theme, `theme.css`.
 - `data-import` is now `data-insert`
+
+## API FAQ
+
+### Running code after any imports have loaded
+
+```js
+await Inspire.importsLoaded;
+// code to run after imports have loaded
+```
+
+Note that `await` needs to be inside an async function otherwise it will error. However, this could just be a self-executing async function.
+
+### Running code after a specific plugin has loaded
+
+```js
+await Inspire.importsLoaded;
+await Inspire.plugins.PLUGIN_ID.loaded;
+// code to run after the plugin with id PLUGIN_ID has loaded and executed
+```
+
+or:
+
+```js
+await Inspire.loadPlugin(PLUGIN_ID);
+// code to run after the plugin with id PLUGIN_ID has loaded and executed
+```
+
+The second example would load the plugin if it hasn't otherwise been loaded, but if it will never be loaded twice.
