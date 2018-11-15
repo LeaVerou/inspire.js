@@ -2,8 +2,8 @@
 
 $$("[data-resolution]").forEach(element => {
 	let [width, height] = element.closest("[data-resolution]").dataset.resolution.split(/\s+/);
-	element.style.setProperty("--vw", width);
-	element.style.setProperty("--vh", height);
+	element.style.setProperty("--v-width", width);
+	element.style.setProperty("--v-height", height);
 });
 
 let width, height;
@@ -23,7 +23,7 @@ var adjustZoom = () => {
 Inspire.hooks.add("slidechange", env => {
 	if (Inspire.currentSlide.closest("[data-resolution]")) {
 		let cs = getComputedStyle(Inspire.currentSlide);
-		[width, height] = [cs.getPropertyValue("--vw"), cs.getPropertyValue("--vh")];
+		[width, height] = [cs.getPropertyValue("--v-width"), cs.getPropertyValue("--v-height")];
 		adjustZoom();
 		addEventListener("resize", adjustZoom, {passive: true});
 	}
