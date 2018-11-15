@@ -9,30 +9,6 @@ $$(".demo.slide").forEach(slide => {
 
 $$("style.demo").forEach(style => style.dataset.slide = "");
 
-await Inspire.loadPlugin("prism");
-await Inspire.plugins.prism.ready;
-
-if (!Prism.Live) {
-	// Filter loaded languages to only languages used in demo slides
-	var languages = [];
-
-	for (let [id, lang] of Object.entries(Inspire.plugins.prism.meta.languages)) {
-		if (id === lang.id && $(`.demo.slide .language-${id}, .language-${id} .demo.slide, .demo.slide.language-${id}`)) {
-			languages.push(id);
-		}
-	}
-
-	await $.load(`https://live.prismjs.com/src/prism-live.js?load=${languages.join(",")}`);
-	await Prism.Live.ready;
-
-	// Move Prism Live CSS before ours
-	var ourCSS = $("link[href$='livedemo/plugin.css']");
-	var liveCSS = $("link[href$='prism-live.css']");
-	if (ourCSS && liveCSS) {
-		liveCSS.after(ourCSS);
-	}
-}
-
 /*
 	Requirements:
 	- HTML, CSS, or both
@@ -451,6 +427,30 @@ input, select, textarea, button {
 	font: inherit;
 }
 `;
+
+await Inspire.loadPlugin("prism");
+await Inspire.plugins.prism.ready;
+
+if (!Prism.Live) {
+	// Filter loaded languages to only languages used in demo slides
+	var languages = [];
+
+	for (let [id, lang] of Object.entries(Inspire.plugins.prism.meta.languages)) {
+		if (id === lang.id && $(`.demo.slide .language-${id}, .language-${id} .demo.slide, .demo.slide.language-${id}`)) {
+			languages.push(id);
+		}
+	}
+
+	await $.load(`https://live.prismjs.com/src/prism-live.js?load=${languages.join(",")}`);
+	await Prism.Live.ready;
+
+	// Move Prism Live CSS before ours
+	var ourCSS = $("link[href$='livedemo/plugin.css']");
+	var liveCSS = $("link[href$='prism-live.css']");
+	if (ourCSS && liveCSS) {
+		liveCSS.after(ourCSS);
+	}
+}
 
 document.addEventListener("slidechange", evt => {
 	Demo.init(evt.target);
