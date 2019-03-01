@@ -25,7 +25,7 @@ Inspire.hooks.add({
 				document.body.classList.toggle("headers-only", headersOnly);
 			}
 		}
-		else if (env.letter === "H") {
+		else if (env.letter === "H" && evt.ctrlKey) {
 			if (headersOnly) {
 				document.body.classList.add("headers-only");
 			}
