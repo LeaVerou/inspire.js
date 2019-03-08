@@ -260,7 +260,7 @@ var _ = self.Inspire = {
 				(Shift instead of Ctrl works too)
 			*/
 			"keydown": evt => {
-				if (evt.target === document.body || evt.target === document.body.parentNode || evt.altKey) {
+				if (evt.altKey || evt.target.contains(_.currentSlide)) {
 					if (evt.keyCode >= 32 && evt.keyCode <= 40) {
 						evt.preventDefault();
 					}
