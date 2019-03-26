@@ -67,6 +67,17 @@ var loadLanguage = async id => {
 		return ok[id];
 	}
 
+	if (!languages[id]) {
+		// Not a registered language. It could be local (custom), don’t do anything
+		let index = ids.indexOf(id);
+
+		if (index > -1) {
+			ids.splice(index, 1);
+		}
+
+		return;
+	}
+
 	var deps = toArray(languages[id].require);
 	ok[id] = promise();
 
