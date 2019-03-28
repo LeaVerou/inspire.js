@@ -4,14 +4,9 @@
 	@version 1.0
  */
 
-/**
- * "Variables"
- */
-.slide,
-.delayed,
-.delayed-children > * {
-	transition:.5s;
-	transition-property: transform, opacity, left, top, right, bottom, background;
+:root {
+	--transition-duration: .5s;
+	--transition-properties: transform, opacity, left, top, right, bottom, background;
 }
 
 /**
@@ -35,6 +30,8 @@ body {
 	left: 0;
 	z-index: 1;
 	font-size: calc(100% + 1vw + 1vh);
+	transition: var(--transition-duration);
+	transition-property: var(--transition-properties);
 }
 
 /* So that people can override and do things like
@@ -150,6 +147,7 @@ body {
 	.delayed,
 	.delayed-children > * {
 		opacity: 0;
+		transition-property: var(--transition-properties);
 	}
 
 	.delayed.displayed,
@@ -163,6 +161,7 @@ body {
 	.delayed-children > .displayed.persistent,
 	.delayed-children.persistent > .displayed {
 		opacity: 1;
+		transition-duration: var(--transition-duration);
 	}
 }
 
