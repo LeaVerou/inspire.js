@@ -665,9 +665,11 @@ var _ = self.Inspire = {
 
 	loadPlugin(id) {
 		if (!_.plugins[id]) {
+			var loadCSS = !$(`.no-css-${id}, .no-${id}-css, .${id}-no-css`);
+
 			_.plugins[id] = {
 				loaded: Promise.all([
-					$.load(`plugins/${id}/plugin.css`, scriptSrc).catch(e => e),
+					loadCSS? $.load(`plugins/${id}/plugin.css`, scriptSrc).catch(e => e) : Promise.resolve(),
 					$.load(`plugins/${id}/plugin.js`, scriptSrc).catch(() => delete _.plugins[id])
 				])
 			};
