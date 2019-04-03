@@ -42,7 +42,8 @@ var _ = self.Inspire = {
 		"live-demo": ".demo.slide",
 		"resolution": "[data-resolution]",
 		"docs": "code.property, code.css, code.function, code.element, code.attribute, [data-mdn] code, code[data-mdn]",
-		"mavo": "[mv-app]"
+		"mavo": "[mv-app]",
+		"visible-keys": "[data-visible-keys]"
 	},
 
 	// Plugins loaded
