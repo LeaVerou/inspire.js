@@ -1,20 +1,40 @@
 // Display certain keys pressed
 Inspire.hooks.add("slidechange", env => {
-	if (Inspire.plugins["visible-keys"].listener) {
+	const visibleKeys = Inspire.plugins["visible-keys"];
+	const symbols = visibleKeys.symbols = {
+		Tab: "⇥",
+		Enter: "⏎",
+		DownArrow: "↓",
+		UpArrow: "↑",
+		LeftArrow: "←",
+		RightArrow: "→",
+		Control: "⌃",
+		Shift: "⇧",
+		Alt: "⌥",
+		Meta: "⌘",
+	};
+
+	if (visibleKeys.listener) {
 		// Remove event listener for keys
-		document.removeEventListener("keyup", Inspire.plugins["visible-keys"].listener);
+		document.removeEventListener("keyup", visibleKeys.listener);
 	}
 
 	if (env.slide.matches("[data-visible-keys]")) {
-		var visibleKeys = new Set(env.slide.dataset.visibleKeys.split(/\s+/));
+		var keys = new Set(env.slide.dataset.visibleKeys.split(/\s+/));
 		var delay = +env.slide.dataset.visibleKeysDelay || 600;
 
-		document.addEventListener("keyup", Inspire.plugins["visible-keys"].listener = function(evt) {
-			if (visibleKeys.has(evt.key) && evt.target.nodeName != "TEXTAREA") {
-				label = evt.key.replace("Tab", "⇥")
-							 .replace("Enter", "⏎")
-							 .replace("DownArrow", "↓");
-				label = (evt.ctrlKey? "⌃" : "") + (evt.shiftKey? "⇧" : "") + (evt.metaKey? "⌘" : "") + (evt.altKey? "⌥" : "") + label;
+		document.addEventListener("keyup", visibleKeys.listener = function(evt) {
+			if (keys.has(evt.key) && evt.target.nodeName != "TEXTAREA") {
+				label = evt.key;
+
+				for (let key in symbols) {
+					label = label.replace(key, symbols[key]);
+				}
+
+				label = (evt.ctrlKey? symbols.Control : "")
+				      + (evt.shiftKey? symbols.Shift : "")
+				      + (evt.metaKey? symbols.Meta : "")
+				      + (evt.altKey? symbols.Alt : "") + label;
 
 				var key = $.create("kbd", {
 					textContent: label,
