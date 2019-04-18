@@ -514,12 +514,16 @@ var _ = self.Inspire = {
 	adjustFontSize() {
 		var slide = _.currentSlide;
 
-		if (!slide || document.body.matches(".show-thumbnails") || slide.matches(".dont-resize")
-		    || slide.scrollHeight <= innerHeight || slide.scrollWidth <= innerWidth) {
+		if (!slide || document.body.matches(".show-thumbnails") || slide.matches(".dont-resize")) {
 			return;
 		}
 
 		slide.style.fontSize = "";
+
+		if (slide.scrollHeight <= innerHeight && slide.scrollWidth <= innerWidth) {
+			return;
+		}
+
 		var size = parseInt(getComputedStyle(slide).fontSize);
 		var prev = {scrollHeight: slide.scrollHeight, scrollWidth: slide.scrollWidth};
 
