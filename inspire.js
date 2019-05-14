@@ -38,7 +38,7 @@ var _ = self.Inspire = {
 		overview: "*",
 		iframe: ".slide[data-src], .iframe.slide",
 		prism: "[class*='lang-'], [class*='language-']",
-		media: "[data-video], .browser",
+		media: "[data-video], .media-frame",
 		"live-demo": ".demo.slide",
 		"resolution": "[data-resolution]",
 		"docs": "code.property, code.css, code.function, code.element, code.attribute, [data-mdn] code, code[data-mdn]",

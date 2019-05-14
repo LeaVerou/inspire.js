@@ -14,7 +14,8 @@
 }
 
 /* Ribbon */
-[data-type].slide::after {
+[data-type].slide::after,
+.ribbon {
 	content: attr(data-type);
 	position: fixed;
 	top: 0;
