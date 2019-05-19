@@ -47,3 +47,69 @@ await Inspire.loadPlugin(PLUGIN_ID);
 ```
 
 The second example would load the plugin if it hasn't otherwise been loaded, but if it will never be loaded twice.
+
+### Running code when a specific slide is displayed
+
+You can do this via the `slidechange` hook:
+
+```js
+Inspire.hooks.add("slidechange", env => {
+	if (Inspire.currentSlide.id === "slide-id") {
+		// Code to run
+	}
+});
+```
+
+or, via an event:
+
+```js
+document.addEventListener("slidechange", evt => {
+	if (Inspire.currentSlide.id === "slide-id") {
+		// Code to run
+	}
+});
+```
+
+### Running code when a specific slide is displayed for the first time
+
+You can do this via the `slidechange` hook:
+
+```js
+Inspire.hooks.add("slidechange", env => {
+	if (Inspire.currentSlide.id === "slide-id" && env.firstTime) {
+		// Code to run
+	}
+});
+```
+
+or, via an event:
+
+```js
+document.addEventListener("slidechange", evt => {
+	if (Inspire.currentSlide.id === "slide-id" && evt.firstTime) {
+		// Code to run
+	}
+});
+```
+
+### Running code after a specific slide has been displayed
+
+You can do this via the `slidechange` hook:
+
+```js
+Inspire.hooks.add("slidechange", env => {
+	if (env.prevSlide.id === "slide-id") {
+		// Code to run
+	}
+});
+```
+
+or, via an event:
+
+```js
+document.addEventListener("slidechange", evt => {
+	if (evt.prevSlide.id === "slide-id") {
+		// Code to run
+	}
+});
+```
