@@ -54,6 +54,7 @@
 			max-height: -webkit-fill-available;
 			max-height: -moz-available;
 			max-height: fill;
+			width: auto;
 			border-bottom-left-radius: inherit;
 			border-bottom-right-radius: inherit;
 		}

@@ -117,8 +117,7 @@ img {
 	}
 }
 
-	.light.slide,
-	.example.slide {
+	.light.slide {
 		background: var(--light1);
 		color: black;
 	}
