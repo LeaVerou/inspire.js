@@ -2,7 +2,7 @@
  * Autoload Prism and Prism plugins as needed
  */
 
-Inspire.plugins.prism.ready = (async () => {
+Inspire.pluginsLoaded.prism.ready = (async () => {
 
 const PRISM_ROOT = Inspire.u.getAttribute("data-prism-root") || "https://prismjs.com";
 
@@ -132,7 +132,7 @@ Inspire.hooks.add("slidechange", env => {
 });
 
 // Exports
-Object.assign(Inspire.plugins.prism, { meta, languages: ids, plugins });
+Object.assign(Inspire.pluginsLoaded.prism, { meta, languages: ids, plugins });
 
 // Utilities
 function toArray(arr) {

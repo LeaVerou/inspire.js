@@ -30,7 +30,7 @@ window.$$ = $.$;
 var _ = self.Inspire = {
 	// Plugin ids and selectors
 	// If selector matches anything, plugin is loaded
-	pluginTest: {
+	plugins: {
 		timer: "[data-duration]",
 		presenter: ".presenter-notes",
 		"lazy-load": "[data-src]:not(.slide)",
@@ -46,8 +46,7 @@ var _ = self.Inspire = {
 		"visible-keys": "[data-visible-keys]"
 	},
 
-	// Plugins loaded
-	plugins: {},
+	pluginsLoaded: {},
 
 	hooks: new $.Hooks(),
 
@@ -60,14 +59,17 @@ var _ = self.Inspire = {
 
 		await _.importsLoaded;
 
-		for (let id in _.pluginTest) {
-			if ($(_.pluginTest[id]) && !document.body.matches(`.no-${id}`)) {
-				_.dependencies.push(_.loadPlugin(id));
+		for (let id in _.plugins) {
+			let def = _.plugins[id];
+			let test = def.test || def;
+
+			if ($(test) && !document.body.matches(`.no-${id}`)) {
+				_.dependencies.push(_.loadPlugin(id, def));
 			}
 		}
 
 		_.ready = Promise.all(_.dependencies).then(() => {
-			var loaded = Object.keys(_.plugins);
+			var loaded = Object.keys(_.pluginsLoaded);
 			console.log("Inspire.js plugins loaded:", loaded.length? loaded.join(", ") : "none");
 
 			Promise.all(_.delayInit).then(_.init);
@@ -668,19 +670,20 @@ var _ = self.Inspire = {
 		}));
 	},
 
-	loadPlugin(id) {
-		if (!_.plugins[id]) {
+	loadPlugin(id, def = {}) {
+		if (!_.pluginsLoaded[id]) {
 			var loadCSS = !$(`.no-css-${id}, .no-${id}-css, .${id}-no-css`);
+			var path = def.path || "plugins";
 
-			_.plugins[id] = {
+			_.pluginsLoaded[id] = {
 				loaded: Promise.all([
-					loadCSS? $.load(`plugins/${id}/plugin.css`, scriptSrc).catch(e => e) : Promise.resolve(),
-					$.load(`plugins/${id}/plugin.js`, scriptSrc).catch(() => delete _.plugins[id])
+					loadCSS? $.load(`${path}/${id}/plugin.css`, scriptSrc).catch(e => e) : Promise.resolve(),
+					$.load(`${path}/${id}/plugin.js`, scriptSrc).catch(() => delete _.pluginsLoaded[id])
 				])
 			};
 		}
 
-		return _.plugins[id].loaded;
+		return _.pluginsLoaded[id].loaded;
 	},
 
 	// Utilities

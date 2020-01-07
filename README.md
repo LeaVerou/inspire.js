@@ -35,7 +35,7 @@ Note that `await` needs to be inside an async function otherwise it will error. 
 
 ```js
 await Inspire.importsLoaded;
-await Inspire.plugins.PLUGIN_ID.loaded;
+await Inspire.pluginsLoaded.PLUGIN_ID.loaded;
 // code to run after the plugin with id PLUGIN_ID has loaded and executed
 ```
 
