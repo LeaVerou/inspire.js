@@ -1,5 +1,5 @@
 // Links to documentation
-$$(Inspire.pluginTest.docs).forEach(code => {
+$$(Inspire.plugins.docs).forEach(code => {
 	var text = code.dataset.mdn? "" : code.textContent;
 	var path;
 	var svg = code.matches(".svg");

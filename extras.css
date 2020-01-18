@@ -15,7 +15,7 @@
 
 /* Ribbon */
 [data-type].slide::after,
-.ribbon {
+.slide .ribbon {
 	content: attr(data-type);
 	position: fixed;
 	top: 0;
@@ -24,7 +24,7 @@
 	text-align: center;
 	text-transform: uppercase;
 	font-weight: bold;
-	background: var(--accent2);
+	background: var(--color, var(--accent2));
 	background-image: linear-gradient(rgba(255, 255, 255, .3), rgba(255, 255, 255, 0));
 	font-size: 80%;
 	line-height: 1.6;
