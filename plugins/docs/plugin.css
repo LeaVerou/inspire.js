@@ -12,7 +12,7 @@ a[href*="whatwg.org"]::before {
 }
 
 a[href^="https://developer.mozilla.org/en-US/docs/"]::before {
-	--image: url("https://cdn.mdn.mozilla.net/static/img/favicon32.7f3da72dcea1.png");
+	--image: url("https://developer.mozilla.org/static/img/favicon32.7f3da72dcea1.png");
 }
 
 a[href^="https://www.w3.org/"]::before {
