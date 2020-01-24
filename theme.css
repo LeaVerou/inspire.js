@@ -182,6 +182,10 @@ blockquote {
 		color: var(--accent1);
 	}
 
+		blockquote .cite::before {
+			content: "— "
+		}
+
 		blockquote .cite a:not(:hover) {
 			text-decoration: none;
 		}
