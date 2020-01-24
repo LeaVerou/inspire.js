@@ -151,7 +151,16 @@ var _ = self.Demo = class Demo {
 				inside: this.controls
 			});
 
-			// Next slide button
+			// Next & previous slide buttons
+			$.create("button", {
+				className: "prev",
+				textContent: "◂ Previous",
+				start: this.controls,
+				events: {
+					click: evt => Inspire.previous()
+				}
+			});
+
 			$.create("button", {
 				className: "next",
 				textContent: "Next ▸",
