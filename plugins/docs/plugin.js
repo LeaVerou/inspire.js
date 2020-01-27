@@ -16,8 +16,8 @@ $$(Inspire.plugins.docs).forEach(code => {
 			path = "SVG/Attribute"
 		}
 		else {
-			var category = code.dataset.category || "Global_attributes";
-			path = `API/${category}`;
+			var category = code.dataset.category;
+			path = category? `API/${category}` : "HTML/Global_attributes";
 		}
 	}
 	else {
