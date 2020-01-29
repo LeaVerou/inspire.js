@@ -17,6 +17,9 @@
 .demo.slide:not(.horizontal) {
 	grid-template: "editor controls" auto
 	               "editor target" minmax(0, 1fr) / auto minmax(0, 1fr);
+}
+
+.demo.slide:not(.horizontal):not(.isolated) {
 	padding-right: var(--padding);
 }
 

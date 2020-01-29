@@ -4,7 +4,7 @@ const PLUGIN_SRC = document.currentScript? document.currentScript.src : "";
 
 $$(".demo.slide").forEach(slide => {
 	// This is before editors have been created
-	slide.classList.add("dont-resize");
+	slide.classList.add("dont-resize", "no-slide-number");
 });
 
 $$("style.demo").forEach(style => style.dataset.slide = "");
@@ -24,8 +24,6 @@ var _ = self.Demo = class Demo {
 		this.slide = slide;
 		this.isolated = this.slide.classList.contains("isolated");
 		this.editors = {};
-
-		this.slide.classList.add("no-slide-number");
 
 		this.editorContainer = $.create({
 			className: "editor-container",
