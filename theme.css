@@ -99,6 +99,7 @@ img {
 ::selection {
 	background: var(--dark1);
 	color: white;
+	text-shadow: none;
 }
 
 .slide {
