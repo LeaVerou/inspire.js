@@ -71,7 +71,7 @@ body {
 	font-weight: bold;
 }
 
-	#indicator::after {
+	#indicator:not(:empty)::after {
 		counter-reset: total var(--total);
 		content: counter(total);
 		display: block;

@@ -25,6 +25,8 @@ var _ = self.Demo = class Demo {
 		this.isolated = this.slide.classList.contains("isolated");
 		this.editors = {};
 
+		this.slide.classList.add("no-slide-number");
+
 		this.editorContainer = $.create({
 			className: "editor-container",
 			inside: this.slide

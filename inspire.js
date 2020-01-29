@@ -426,7 +426,12 @@ var _ = self.Inspire = {
 
 			$("#onscreen-nav").classList.toggle("hidden", !slide.matches(".onscreen-nav"));
 
-			_.indicator.textContent = _.index + 1;
+			if (env.slide.classList.contains("no-slide-number")) {
+				_.indicator.textContent = "";
+			}
+			else {
+				_.indicator.textContent = _.index + 1;
+			}
 
 			// Update items collection
 			_.updateItems();
