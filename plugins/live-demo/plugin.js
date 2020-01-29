@@ -158,7 +158,7 @@ var _ = self.Demo = class Demo {
 				title: "Previous slide",
 				start: this.controls,
 				events: {
-					click: evt => Inspire.previous()
+					click: Inspire.previous
 				}
 			});
 
@@ -167,9 +167,14 @@ var _ = self.Demo = class Demo {
 				textContent: "Next ▸",
 				inside: this.controls,
 				events: {
-					click: evt => Inspire.next()
+					click: Inspire.next
 				}
 			});
+
+			var h1 = $(".slide > h1", this.slide);
+			if (h1) {
+				this.controls.prepend(h1);
+			}
 		}
 		else {
 			this.ready = Promise.resolve();

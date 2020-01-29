@@ -62,10 +62,34 @@
 	grid-area: controls;
 	display: flex;
 	padding: .3em;
+	font-size: 60%;
+	line-height: 1.5;
+	background: hsla(220,10%,50%,.15);
 }
+
+	.demo-controls h1 {
+		margin: 0;
+		margin-right: .5em;
+		font-size: 150%;
+		line-height: 1;
+		font-weight: bold;
+		letter-spacing: -.02em;
+	}
+
+	.demo-controls h1::before {
+		content: var(--icon, "ℹ️");
+		display: inline-block;
+		vertical-align: .05em;
+		margin-right: .2em;
+		font-size: 70%;
+	}
 
 	.demo-controls form {
 		display: contents;
+	}
+
+	.demo-controls details.notes {
+		font-size: 100%;
 	}
 
 	.demo-controls details.notes > summary,
@@ -79,8 +103,6 @@
 		border-radius: .2em;
 		cursor: pointer;
 		font-weight: bold;
-		font-size: 60%;
-		line-height: 1.5;
 	}
 
 	.demo-controls .button:not(:hover):not(:focus),
