@@ -79,14 +79,6 @@
 		letter-spacing: -.02em;
 	}
 
-	.demo-controls h1::before {
-		content: var(--icon, "ℹ️");
-		display: inline-block;
-		vertical-align: .05em;
-		margin-right: .2em;
-		font-size: 70%;
-	}
-
 	.demo-controls form {
 		display: contents;
 	}
