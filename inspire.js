@@ -378,11 +378,14 @@ var _ = self.Inspire = {
 		// our current item (and there"s no point either, so we save on performance)
 		window.removeEventListener("hashchange", _.hashchange);
 
-		if (which + "" === which) {
+		var isWhichAnId = which + "" === which;
+
+		if (isWhichAnId) {
 			// Argument is a slide id
 			var id = which;
 			which = $(which[0] === "#"? which : "#" + which);
 
+			// Id is of the form #slide42, just find that slide by number
 			if (!which && /^slide(\d+)$/.test(id)) {
 				which = id.slice(5) - 1;
 			}
@@ -392,6 +395,11 @@ var _ = self.Inspire = {
 			// Argument is an element
 			// Is it a slide? Inside a slide? Contains a slide?
 			slide = which.closest(".slide") || $(".slide", which);
+		}
+
+		if (!slide && isWhichAnId && localStorage.Inspire_currentSlide) {
+			// No slide found with this id, load the one most recently accessed
+			which = +localStorage.Inspire_currentSlide;
 		}
 
 		if (slide) {
@@ -422,18 +430,15 @@ var _ = self.Inspire = {
 			var env = {slide, prevSlide, firstTime, which, context: this};
 			_.hooks.run("slidechange", env);
 
+			localStorage.Inspire_currentSlide = _.index;
+
 			_.adjustFontSize();
 
 			// Show or hide onscreen navigation
 			$("#onscreen-nav").classList.toggle("hidden", !slide.matches(".onscreen-nav"));
 
 			// Update the slide number
-			if (env.slide.classList.contains("no-slide-number")) {
-				_.indicator.textContent = "";
-			}
-			else {
-				_.indicator.textContent = _.index + 1;
-			}
+			_.indicator.textContent = env.slide.classList.contains("no-slide-number")? "" : _.index + 1;
 
 			// Are there any autoplay videos?
 			for (let video of $$("video[autoplay]", env.slide)) {
