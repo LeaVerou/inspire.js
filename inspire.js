@@ -32,7 +32,7 @@ var _ = self.Inspire = {
 	// If selector matches anything, plugin is loaded
 	plugins: {
 		timer: "[data-duration]",
-		presenter: ".presenter-notes",
+		presenter: ".presenter-notes, details.notes",
 		"lazy-load": "[data-src]:not(.slide)",
 		"slide-style": "style[data-slide]",
 		overview: "*",

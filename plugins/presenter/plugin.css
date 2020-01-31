@@ -35,3 +35,11 @@
 .presenter .slide:target > .presenter-notes {
 	display: block;
 }
+
+.presenter.show-next .slide.next {
+	transform: scale(.2);
+}
+
+.presenter.show-next .slide.next:hover {
+	transform: scale(.5);
+}
