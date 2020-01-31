@@ -424,13 +424,26 @@ var _ = self.Inspire = {
 
 			_.adjustFontSize();
 
+			// Show or hide onscreen navigation
 			$("#onscreen-nav").classList.toggle("hidden", !slide.matches(".onscreen-nav"));
 
+			// Update the slide number
 			if (env.slide.classList.contains("no-slide-number")) {
 				_.indicator.textContent = "";
 			}
 			else {
 				_.indicator.textContent = _.index + 1;
+			}
+
+			// Are there any autoplay videos?
+			for (let video of $$("video[autoplay]", env.slide)) {
+				if (video.currentTime > 0) {
+					video.currentTime = 0;
+				}
+
+				if (video.paused) {
+					video.play();
+				}
 			}
 
 			// Update items collection
@@ -455,6 +468,7 @@ var _ = self.Inspire = {
 				previousNext.classList.remove("next");
 			}
 
+			// Run the slidechange event and hook
 			requestAnimationFrame(() => {
 				var evt = new CustomEvent("slidechange", {"bubbles": true});
 				$.extend(evt, {prevSlide, firstTime});
