@@ -23,7 +23,7 @@ Inspire.hooks.add({
 	},
 	"slidechange": env => {
 		if (Inspire.projector) {
-			var pInspire = this.projector.Inspire;
+			var pInspire = Inspire.projector.Inspire;
 			pInspire.goto(env.which);
 
 			$$("details.notes", pInspire.currentSlide).forEach(d => d.open = true);
