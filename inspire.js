@@ -447,7 +447,11 @@ var _ = self.Inspire = {
 				}
 
 				if (video.paused) {
-					video.play();
+					video.play().catch(() => {
+						video.addEventListener("click", evt => {
+							video.play();
+						}, {once: true});
+					});
 				}
 			}
 
