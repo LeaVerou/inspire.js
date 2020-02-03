@@ -26,7 +26,7 @@ Inspire.hooks.add({
 			var pInspire = Inspire.projector.Inspire;
 			pInspire.goto(env.which);
 
-			$$("details.notes", pInspire.currentSlide).forEach(d => d.open = true);
+			$$("details.notes", Inspire.currentSlide).forEach(d => d.open = true);
 		}
 	},
 	"gotoitem-end": env => {
