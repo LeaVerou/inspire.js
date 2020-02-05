@@ -11,6 +11,12 @@ a[href*="whatwg.org"]::before {
 	background: var(--image) bottom / contain no-repeat;
 }
 
+.no-docs-icons a[href^="https://developer.mozilla.org/en-US/docs/"]::before,
+.no-docs-icons a[href^="https://www.w3.org/"]::before,
+.no-docs-icons a[href*="whatwg.org"]::before {
+	content: none;
+}
+
 a[href^="https://developer.mozilla.org/en-US/docs/"]::before {
 	--image: url("https://developer.mozilla.org/static/img/favicon32.7f3da72dcea1.png");
 }
