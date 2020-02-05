@@ -115,7 +115,7 @@ var _ = self.Demo = class Demo {
 				target: "_blank",
 				events: {
 					"click mouseenter": evt => {
-						a.href = Demo.createURL(this.getHTMLPage({inline: false}));
+						a.href = Demo.createURL(this.getHTMLPage({inline: false}), self.safari);
 					}
 				}
 			});
@@ -335,11 +335,16 @@ var _ = self.Demo = class Demo {
 		return new Prism.Live(textarea);
 	}
 
-	static createURL(html) {
+	static createURL(html, useDataURI) {
 		html = html.replace(/&#x200b;/g, "");
-		var blob = new Blob([html], {type : "text/html"});
 
-		return URL.createObjectURL(blob);
+		if (useDataURI) {
+			return `data:text/html,${encodeURIComponent(html)}`;
+		}
+		else {
+			return URL.createObjectURL(new Blob([html], {type : "text/html"}));
+		}
+
 	}
 
 	static scopeRule(rule, slide, scope) {
