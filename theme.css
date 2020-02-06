@@ -123,11 +123,17 @@ img {
 		color: black;
 	}
 
-	.slide > h1 {
+	.slide > h1,
+	.slide > header > h1 {
 		text-align: center;
 		margin: 0 0 .6em;
 		font-size: 200%;
 	}
+
+		.slide > header > h1 + h2,
+		.slide > header > h1 + p {
+			margin-top: 0;
+		}
 
 	.slide h2 {
 		color: var(--accent2);
