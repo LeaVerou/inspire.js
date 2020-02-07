@@ -168,7 +168,7 @@ section > section > header.slide {
 blockquote {
 	position: relative;
 	font-style: italic;
-	width: calc(80vw - 4.5em);
+	max-width: calc(80vw - 4.5em);
 }
 
 	blockquote::before {
