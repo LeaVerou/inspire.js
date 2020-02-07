@@ -60,7 +60,8 @@ select {
 input:not([type]),
 input[type="text"],
 input[type="email"],
-input[type="tel"] {
+input[type="tel"],
+input[type="url"] {
 	padding: 0 .3em;
 }
 
