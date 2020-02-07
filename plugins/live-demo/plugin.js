@@ -23,6 +23,7 @@ var _ = self.Demo = class Demo {
 	constructor(slide) {
 		this.slide = slide;
 		this.isolated = this.slide.classList.contains("isolated");
+		this.updateReload = this.slide.classList.contains("update-reload");
 		this.editors = {};
 
 		this.editorContainer = $.create({
@@ -218,6 +219,11 @@ var _ = self.Demo = class Demo {
 		var code = editor.textarea.value;
 
 		code = this.fixCode(id, code);
+
+		if (this.updateReload) {
+			this.updateIframe();
+			return;
+		}
 
 		if (id === "markup") {
 			if (this.isolated) {
