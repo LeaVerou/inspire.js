@@ -69,6 +69,14 @@
 		text-shadow: 0 .05em .1em rgba(0,0,0,.3);
 	}
 
+	@supports (backdrop-filter: blur(2px)) {
+		.slide > .caption,
+		.image.slide > h1:only-child {
+			background: rgba(0,0,0,.2);
+			backdrop-filter: blur(9px);
+		}
+	}
+
 	.slide > .caption,
 	.image.slide > h1:only-child {
 		font-size: 200%;
