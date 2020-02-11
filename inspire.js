@@ -1,9 +1,9 @@
-/**
- * Inspire.js
- * https://inspirejs.org
- * MIT Licensed
- * Copyright (C) 2010-2018 Lea Verou, http://lea.verou.me
- */
+	/**
+	 * Inspire.js
+	 * https://inspirejs.org
+	 * MIT Licensed
+	 * Copyright (C) 2010-2018 Lea Verou, http://lea.verou.me
+	 */
 
 (async function(){
 
@@ -453,6 +453,17 @@ var _ = self.Inspire = {
 						}, {once: true});
 					});
 				}
+			}
+
+			for (let video of $$("video:not([controls])", env.slide)) {
+				video.addEventListener("click", evt => {
+					if (video.paused) {
+						video.play();
+					}
+					else {
+						video.pause();
+					}
+				});
 			}
 
 			// Update items collection
