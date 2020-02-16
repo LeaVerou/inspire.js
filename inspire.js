@@ -545,7 +545,14 @@ var _ = self.Inspire = {
 			}
 
 			if (item.classList.contains("dummy") && item.dummyFor) {
-				item.dummyFor.setAttribute("data-step", item.dummyIndex);
+				if (item.closest(".additive-steps")) {
+					let numbers = [...Array(item.dummyIndex).keys()].map(n => n + 1);
+					console.log(numbers, item.dummyIndex);
+					item.dummyFor.setAttribute("data-step", numbers.join(" "));
+				}
+				else {
+					item.dummyFor.setAttribute("data-step", item.dummyIndex);
+				}
 			}
 		}
 
