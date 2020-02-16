@@ -15,7 +15,7 @@
 }
 
 .demo.slide:not(.horizontal) {
-	grid-template: "editor controls" auto
+	grid-template: "editor controls" 1.5em /* used to be auto but mysteriously broke one day */
 	               "editor target" minmax(0, 1fr) / auto minmax(0, 1fr);
 }
 
@@ -91,7 +91,9 @@
 	.demo-controls .button,
 	.demo-controls button {
 		all: unset;
-		display: block;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		padding: .1em .4em;
 		margin: 0 .2em;
 		box-shadow: 0 0 1px inset;

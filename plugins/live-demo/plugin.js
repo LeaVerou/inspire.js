@@ -275,6 +275,11 @@ var _ = self.Demo = class Demo {
 	}
 
 	get html() {
+		if (!this.editors.markup) {
+			// No HTML editor
+			return "";
+		}
+
 		var editor = this.editors.markup.source;
 
 		if (editor) {
