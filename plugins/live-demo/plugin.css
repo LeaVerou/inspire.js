@@ -5,6 +5,7 @@
 	box-sizing: border-box;
 	font-size: 200%;
 	align-items: stretch;
+	background: hsl(220,10%,95%);
 	--padding: 1.5rem;
 }
 
@@ -57,7 +58,7 @@
 	flex-flow: column;
 }
 
-	.horizontal .demo-target {
+	.horizontal:not(.isolated) .demo-target {
 		padding: 0 1rem;
 	}
 
@@ -67,7 +68,10 @@
 	padding: .3em;
 	font-size: 60%;
 	line-height: 1.5;
-	background: hsla(220,10%,50%,.15);
+}
+
+.horizontal .demo-controls {
+	padding: .3em .6em;
 }
 
 	.demo-controls h1 {
