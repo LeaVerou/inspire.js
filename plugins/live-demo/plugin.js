@@ -475,14 +475,26 @@ if (!Prism.Live) {
 	}
 }
 
-document.addEventListener("slidechange", evt => {
-	Demo.init(evt.target);
-});
+
+//
+// document.addEventListener("slidechange", evt => {
+// 	Demo.init(evt.target);
+// });
 
 if (Inspire.currentSlide) {
 	$.ready().then(() => {
 		Demo.init(Inspire.currentSlide);
 	});
 }
+
+await Inspire.importsLoaded;
+
+var io = new IntersectionObserver(entries => {
+	entries.forEach(entry => Demo.init(entry.target));
+});
+
+$$(".demo.slide").forEach(demo => {
+	io.observe(demo);
+})
 
 })();

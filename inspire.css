@@ -36,10 +36,10 @@ body {
 
 /* So that people can override and do things like
    .slide { display: flex; }
-   without having to specify :not(.target) all the bloody time
+   without having to specify :not(:target) all the bloody time
 */
 @media screen {
-	body:not(.show-thumbnails) .slide:not(.previous):not(:target):not(.next) {
+	body:not(.show-all) .slide:not(.previous):not(:target):not(.next) {
 		display: none !important;
 	}
 }
@@ -49,6 +49,10 @@ body {
 .slide.next {
 	visibility: hidden;
 	overflow:hidden;
+}
+
+body.show-all .slide {
+	visibility: visible;
 }
 
 .slide:target {

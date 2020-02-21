@@ -1,7 +1,7 @@
 .demo.slide {
 	padding: 0;
 	display: grid;
-	height: 100%;
+	height: 100vh;
 	box-sizing: border-box;
 	font-size: 200%;
 	align-items: stretch;

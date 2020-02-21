@@ -1,6 +1,6 @@
 {
 
-let exitOverview = () => document.body.classList.remove("show-thumbnails", "headers-only");
+let exitOverview = () => document.body.classList.remove("show-thumbnails", "headers-only", "show-all");
 
 Inspire.hooks.add({
 	"keyup": function(env) {
@@ -41,7 +41,7 @@ Inspire.hooks.add({
 				exitOverview();
 			}, {once: true});
 
-			document.body.classList.add("show-thumbnails");
+			document.body.classList.add("show-thumbnails", "show-all");
 		}
 	}
 });
