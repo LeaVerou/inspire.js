@@ -13,7 +13,10 @@ a[href*="whatwg.org"]::before {
 
 .no-docs-icons a[href^="https://developer.mozilla.org/en-US/docs/"]::before,
 .no-docs-icons a[href^="https://www.w3.org/"]::before,
-.no-docs-icons a[href*="whatwg.org"]::before {
+.no-docs-icons a[href*="whatwg.org"]::before,
+h1 a[href^="https://developer.mozilla.org/en-US/docs/"]::before,
+h1 a[href^="https://www.w3.org/"]::before,
+h1 a[href*="whatwg.org"]::before {
 	content: none;
 }
 

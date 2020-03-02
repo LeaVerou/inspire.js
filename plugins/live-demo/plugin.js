@@ -454,6 +454,12 @@ input, select, textarea, button {
 await Inspire.loadPlugin("prism");
 await Inspire.pluginsLoaded.prism.ready;
 
+var baseCSSTemplate = $(".live-demo-base-css");
+if (baseCSSTemplate) {
+	// textContent doesn't work on <template>
+	Demo.baseCSS = baseCSSTemplate.textContent || baseCSSTemplate.innerHTML;
+}
+
 if (!Prism.Live) {
 	// Filter loaded languages to only languages used in demo slides
 	var languages = [];
@@ -475,11 +481,9 @@ if (!Prism.Live) {
 	}
 }
 
-
-//
-// document.addEventListener("slidechange", evt => {
-// 	Demo.init(evt.target);
-// });
+document.addEventListener("slidechange", evt => {
+	Demo.init(evt.target);
+});
 
 if (Inspire.currentSlide) {
 	$.ready().then(() => {
