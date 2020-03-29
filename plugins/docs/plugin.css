@@ -1,6 +1,5 @@
-a[href^="https://developer.mozilla.org/en-US/docs/"]::before,
-a[href^="https://www.w3.org/"]::before,
-a[href*="whatwg.org"]::before {
+.docs-link::before,
+.docs-icons.docs-icons .docs-link::before {
 	content: "";
 	display: inline-block;
 	vertical-align: -.1em;
@@ -11,12 +10,8 @@ a[href*="whatwg.org"]::before {
 	background: var(--image) bottom / contain no-repeat;
 }
 
-.no-docs-icons a[href^="https://developer.mozilla.org/en-US/docs/"]::before,
-.no-docs-icons a[href^="https://www.w3.org/"]::before,
-.no-docs-icons a[href*="whatwg.org"]::before,
-h1 a[href^="https://developer.mozilla.org/en-US/docs/"]::before,
-h1 a[href^="https://www.w3.org/"]::before,
-h1 a[href*="whatwg.org"]::before {
+.no-docs-icons .docs-link::before,
+h1 .docs-link::before {
 	content: none;
 }
 
