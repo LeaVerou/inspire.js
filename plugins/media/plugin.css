@@ -95,6 +95,13 @@
 	--pointer-aspect-ratio: 2;
 }
 
+	.video-container .annotation.centered {
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%);
+		transform-origin: center;
+	}
+
 	.video-container code.annotation {
 		white-space: pre;
 	}
@@ -103,7 +110,7 @@
 		transform-origin: var(--pointer-left) calc(-1 * var(--pointer-height));
 	}
 
-	.video-container .annotation::before {
+	.video-container .annotation:not(.no-pointer)::before {
 		content: "";
 		position: absolute;
 		left: var(--pointer-left);
