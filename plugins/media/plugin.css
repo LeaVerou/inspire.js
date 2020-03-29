@@ -70,7 +70,11 @@
 		font-weight: 400;
 	}
 
-.media-frame .annotation {
+.video-container {
+	position: relative;
+}
+
+.video-container .annotation {
 	background: rgba(0,0,0,.6);
 	color: white;
 	position: absolute;
@@ -91,15 +95,15 @@
 	--pointer-aspect-ratio: 2;
 }
 
-	.media-frame code.annotation {
+	.video-container code.annotation {
 		white-space: pre;
 	}
 
-	.media-frame .annotation.top-pointer {
+	.video-container .annotation.top-pointer {
 		transform-origin: var(--pointer-left) calc(-1 * var(--pointer-height));
 	}
 
-	.media-frame .annotation::before {
+	.video-container .annotation::before {
 		content: "";
 		position: absolute;
 		left: var(--pointer-left);
@@ -108,18 +112,18 @@
 		background: inherit;
 	}
 
-	.media-frame .annotation.top-pointer::before {
+	.video-container .annotation.top-pointer::before {
 		bottom: calc(100% - .5px);
 		clip-path: polygon(0 100%, 50% 0, 100% 100%);
 	}
 
-	.media-frame .annotation.bottom-pointer::before {
+	.video-container .annotation.bottom-pointer::before {
 		top: calc(100% - .5px);
 		clip-path: polygon(0 0, 50% 100%, 100% 0);
 	}
 
-	.media-frame video:not(.paused) ~ .annotation.on-pause,
-	.media-frame .annotation.hidden {
+	.video-container video:not(.paused) ~ .annotation.on-pause,
+	.video-container .annotation.hidden {
 		opacity: 0;
 		transform: scale(.5);
 	}

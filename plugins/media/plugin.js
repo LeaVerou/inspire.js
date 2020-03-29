@@ -1,9 +1,9 @@
 /**
- * Video slides, declared with data-video
- * [data-times="N"] to play video N times and then pause
- * .looping for looping
- * <div class="annotation"> for annotations.
- * 		Annotation attributes: data-time="1000 to 2000", data-pause="3000"
+* Video slides, declared with data-video
+* [data-times="N"] to play video N times and then pause
+* .looping for looping
+* <div class="annotation"> for annotations.
+* 		Annotation attributes: data-time="1000 to 2000", data-pause="3000"
  */
 
 var $ = Bliss, $$ = $.$;
@@ -18,7 +18,7 @@ $.events(document, "slidechange", evt => {
 		if (!slide.matches(".initialized")) {
 			// Initialization code
 			let container = slide.classList.contains("cover")? slide : $.create("div", {
-				className: "media-frame",
+				className: "video-container " + (slide.hasAttribute("data-frame-class")? slide.getAttribute("data-frame-class") : "media-frame"),
 				inside: slide
 			});
 
@@ -79,8 +79,10 @@ $.events(document, "slidechange", evt => {
 				if (annotation.dataset.time) {
 					annotation.classList.add("hidden");
 					let times = annotation.dataset.time.split(/\s*to\s*/);
+					let start = +times[0];
+					let end = annotation.dataset.pause !== undefined? start + 300 : +times[1];
 
-					timedAnnotations.set(annotation, {start: +times[0], end: +times[1]});
+					timedAnnotations.set(annotation, {start, end});
 				}
 			}
 
