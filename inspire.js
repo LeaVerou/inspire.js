@@ -169,6 +169,11 @@ var _ = self.Inspire = {
 							.trim().replace(/\s+/g, "-") // Convert whitespace to hyphens
 							.toLowerCase();
 
+					if (/\d/.test(id)) {
+						// Make sure it doesn't start with a number
+						id = "slide-" + id;
+					}
+
 					if (!window[id]) {
 						slide.id = id;
 					}
@@ -547,7 +552,7 @@ var _ = self.Inspire = {
 			if (item.classList.contains("dummy") && item.dummyFor) {
 				if (item.closest(".additive-steps")) {
 					let numbers = [...Array(item.dummyIndex).keys()].map(n => n + 1);
-					
+
 					item.dummyFor.setAttribute("data-step", numbers.join(" "));
 				}
 				else {
