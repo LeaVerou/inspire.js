@@ -63,7 +63,7 @@ var _ = self.Inspire = {
 			let def = _.plugins[id];
 			let test = def.test || def;
 
-			if ($(test) && !document.body.matches(`.no-${id}`)) {
+			if (($(test) || document.body.matches(`[data-load-plugins~="${id}"]`)) && !document.body.matches(`.no-${id}`)) {
 				_.dependencies.push(_.loadPlugin(id, def));
 			}
 		}
