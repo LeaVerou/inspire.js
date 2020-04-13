@@ -520,7 +520,7 @@ var _ = self.Inspire = {
 
 	updateItems() {
 		_.items = $$(".delayed, .delayed-children > *", _.currentSlide);
-		_.u.stableSort(_.items, function(a, b) {
+		_.items = _.u.stableSort(_.items, function(a, b) {
 			return (a.getAttribute("data-index") || 0) - (b.getAttribute("data-index") || 0);
 		});
 	},
