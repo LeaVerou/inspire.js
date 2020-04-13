@@ -508,6 +508,16 @@ var _ = self.Inspire = {
 		requestAnimationFrame(() => addEventListener("hashchange", _.hashchange));
 	},
 
+	on(slideId) {
+		return new Promise(resolve => {
+			_.hooks.add("slidechange", env => {
+				if (_.currentSlide.id === slideId) {
+					resolve(_.currentSlide);
+				}
+			});
+		});
+	},
+
 	updateItems() {
 		_.items = $$(".delayed, .delayed-children > *", _.currentSlide);
 		_.u.stableSort(_.items, function(a, b) {
