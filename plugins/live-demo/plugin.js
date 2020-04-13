@@ -24,6 +24,8 @@ var _ = self.Demo = class Demo {
 		this.slide = slide;
 		this.isolated = this.slide.classList.contains("isolated");
 		this.updateReload = this.slide.classList.contains("update-reload");
+		this.noBase = this.slide.classList.contains("no-base");
+
 		this.editors = {};
 
 		this.editorContainer = $.create({
@@ -35,16 +37,22 @@ var _ = self.Demo = class Demo {
 			textarea.value = Prism.plugins.NormalizeWhitespace.normalize(textarea.value);
 			var editor = new Prism.Live(textarea);
 			var id = Inspire.pluginsLoaded.prism.meta.languages[editor.lang].id;
+
+			if (id === "javascript" ) {
+				// JS needs this
+				this.updateReload = true;
+			}
+
 			this.editors[id] = editor;
 			this.editorContainer.append(editor.wrapper);
 			editor.realtime = !textarea.classList.contains("no-realtime");
 
-			if (editor.realtime) {
+			if (editor.realtime && id !== "javascript") {
 				textarea.addEventListener("input", evt => this.output(id));
 			}
 			else {
 				textarea.addEventListener("keyup", evt => {
-					if (evt.key == "Enter" && evt.ctrlKey) {
+					if (evt.key == "Enter" && (evt.ctrlKey || evt.metaKey)) {
 						this.output(id);
 					}
 				});
@@ -99,7 +107,7 @@ var _ = self.Demo = class Demo {
 				target: "_blank",
 				events: {
 					"click mouseenter": evt => {
-						a.href = Demo.createURL(this.getHTMLPage({inline: false}), self.safari);
+						a.href = Demo.createURL(this.getHTMLPage({inline: false, noBase: this.noBase}), self.safari);
 					}
 				}
 			});
@@ -123,7 +131,7 @@ var _ = self.Demo = class Demo {
 								"/* Our demo CSS */",
 								this.css].join("\n"),
 							editors: "1100",
-							head: `<base href="${location.href}" />`
+							head: this.noBase? "" : `<base href="${location.href}" />`
 						})
 					},
 					{
@@ -162,17 +170,17 @@ var _ = self.Demo = class Demo {
 		}
 		else {
 			this.ready = Promise.resolve();
+
+			this.ready.then(() => {
+				for (let id in this.editors) {
+					this.output(id);
+				}
+			});
 		}
 
 		this.slide.addEventListener("slidechange", evt => {
 			for (let id in this.editors) {
 				this.editors[id].textarea.dispatchEvent(new InputEvent("input"));
-			}
-		});
-
-		this.ready.then(() => {
-			for (let id in this.editors) {
-				this.output(id);
 			}
 		});
 
@@ -297,7 +305,7 @@ var _ = self.Demo = class Demo {
 	}
 
 	get js() {
-		return $.value(this.editors.js, "value");
+		return $.value(this.editors.js || this.editors.javascript, "value");
 	}
 
 	get title() {
@@ -311,7 +319,8 @@ var _ = self.Demo = class Demo {
 			extraCSS: this.extraCSS,
 			js: this.js,
 			title: title || this.title,
-			inline
+			inline,
+			noBase: this.noBase
 		});
 	}
 
@@ -338,16 +347,15 @@ var _ = self.Demo = class Demo {
 		return new Prism.Live(textarea);
 	}
 
-	static createURL(html, useDataURI) {
+	static createURL(html, useDataURI, type = "text/html") {
 		html = html.replace(/&#x200b;/g, "");
 
 		if (useDataURI) {
-			return `data:text/html,${encodeURIComponent(html)}`;
+			return `data:${type},${encodeURIComponent(html)}`;
 		}
 		else {
-			return URL.createObjectURL(new Blob([html], {type : "text/html"}));
+			return URL.createObjectURL(new Blob([html], {type}));
 		}
-
 	}
 
 	static scopeRule(rule, slide, scope) {
@@ -376,7 +384,7 @@ var _ = self.Demo = class Demo {
 		}
 	}
 
-	static getHTMLPage({html="", css="", extraCSS="", js="", title="Demo", inline = true} = {}) {
+	static getHTMLPage({html="", css="", extraCSS="", js="", title="Demo", inline = true, noBase = false} = {}) {
 		if (css !== "undefined") {
 			css = `<style id=live>
 ${css}
@@ -386,7 +394,7 @@ ${css}
 		return `<!DOCTYPE html>
 <html lang="en">
 <head>
-<base href="${location.href}" />
+${noBase? "" : `<base href="${location.href}" />`}
 <meta charset="UTF-8">
 <title>${title}</title>
 <style>
@@ -404,7 +412,15 @@ ${js}
 
 ${inline? `document.addEventListener("click", evt => {
 	if (evt.target.matches('a[href^="#"]:not([target])')) {
+		let prevented = evt.defaultPrevented;
 		evt.preventDefault();
+
+		if (!prevented) {
+			let href = evt.target.getAttribute("href");
+			let target = document.querySelector(href);
+			// evt.preventDefault();
+			target.scrollIntoView()
+		}
 	}
 })` : ""}
 
