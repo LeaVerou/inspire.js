@@ -15,7 +15,8 @@
 		width: 100%;
 	}
 
-.media-frame {
+.media-frame,
+.browser {
 	/* Frame offsets in px */
 	--frame-top: 38;
 	--frame-right: 146;
@@ -30,7 +31,8 @@
 	background-color: white;
 }
 
-	.media-frame::before {
+	.media-frame::before,
+	.browser::before {
 		content: "";
 		position: absolute;
 		top: 0; right: 0; left: 0;
@@ -40,15 +42,18 @@
 		border-image-source: url("chrome.png");
 	}
 
-	.media-frame.small {
+	.media-frame.small,
+	.browser.small {
 		padding-top: calc(var(--frame-top) * 1px / 2);
 	}
 
-	.media-frame.small::before {
+	.media-frame.small::before,
+	.browser.small::before {
 		border-width: 19px calc(var(--frame-right) * 1px / 2) 0 calc(var(--frame-left) * 1px / 2);
 	}
 
-		.media-frame.media-frame > :first-child {
+		.media-frame.media-frame > :first-child,
+		.browser.browser > :first-child {
 			display: block;
 			max-width: 100%;
 			max-height: calc(100vh - 6vw);
@@ -60,7 +65,13 @@
 			border-bottom-right-radius: inherit;
 		}
 
-	.media-frame::after {
+		.browser > iframe:only-child {
+			width: 100%;
+			height: 100%;
+		}
+
+	.media-frame::after,
+	.browser::after {
 		content: var(--url);
 		position: absolute;
 		top: .45em;

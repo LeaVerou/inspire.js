@@ -61,7 +61,7 @@ var _ = self.Demo = class Demo {
 
 		this.controls = $.create({
 			className: "demo-controls",
-			contents: $("details.notes", this.slide),
+			contents: this.slide.classList.contains("minimal")? [] : $("details.notes", this.slide),
 			after: this.editorContainer
 		});
 
@@ -69,7 +69,8 @@ var _ = self.Demo = class Demo {
 			this.element = $.create({inside: this.slide, className: "demo-target"});
 
 			if (!this.editors.markup) {
-				this.element.append(...$$(".slide > :not(.editor-container):not(style):not(.demo-controls):not(.demo-target)", this.slide));
+				let exclude = [".editor-container", "style", ".demo-controls", ".demo-target", ".demo-exclude", ".notes"].map(s => `:not(${s})`)
+				this.element.append(...$$(`.slide > ${exclude.join("")}`, this.slide));
 			}
 		}
 

@@ -1,21 +1,24 @@
 .demo.slide {
-	padding: 0;
-	display: grid;
 	height: 100vh;
 	box-sizing: border-box;
-	font-size: 200%;
-	align-items: stretch;
-	background: hsl(220,10%,95%);
 	--padding: 1.5rem;
 }
 
-.horizontal.demo.slide {
+.demo.slide:not(.minimal) {
+	padding: 0;
+	display: grid;
+	font-size: 200%;
+	align-items: stretch;
+	background: hsl(220,10%,95%);
+}
+
+.horizontal.demo.slide:not(.minimal) {
 	grid-template: "controls" auto
 	               "target"   minmax(0, 1fr)
 	               "editor"   auto / 1fr;
 }
 
-.demo.slide:not(.horizontal) {
+.demo.slide:not(.horizontal):not(.minimal) {
 	grid-template: "editor controls" 1.5em /* used to be auto but mysteriously broke one day */
 	               "editor target" minmax(0, 1fr) / auto minmax(0, 1fr);
 }
@@ -51,11 +54,14 @@
 		}
 
 .demo-target {
-	grid-area: target;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	flex-flow: column;
+}
+
+.slide:not(.minimal) .demo-target {
+	grid-area: target;
 }
 
 	.horizontal:not(.isolated) .demo-target {
@@ -68,6 +74,11 @@
 	padding: .3em;
 	font-size: 60%;
 	line-height: 1.5;
+}
+
+.demo-controls:empty,
+.slide.minimal .demo-controls {
+	display: none;
 }
 
 .horizontal .demo-controls {
@@ -114,8 +125,11 @@
 .editor-container {
 	display: flex;
 	flex-flow: column;
-	grid-area: editor;
 	max-width: 100vw;
+}
+
+.slide:not(.minimal) .editor-container {
+	grid-area: editor;
 }
 
 .demo.slide:not(.horizontal) div.editor-container {
@@ -123,8 +137,8 @@
 	min-width: 15em;
 }
 
-.horizontal.demo.slide > div.editor-container:first-child,
-.horizontal.demo.slide > style:first-child + div.editor-container {
+.horizontal.demo.slide:not(.minimal) > div.editor-container:first-child,
+.horizontal.demo.slide:not(.minimal) > style:first-child + div.editor-container {
 	margin-top: auto;
 }
 
@@ -184,9 +198,12 @@ div.prism-live {
 	font-size: calc(var(--font-size-multiplier, 1) * 100%);
 	line-height: 1.5em;
 	max-height: 100vh;
-	background: hsl(200, 10%, 15%);
 	transition: .2s;
 	transition-property: max-height, flex;
+}
+
+.slide:not(.minimal) div.prism-live {
+	background: hsl(200, 10%, 15%);
 }
 
 textarea.prism-live {
@@ -194,7 +211,7 @@ textarea.prism-live {
 	min-height: 1.6em;
 }
 
-.demo.slide:not(.horizontal) textarea.prism-live {
+.demo.slide:not(.horizontal):not(.minimal) textarea.prism-live {
 	box-shadow: -.1em 0 .2em rgba(0,0,0,.3) inset;
 }
 
@@ -202,13 +219,16 @@ textarea.prism-live {
 	max-height: calc(var(--division, 50) * 1vh);
 }
 
-.demo.slide.horizontal textarea.prism-live {
+.demo.slide.horizontal:not(.minimal) textarea.prism-live {
 	box-shadow: 0 .1em .2em rgba(0,0,0,.3) inset;
 }
 
 pre.prism-live {
 	height: 100%;
 	line-height: 1.5em;
+}
+
+.slide:not(.minimal) pre.prism-live {
 	background: hsl(200, 10%, 20%) linear-gradient(rgba(0,0,0,.1) 50%, transparent 0);
 	background-origin: content-box;
 	background-size: auto 3em;
