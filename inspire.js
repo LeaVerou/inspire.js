@@ -174,14 +174,28 @@ var _ = self.Inspire = {
 						id = "slide-" + id;
 					}
 
-					if (!window[id]) {
-						slide.id = id;
-					}
+					slide.id = id; // Ok if it's duplicate, next bit of code will fix that
 				}
 			}
 
-			// Asign ids to slides that don"t have one
-			if (!slide.id) {
+
+			if (slide.id) {
+				// If duplicate id, append number to make it unique
+				let otherSlide = document.getElementById(slide.id);
+				if (otherSlide && otherSlide !== slide) {
+					// Id is not unique
+					let i = 1, newId;
+
+					do {
+						i++;
+						newId = slide.id + "-" + i;
+					} while (document.getElementById(newId));
+
+					slide.id = newId;
+				}
+			}
+			else {
+				// Asign ids to slides that don"t have one
 				slide.id = "slide" + (i+1);
 			}
 
