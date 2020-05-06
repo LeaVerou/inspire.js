@@ -66,7 +66,7 @@ var _ = self.Demo = class Demo {
 		});
 
 		if (!this.isolated) {
-			this.element = $.create({inside: this.slide, className: "demo-target"});
+			this.element = $(".demo-target", this.slide) || $.create({inside: this.slide, className: "demo-target"});
 
 			if (!this.editors.markup) {
 				let exclude = [".editor-container", "style", ".demo-controls", ".demo-target", ".demo-exclude", ".notes"].map(s => `:not(${s})`)
@@ -84,11 +84,12 @@ var _ = self.Demo = class Demo {
 		}
 
 		if (this.isolated) {
-			this.iframe = $.create("iframe", {
-				name: "iframe-" + slide.id,
+			this.iframe = $("iframe.demo-target", this.slide) || $.create("iframe", {
 				className: "demo-target",
 				inside: this.slide
 			});
+
+			this.iframe.name = this.iframe.name || "iframe-" + slide.id;
 
 			this.extraCSS = $$("style.demo", this.slide).map(s => {
 				s.remove();

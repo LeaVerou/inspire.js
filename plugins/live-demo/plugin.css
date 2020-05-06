@@ -132,7 +132,7 @@
 	grid-area: editor;
 }
 
-.demo.slide:not(.horizontal) div.editor-container {
+.demo.slide:not(.horizontal):not(.minimal) div.editor-container {
 	width: calc(var(--division, 60) * 1vw);
 	min-width: 15em;
 }
@@ -194,7 +194,7 @@ div.prism-live ::-webkit-scrollbar-thumb:hover {
 }
 
 div.prism-live {
-	color: white;
+	color: inherit;
 	font-size: calc(var(--font-size-multiplier, 1) * 100%);
 	line-height: 1.5em;
 	max-height: 100vh;
