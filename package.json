@@ -1,0 +1,28 @@
+{
+  "name": "inspire.js",
+  "version": "1.0.0",
+  "description": "Lean, hackable, extensible slide deck framework",
+  "main": "inspire.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeaVerou/inspire.js.git"
+  },
+  "keywords": [
+    "slides"
+  ],
+  "author": "Lea Verou",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LeaVerou/inspire.js/issues"
+  },
+  "homepage": "https://inspirejs.org",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-postcss": "^8.0.0",
+    "gulp-rename": "^2.0.0",
+    "postcss-nesting": "^7.0.1"
+  }
+}
