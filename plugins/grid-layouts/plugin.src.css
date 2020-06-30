@@ -1,12 +1,3 @@
-.heading-1x1,
-.heading-2x1,
-.heading-3x1,
-.heading-1x2,
-.heading-2x2,
-.heading-3x2,
-.heading-1x3,
-.heading-2x3,
-.heading-3x3,
 .heading-MxN {
 	display: grid;
 	--columns: 2;
@@ -34,6 +25,19 @@
 		& > h1 {
 			margin-bottom: 0;
 			font-size: 250%;
+		}
+	}
+
+	& > figure {
+		display: flex;
+		flex-flow: column;
+		margin: 0;
+		box-sizing: border-box;
+		height: 100%;
+
+		& > :not(figcaption) {
+			flex: 1;
+			flex-basis: 0;
 		}
 	}
 
@@ -70,6 +74,8 @@
 		& > img {
 			display: block;
 			width: 100%;
+			height: 100%;
+			object-fit: contain;
 		}
 
 		& > ol,
@@ -81,32 +87,4 @@
 			margin-left: 2.5em;
 		}
 	}
-}
-
-.heading-1x1,
-.heading-2x1,
-.heading-3x1,
-.heading-4x1 {
-	--rows: 1;
-}
-
-.heading-1x3,
-.heading-2x3,
-.heading-3x3 {
-	--rows: 3;
-}
-
-[class^="header-1x"],
-[class*=" header-1x"] {
-	--columns: 1;
-}
-
-[class^="header-3x"],
-[class*=" header-3x"] {
-	--columns: 3;
-}
-
-[class^="header-4x"],
-[class*=" header-4x"] {
-	--columns: 3;
 }
