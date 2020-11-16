@@ -44,7 +44,8 @@ var _ = self.Inspire = {
 		"docs": "code.property, code.css, code.function, code.element, code.attribute, [data-mdn] code, code[data-mdn]",
 		"mavo": "[mv-app]",
 		"visible-keys": "[data-visible-keys]",
-		"grid-layouts": "[class*='heading-']"
+		"grid-layouts": "[class*='heading-']",
+		"balance-lines": ".balance-lines"
 	},
 
 	pluginsLoaded: {},
