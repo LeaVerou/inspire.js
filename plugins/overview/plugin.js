@@ -1,6 +1,10 @@
 {
 
-let exitOverview = () => document.body.classList.remove("show-thumbnails", "headers-only", "show-all");
+let exitOverview = () => {
+	document.body.classList.remove("show-thumbnails", "show-all");
+	document.querySelector("style#inspire-overview-filter")?.remove();
+};
+let enteredSelector;
 
 Inspire.hooks.add({
 	"keyup": function(env) {
@@ -16,18 +20,22 @@ Inspire.hooks.add({
 		var evt = env.evt;
 		var headersOnly = !(evt.shiftKey && evt.ctrlKey);
 
-		if (document.body.matches(".show-thumbnails")) {
-			if (env.evt.key === "Escape" || headersOnly === isHeadersOnly) {
-				// Escape overview
-				exitOverview();
-			}
-			else {
-				document.body.classList.toggle("headers-only", headersOnly);
-			}
+		if (document.body.matches(".show-thumbnails") && env.evt.key === "Escape") {
+			exitOverview();
 		}
 		else if (env.letter === "H" && evt.ctrlKey) {
-			if (headersOnly) {
-				document.body.classList.add("headers-only");
+			let defaultSelector = enteredSelector || (headersOnly? ".slide:not(header):not(:target)" : "");
+			let selector = prompt("Which slides to filter out? Enter a compound selector, or leave empty to show all slides.", defaultSelector);
+
+			document.querySelector("style#inspire-overview-filter")?.remove();
+			
+			if (selector) {
+				let style = document.createElement("style");
+				style.id = "inspire-overview-filter";
+				style.textContent = `.show-thumbnails ${selector} {
+					display: none !important;
+				}`;
+				document.head.append(style);
 			}
 
 			document.body.addEventListener("click", evt => {

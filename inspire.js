@@ -138,8 +138,14 @@ const _ = self.Inspire = {
 			return;
 		}
 
+		let slideContainers = new Set();
+
 		for (let i=0; i<_.slides.length; i++) {
 			let slide = _.slides[i];
+
+			for (let ancestor = slide; (ancestor = ancestor.parentNode); ) {
+				slideContainers.add(ancestor);
+			}
 
 			// Set data-title attribute to the title of the slide
 			let title = slide.title || slide.getAttribute("data-title");
@@ -243,7 +249,12 @@ const _ = self.Inspire = {
 					}
 				}
 			});
-		}
+		} // end slide loop
+
+		slideContainers.delete(document.body);
+		slideContainers.delete(document.documentElement);
+		slideContainers.delete(document);
+		slideContainers.forEach(el => el.classList.add("slide-container"));
 
 		addEventListener("hashchange", _.hashchange);
 

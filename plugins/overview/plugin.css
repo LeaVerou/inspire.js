@@ -3,7 +3,18 @@
 */
 
 .show-thumbnails {
-	overflow-x: hidden;
+	display: grid;
+	--cols: 5;
+	--gap: .01;
+	--gap-h: calc(100vw * var(--gap));
+	--gap-v: calc(100vh * var(--gap));
+	grid-template-columns: repeat(auto-fill, minmax(calc(100vw / var(--cols) - var(--gap-h)), 1fr));
+	grid-template-rows: repeat(auto-fill, minmax(calc(100vh / var(--cols) - var(--gap-v)), 1fr));
+	grid-gap:  var(--gap-v) var(--gap-h);
+}
+
+.show-thumbnails .slide-container {
+	display: contents;
 }
 
 .show-thumbnails .slide,
@@ -17,15 +28,10 @@
 	opacity: 1;
 	visibility: visible;
 	cursor: pointer;
-	transform: scale(.2, .2);
+	transform: scale(calc(1 / var(--cols) - var(--gap)), calc(1 / var(--cols) - var(--gap)));
 	transform-origin: top left;
 	transition-duration: .3s;
 	transition-property: transform, transform-origin, margin;
-}
-
-.show-thumbnails .slide {
-	--margin: .25em;
-	margin: var(--margin) calc(-80vw + var(--margin)) calc(-80vh + var(--margin)) var(--margin);
 }
 
 .show-next .slide {
