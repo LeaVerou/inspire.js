@@ -8,10 +8,10 @@
 (async function(){
 
 // Cache <title> element, we may need it for slides that don"t have titles
-var documentTitle = document.title + "";
+const documentTitle = document.title + "";
 
 // Cache current <script> src, we will need it for loading plugins
-var scriptSrc = document.currentScript ? document.currentScript.src : undefined;
+const scriptSrc = document.currentScript ? document.currentScript.src : undefined;
 
 if (!window.Bliss) {
 	// Load Bliss if not loaded
@@ -27,7 +27,7 @@ if (!window.Bliss) {
 window.$ = Bliss;
 window.$$ = $.$;
 
-var _ = self.Inspire = {
+const _ = self.Inspire = {
 	// Plugin ids and selectors
 	// If selector matches anything, plugin is loaded
 	plugins: {
@@ -71,7 +71,7 @@ var _ = self.Inspire = {
 		}
 
 		_.ready = Promise.all(_.dependencies).then(() => {
-			var loaded = Object.keys(_.pluginsLoaded);
+			let loaded = Object.keys(_.pluginsLoaded);
 			console.log("Inspire.js plugins loaded:", loaded.length? loaded.join(", ") : "none");
 
 			Promise.all(_.delayInit).then(_.init);
@@ -100,7 +100,7 @@ var _ = self.Inspire = {
 		});
 
 		// Add on screen navigation
-		var onscreen = $.create("nav", {
+		let onscreen = $.create("nav", {
 			id: "onscreen-nav",
 			className: "hidden",
 			inside: document.body,
@@ -138,18 +138,18 @@ var _ = self.Inspire = {
 			return;
 		}
 
-		for (var i=0; i<_.slides.length; i++) {
-			var slide = _.slides[i];
+		for (let i=0; i<_.slides.length; i++) {
+			let slide = _.slides[i];
 
 			// Set data-title attribute to the title of the slide
-			var title = slide.title || slide.getAttribute("data-title");
+			let title = slide.title || slide.getAttribute("data-title");
 
 			if (title) {
 				slide.removeAttribute("title");
 			}
 			else {
 				// no title attribute, fetch title from heading(s)
-				var heading = $("h1, h2, h3, h4, h5, h6", slide);
+				let heading = $("h1, h2, h3, h4, h5, h6", slide);
 
 				if (heading && heading.textContent.trim()) {
 					title = heading.textContent;
@@ -167,7 +167,7 @@ var _ = self.Inspire = {
 
 				if (!slide.id) {
 					// If a slide has a title but not an id, get its id from that
-					var id = title.replace(/[^\w\s-]/g, "") // Remove non-ASCII characters
+					let id = title.replace(/[^\w\s-]/g, "") // Remove non-ASCII characters
 							.trim().replace(/\s+/g, "-") // Convert whitespace to hyphens
 							.toLowerCase();
 
@@ -202,7 +202,7 @@ var _ = self.Inspire = {
 			}
 
 			slide.setAttribute("data-index", i);
-			var imp = slide.getAttribute("data-insert"),
+			let imp = slide.getAttribute("data-insert"),
 				imported = imp? _.getSlideById(imp) : null;
 
 			if (imp && !imported) {
@@ -218,18 +218,18 @@ var _ = self.Inspire = {
 
 			// [data-steps] can be used to define steps (applied through the data-step
 			// property), used in CSS to go through multiple states for an element
-			var stepped = $$("[data-steps]", slide);
+			let stepped = $$("[data-steps]", slide);
 
 			if (slide.hasAttribute("data-steps")) {
 				stepped.push(slide);
 			}
 
 			stepped.forEach(function(element) {
-				var steps = +element.getAttribute("data-steps");
+				let steps = +element.getAttribute("data-steps");
 				element.removeAttribute("data-step");
 
-				for (var i=0; i<steps; i++) {
-					var dummy = document.createElement("span");
+				for (let i=0; i<steps; i++) {
+					let dummy = document.createElement("span");
 					dummy.style.display = "none";
 					dummy.className = "delayed dummy";
 					dummy.dummyFor = element;
@@ -262,10 +262,10 @@ var _ = self.Inspire = {
 			*/
 			"keyup": evt => {
 				if (!document.activeElement.matches("input, textarea, select, button")) {
-					var letter = evt.key.toUpperCase();
+					let letter = evt.key.toUpperCase();
 
 					if (letter === "G" && (evt.ctrlKey || evt.shiftKey) && !evt.altKey) {
-						var slide = prompt("Which slide?");
+						let slide = prompt("Which slide?");
 						_.goto(+slide? slide - 1 : slide);
 					}
 					else {
@@ -375,7 +375,7 @@ var _ = self.Inspire = {
 				_.items.forEach(item => item.classList.add("displayed"));
 
 				// Mark the last one as current
-				var lastItem = _.items[_.items.length - 1];
+				let lastItem = _.items[_.items.length - 1];
 
 				lastItem.classList.remove("displayed");
 				lastItem.classList.add("current");
@@ -392,18 +392,18 @@ var _ = self.Inspire = {
 		@param which {Element|String|Integer} Which slide (identifier or slide number)
 	*/
 	goto: function(which) {
-		var slide;
-		var prev = _.slide;
+		let slide;
+		let prev = _.slide;
 
 		// We have to remove it to prevent multiple calls to goto messing up
 		// our current item (and there"s no point either, so we save on performance)
 		window.removeEventListener("hashchange", _.hashchange);
 
-		var isWhichAnId = which + "" === which;
+		let isWhichAnId = which + "" === which;
 
 		if (isWhichAnId) {
 			// Argument is a slide id
-			var id = which;
+			let id = which;
 			which = $(which[0] === "#"? which : "#" + which);
 
 			// Id is of the form #slide42, just find that slide by number
@@ -444,11 +444,11 @@ var _ = self.Inspire = {
 		if (prev !== _.slide) { // Slide actually changed, perform any other tasks needed
 			document.title = slide.getAttribute("data-title") || documentTitle;
 
-			var prevSlide = _.slides[prev];
-			var firstTime = !_.displayed.has(slide);
+			let prevSlide = _.slides[prev];
+			let firstTime = !_.displayed.has(slide);
 			_.displayed.add(slide);
 
-			var env = {slide, prevSlide, firstTime, which, context: this};
+			let env = {slide, prevSlide, firstTime, which, context: this};
 			_.hooks.run("slidechange", env);
 
 			localStorage.Inspire_currentSlide = _.index;
@@ -492,8 +492,8 @@ var _ = self.Inspire = {
 			_.item = 0;
 
 			// Update next/previous
-			var previousPrevious = _.slides.previous;
-			var previousNext = _.slides.next;
+			let previousPrevious = _.slides.previous;
+			let previousNext = _.slides.next;
 
 			_.slides.previous = _.slides[_.order[_.index - 1]];
 			_.slides.next = _.slides[_.order[_.index + 1]];
@@ -511,7 +511,7 @@ var _ = self.Inspire = {
 
 			// Run the slidechange event and hook
 			requestAnimationFrame(() => {
-				var evt = new CustomEvent("slidechange", {"bubbles": true});
+				let evt = new CustomEvent("slidechange", {"bubbles": true});
 				$.extend(evt, {prevSlide, firstTime});
 				slide.dispatchEvent(evt);
 
@@ -557,17 +557,17 @@ var _ = self.Inspire = {
 			}
 		}
 
-		for (var i=_.item - 1; i-- > 0;) {
+		for (let i = _.item - 1; i-- > 0;) {
 			_.items[i].classList.add("displayed");
 		}
 
 		if (_.item > 0) { // _.item can be zero, at which point no items are current
-			var item = _.items[_.item - 1];
+			let item = _.items[_.item - 1];
 
 			item.classList.add("current");
 
 			// support for nested lists
-			for (var i = _.item - 1, cur = _.items[i], j; i > 0; i--) {
+			for (let i = _.item - 1, cur = _.items[i], j; i > 0; i--) {
 			  j = _.items[i - 1];
 			  if (j.contains(cur)) {
 				j.classList.remove("displayed");
@@ -591,7 +591,7 @@ var _ = self.Inspire = {
 	},
 
 	adjustFontSize() {
-		var slide = _.currentSlide;
+		let slide = _.currentSlide;
 
 		if (!slide || document.body.matches(".show-thumbnails") || slide.matches(".dont-resize")) {
 			return;
@@ -603,11 +603,11 @@ var _ = self.Inspire = {
 			return;
 		}
 
-		var size = parseInt(getComputedStyle(slide).fontSize);
-		var prev = {scrollHeight: slide.scrollHeight, scrollWidth: slide.scrollWidth};
+		let size = parseInt(getComputedStyle(slide).fontSize);
+		let prev = {scrollHeight: slide.scrollHeight, scrollWidth: slide.scrollWidth};
 
 		for (
-			var factor = size / parseInt(getComputedStyle(document.body).fontSize);
+			let factor = size / parseInt(getComputedStyle(document.body).fontSize);
 			(slide.scrollHeight > innerHeight || slide.scrollWidth > innerWidth) && factor >= 1;
 			factor -= .1
 		) {
@@ -648,8 +648,8 @@ var _ = self.Inspire = {
 		let parser = new DOMParser();
 
 		_.imports = $$('link[rel="inspire-import"]').map(async link => {
-			var response = await fetch(link.href);
-			var text = await response.text();
+			let response = await fetch(link.href);
+			let text = await response.text();
 			return {
 				id: link.id,
 				doc: parser.parseFromString(text, "text/html"),
@@ -657,22 +657,22 @@ var _ = self.Inspire = {
 			};
 		});
 
-		var talkCSS = $('link[href$="talk.css"]');
+		let talkCSS = $('link[href$="talk.css"]');
 
 		return Promise.all(_.imports.map(async imported => {
-			var info = await imported;
-			var link = info.link;
-			var doc = info.doc;
+			let info = await imported;
+			let link = info.link;
+			let doc = info.doc;
 
 			// Make sure local links in the import resolve correctly
 			doc.head.append($.create(doc.createElement("base"), {href: link.href}));
 
 			// Go through all linked resources and absolutize their URLs
-			var attributes = ["src", "data-src", "href"];
+			let attributes = ["src", "data-src", "href"];
 			$$("[src], [data-src], [href]", doc).forEach(resource => {
 				for (let attribute of attributes) {
 					if (resource.hasAttribute(attribute)) {
-						var url = new URL(resource.getAttribute(attribute), link.href);
+						let url = new URL(resource.getAttribute(attribute), link.href);
 						resource.setAttribute(attribute, url);
 					}
 				}
@@ -692,7 +692,7 @@ var _ = self.Inspire = {
 			}
 
 			// Load stylesheets and talk.js from import
-			var inspireCSS = $('link[href$="inspire.css"]');
+			let inspireCSS = $('link[href$="inspire.css"]');
 
 			for (let link of $$('link[href$="talk.css"]', doc)) {
 				let copy = link.cloneNode();
@@ -713,7 +713,7 @@ var _ = self.Inspire = {
 			}
 
 			// Replace imported slides with their correct HTML
-			var inserted = {};
+			let inserted = {};
 			for (let slide of $$(`.slide[data-insert^="${link.id}#"]`)) {
 				let insert = slide.dataset.insert;
 				let id = insert.match(/#.*$/)[0];
@@ -749,8 +749,8 @@ var _ = self.Inspire = {
 
 	loadPlugin(id, def = {}) {
 		if (!_.pluginsLoaded[id]) {
-			var loadCSS = !$(`.no-css-${id}, .no-${id}-css, .${id}-no-css`);
-			var path = def.path || "plugins";
+			let loadCSS = !$(`.no-css-${id}, .no-${id}-css, .${id}-no-css`);
+			let path = def.path || "plugins";
 
 			_.pluginsLoaded[id] = {
 				loaded: Promise.all([
@@ -772,12 +772,12 @@ var _ = self.Inspire = {
 				return arr.sort();
 			}
 
-			var newArr = arr.map((i, j) => {
+			let newArr = arr.map((i, j) => {
 				return {i, j};
 			});
 
 			return newArr.sort((a, b) => {
-				var result = fn(a.i, b.i);
+				let result = fn(a.i, b.i);
 				return result === 0? a.j - b.j : result;
 			}).map(i => i.i);
 		},
@@ -785,14 +785,14 @@ var _ = self.Inspire = {
 		// Get attribute value, from the first element it's defined on
 		// Useful for things like global settings where we don't care where the attribute is on
 		getAttribute(attribute) {
-			var element = $(`[${attribute}]`);
+			let element = $(`[${attribute}]`);
 			return element && element.getAttribute(attribute);
 		},
 	},
 };
 
-var url = new URL(location);
-var profile = url.searchParams && url.searchParams.get("profile");
+const url = new URL(location);
+const profile = url.searchParams && url.searchParams.get("profile");
 
 if (profile) {
 	_.profile = profile;
