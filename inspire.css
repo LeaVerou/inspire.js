@@ -180,7 +180,7 @@ body.show-all .slide {
 		height: 100vh;
 		box-sizing: border-box;
 		overflow: hidden;
-		position: static;
+		position: relative;
 		opacity: 1;
 		visibility: visible;
 	}
