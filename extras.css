@@ -39,12 +39,17 @@
 /* Full image slides */
 
 .image.slide {
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: center;
 	padding: 0;
 	background: center / cover no-repeat black;
 	image-rendering: crisp-edges;
 }
 
 .bottom-heavy.image.slide {
+	justify-content: start;
 	background-position: center bottom;
 }
 

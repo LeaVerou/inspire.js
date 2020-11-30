@@ -41,7 +41,6 @@ body {
 @media screen {
 	body:not(.show-all) .slide:not(.previous):not(:target):not(.next) {
 		display: none !important;
-		transform: scale(1); /* for any internal position: fixed elements */
 	}
 }
 
