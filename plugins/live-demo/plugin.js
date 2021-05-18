@@ -124,17 +124,6 @@ var _ = self.Demo = class Demo {
 						tag: "input",
 						type: "hidden",
 						name: "data",
-						value: JSON.stringify({
-							title,
-							html: this.html,
-							css: [
-								"/* Base styles, not related to demo */",
-								Demo.baseCSS + this.extraCSS,
-								"/* Our demo CSS */",
-								this.css].join("\n"),
-							editors: "1100",
-							head: this.noBase? "" : `<base href="${location.href}" />`
-						})
 					},
 					{
 						tag: "button",
@@ -142,7 +131,20 @@ var _ = self.Demo = class Demo {
 						className: "play"
 					}
 				],
-				inside: this.controls
+				inside: this.controls,
+				onsubmit: evt => {
+					evt.target.elements.data.value = JSON.stringify({
+						title,
+						html: this.html,
+						css: [
+							"/* Base styles, not related to demo */",
+							Demo.baseCSS + this.extraCSS,
+							"/* Our demo CSS */",
+							this.css].join("\n"),
+						editors: "1100",
+						head: this.noBase? "" : `<base href="${location.href}" />`
+					});
+				}
 			});
 
 			// Next & previous slide buttons
