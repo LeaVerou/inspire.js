@@ -45,9 +45,9 @@ const _ = self.Inspire = {
 		"mavo": "[mv-app]",
 		"visible-keys": "[data-visible-keys]",
 		"grid-layouts": "[class*='heading-']",
-		"balance-lines": ".balance-lines"
 		"balance-lines": ".balance-lines",
 		"details-notes": "details.notes",
+		"markdown": "[data-markdown-selectors]"
 	},
 
 	pluginsLoaded: {},
