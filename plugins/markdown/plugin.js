@@ -1,5 +1,5 @@
 (async function() {
-let selectors = $$("[data-markdown-selectors]").flatMap(e => e.getAttribute("data-markdown-selectors").split(/\s+/));
+let selectors = $$("[data-markdown-selectors]").map(e => e.getAttribute("data-markdown-selectors"));
 
 let elements = $$(selectors.join(", "));
 
@@ -17,26 +17,54 @@ let md = new markdownit("commonmark", {
 });
 
 for (let e of elements) {
-	highlight(e);
+	render(e);
 }
 
-function highlight(e) {
+function fixupCode(code) {
+	// Remove indented code blocks
+	code = code.replace(/^\t+|^ {4,}/gm, "");
+
+	return code;
+}
+
+function renderCode(code) {
+	// Remove indented code blocks
+	code = code.replace(/^\t+|^ {4,}/gm, "");
+	return /\r?\n/.test(code.trim())? md.render(code) : md.renderInline(code);
+}
+
+function render(e) {
+	if (e?.classList.contains("no-md")) {
+		return;
+	}
+
 	if (e.children.length === 0) {
 		let code = e.textContent;
-		// Remove indented code blocks
-		code = code.replace(/^\t+|^ {4,}/gm, "");
-		e.innerHTML = md.render(code);
+		e.innerHTML = renderCode(code);
 	}
 	else {
+		// Join adjacent text nodes
+		e.normalize();
+
 		for (let child of [...e.childNodes]) {
 			if (child.nodeType === Node.TEXT_NODE) {
-				let div = document.createElement("div");
-				div.textContent = child.textContent;
-				highlight(div);
-				child.replaceWith(div);
+				let code = child.textContent;
+				let html = renderCode(code)
+
+				if (child.nextSibling) {
+					child.nextSibling.insertAdjacentHTML("beforebegin", html);
+				}
+				else if (child.previousSibling) {
+					child.previousSibling.insertAdjacentHTML("afterend", html);
+				}
+				else {
+					continue;
+				}
+
+				child.remove();
 			}
 			else if(child.nodeType === Node.ELEMENT_NODE) {
-				highlight(child);
+				render(child);
 			}
 		}
 	}
