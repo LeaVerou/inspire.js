@@ -46,6 +46,8 @@ const _ = self.Inspire = {
 		"visible-keys": "[data-visible-keys]",
 		"grid-layouts": "[class*='heading-']",
 		"balance-lines": ".balance-lines"
+		"balance-lines": ".balance-lines",
+		"details-notes": "details.notes",
 	},
 
 	pluginsLoaded: {},
