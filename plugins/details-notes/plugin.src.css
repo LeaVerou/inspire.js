@@ -18,8 +18,9 @@ details.notes {
 		white-space: nowrap;
 		font-weight: bold;
 		letter-spacing: -.03em;
+		display: block; /* remove marker */
 
-		&::marker {
+		&::-webkit-details-marker {
 			display: none;
 		}
 
@@ -86,28 +87,23 @@ details.notes {
 	}
 
 	&.top-right,
-	&:not(.bottom-left) {
-		position: absolute;
+	&.top-left {
 		top: 1em;
-		right: 1em;
 
 		&[open]::before {
 			bottom: auto;
 			top: calc(1.6em - 2px);
-			left: auto;
-			right: 40%;
 			border-bottom: none;
 			border-right: none;
 		}
 
 		& > div {
 			top: 1.86em;
-			right: 0;
 		}
 	}
 
+	&.bottom-right,
 	&.bottom-left {
-		left: 1em;
 		bottom: 1em;
 
 		&[open]::before {
@@ -117,6 +113,28 @@ details.notes {
 
 		& > div {
 			bottom: 1.86em;
+		}
+	}
+
+	&.top-right,
+	&.bottom-right {
+		right: 1em;
+
+		&[open]::before {
+			left: auto;
+			right: 40%;
+		}
+
+		& > div {
+			right: 0;
+		}
+	}
+
+	&.top-left,
+	&.bottom-left {
+		left: 1em;
+
+		& > div {
 			left: 0;
 		}
 	}

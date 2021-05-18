@@ -18,10 +18,11 @@ details.notes > summary {
 		cursor: pointer;
 		white-space: nowrap;
 		font-weight: bold;
-		letter-spacing: -.03em
+		letter-spacing: -.03em;
+		display: block /* remove marker */
 	}
 
-details.notes > summary::marker {
+details.notes > summary::-webkit-details-marker {
 			display: none;
 		}
 
@@ -87,38 +88,55 @@ details.notes a,
 	}
 
 details.notes.top-right,
-	details.notes:not(.bottom-left) {
-		position: absolute;
-		top: 1em;
-		right: 1em
+	details.notes.top-left {
+		top: 1em
 	}
 
-details.notes.top-right[open]::before, details.notes:not(.bottom-left)[open]::before {
+details.notes.top-right[open]::before, details.notes.top-left[open]::before {
 			bottom: auto;
 			top: calc(1.6em - 2px);
-			left: auto;
-			right: 40%;
 			border-bottom: none;
 			border-right: none;
 		}
 
-details.notes.top-right > div, details.notes:not(.bottom-left) > div {
+details.notes.top-right > div, details.notes.top-left > div {
 			top: 1.86em;
-			right: 0;
 		}
 
-details.notes.bottom-left {
-		left: 1em;
+details.notes.bottom-right,
+	details.notes.bottom-left {
 		bottom: 1em
 	}
 
-details.notes.bottom-left[open]::before {
+details.notes.bottom-right[open]::before, details.notes.bottom-left[open]::before {
 			border-top: none;
 			border-left: none;
 		}
 
-details.notes.bottom-left > div {
+details.notes.bottom-right > div, details.notes.bottom-left > div {
 			bottom: 1.86em;
+		}
+
+details.notes.top-right,
+	details.notes.bottom-right {
+		right: 1em
+	}
+
+details.notes.top-right[open]::before, details.notes.bottom-right[open]::before {
+			left: auto;
+			right: 40%;
+		}
+
+details.notes.top-right > div, details.notes.bottom-right > div {
+			right: 0;
+		}
+
+details.notes.top-left,
+	details.notes.bottom-left {
+		left: 1em
+	}
+
+details.notes.top-left > div, details.notes.bottom-left > div {
 			left: 0;
 		}
 
