@@ -350,7 +350,7 @@ const _ = self.Inspire = {
 		@param hard {Boolean} Whether to advance to the next slide (true) or
 			just the next step (which could very well be showing a list item)
 	 */
-	next(hard) {
+	next (hard) {
 		if (!hard && _.items.length) {
 			_.nextItem();
 		}
@@ -534,7 +534,7 @@ const _ = self.Inspire = {
 
 		// If you attach the listener immediately again then it will catch the event
 		// We have to do it asynchronously
-		requestAnimationFrame(() => addEventListener("hashchange", _.hashchange));
+		setTimeout(() => addEventListener("hashchange", _.hashchange), 200);
 	},
 
 	on(slideId) {
