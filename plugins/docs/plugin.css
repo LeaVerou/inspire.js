@@ -26,3 +26,23 @@ a[href^="https://www.w3.org/"]::before {
 a[href*="whatwg.org"]::before {
 	--image: url("https://resources.whatwg.org/logo.svg");
 }
+
+.element {
+	--docs-type: element;
+}
+
+.css {
+	--docs-type: css;
+}
+
+.property {
+	--docs-type: property;
+}
+
+.function {
+	--docs-type: function;
+}
+
+.svg {
+	--docs-markup: svg;
+}
