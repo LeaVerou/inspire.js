@@ -781,6 +781,12 @@ const _ = self.Inspire = {
 		return _.pluginsLoaded[id].loaded;
 	},
 
+	// Plugins can call this to signify to other plugins that the DOM changed
+	domchanged: element => {
+		let evt = new CustomEvent("inspire-domchanged", {bubbles: true});
+		element.dispatchEvent(evt);
+	},
+
 	// Utilities
 	u: {
 		// http://ichuan.net/post/52/stable-sort-of-javascript-array/

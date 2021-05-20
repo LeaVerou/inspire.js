@@ -17,7 +17,11 @@ let md = new markdownit("commonmark", {
 });
 
 for (let e of elements) {
-	render(e);
+	let changed = render(e);
+
+	if (changed) {
+		Inspire.domchanged(e);
+	}
 }
 
 function fixupCode(code) {
@@ -38,9 +42,13 @@ function render(e) {
 		return;
 	}
 
+	let previousHTML = e.innerHTML;
+
 	if (e.children.length === 0) {
 		let code = e.textContent;
-		e.innerHTML = renderCode(code);
+		let html = renderCode(code);
+
+		e.innerHTML = html;
 	}
 	else {
 		// Join adjacent text nodes
@@ -68,6 +76,8 @@ function render(e) {
 			}
 		}
 	}
+
+	return e.innerHTML !== previousHTML;
 }
 
 })();

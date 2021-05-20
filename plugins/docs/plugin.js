@@ -47,3 +47,7 @@ let processDocsLinks = (root = document) => {
 };
 
 processDocsLinks(document.body);
+
+document.addEventListener("inspire-domchanged", evt => {
+	processDocsLinks(evt.target);
+});
