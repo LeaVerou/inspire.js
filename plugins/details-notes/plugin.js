@@ -15,4 +15,9 @@ $$("details.notes").forEach(details => {
 	}
 
 	details.prepend(summary);
+
+	if (Inspire.projector) {
+		// Speaker view, let's have the notes open by default
+		details.open = true;
+	}
 });
