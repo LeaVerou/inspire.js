@@ -466,6 +466,17 @@ const _ = self.Inspire = {
 			let firstTime = !_.displayed.has(slide);
 			_.displayed.add(slide);
 
+			// Which revisit is this?
+			let revisit = 0;
+
+			for (let i = 0; i<_.index; i++) {
+				if (_.order[i] === _.slide) {
+					revisit++;
+				}
+			}
+
+			slide.dataset.visit = revisit + 1;
+
 			let env = {slide, prevSlide, firstTime, which, context: this};
 			_.hooks.run("slidechange", env);
 
