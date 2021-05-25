@@ -2,6 +2,7 @@
 	height: 100vh;
 	box-sizing: border-box;
 	--padding: 1.5rem;
+	--division: 50;
 }
 
 .demo.slide:not(.minimal) {
@@ -28,7 +29,7 @@
 }
 
 .isolated.demo.slide {
-	--division: 50;
+	
 }
 
 	.isolated.demo.slide > iframe {
@@ -71,6 +72,7 @@
 .demo-controls {
 	grid-area: controls;
 	display: flex;
+	flex-wrap: wrap;
 	padding: .3em;
 	font-size: 60%;
 	line-height: 1.5;
@@ -115,6 +117,7 @@
 		border-radius: .2em;
 		cursor: pointer;
 		font-weight: bold;
+		white-space: nowrap;
 	}
 
 	.demo-controls .button:not(:hover):not(:focus),
@@ -147,14 +150,18 @@
 }
 
 	.editor-container div.prism-live {
+		--min-height: 1.6em;
+	}
+
+	.editor-container div.prism-live:not(.collapsed) {
 		flex: auto;
 	}
 
 	.demo.slide div.prism-live.collapsed {
-		--min-height: 1.6em;
 		max-height: var(--collapsed-height, var(--min-height));
 		min-height: var(--min-height);
 		overflow: hidden;
+		flex: none;
 	}
 
 		.demo.slide div.prism-live.collapsed pre {
@@ -198,8 +205,14 @@ div.prism-live {
 	font-size: calc(var(--font-size-multiplier, 1) * 100%);
 	line-height: 1.5em;
 	max-height: 100vh;
+	max-height: -webkit-fill-available;
 	transition: .2s;
 	transition-property: max-height, flex;
+}
+
+/* Hack to fix overflowing height */
+.demo.slide:not(.horizontal) div.prism-live:not(:only-child):not(.collapsed) {
+	max-height: calc(100vh - var(--collapsed-height, var(--min-height)));
 }
 
 .slide:not(.minimal) div.prism-live {
@@ -233,6 +246,7 @@ pre.prism-live {
 	background-origin: content-box;
 	background-size: auto 3em;
 	background-attachment: local;
+	color: white;
 }
 
 .prism-live label {
