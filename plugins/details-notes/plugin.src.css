@@ -153,3 +153,12 @@ details.notes {
 	order: 5;
 	margin-left: auto;
 }
+
+/* <hr> in notes separates notes for revisits */
+.slide[data-visit="1"] details.notes hr,
+.slide[data-visit="1"] details.notes hr ~ *,
+
+.slide[data-visit="2"] details.notes hr:nth-of-type(2),
+.slide[data-visit="2"] details.notes hr:nth-of-type(2) ~ * {
+	display: none;
+}
