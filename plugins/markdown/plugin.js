@@ -14,7 +14,7 @@ let md = new markdownit("commonmark", {
 	typographer: true,
 	linkify: true,
 	// breaks: true
-});
+}).enable([ "table" ]);
 
 for (let e of elements) {
 	let changed = render(e);
