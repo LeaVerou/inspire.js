@@ -104,7 +104,7 @@ var _ = self.Demo = class Demo {
 			// Open in new Tab button
 			var a = $.create("a", {
 				className: "button new-tab",
-				textContent: "Open in new Tab",
+				textContent: "↗️ New Tab",
 				inside: this.controls,
 				target: "_blank",
 				events: {
@@ -127,7 +127,7 @@ var _ = self.Demo = class Demo {
 					},
 					{
 						tag: "button",
-						textContent: "Open in CodePen",
+						textContent: "↗️ CodePen",
 						className: "play"
 					}
 				],
