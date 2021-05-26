@@ -52,7 +52,7 @@ const _ = self.Inspire = {
 		"grid-layouts": "[class*='heading-']",
 		"balance-lines": ".balance-lines",
 		"details-notes": "details.notes",
-		"markdown": "[data-markdown-selectors]"
+		"markdown": "[data-markdown-elements]"
 	},
 
 	pluginsLoaded: {},

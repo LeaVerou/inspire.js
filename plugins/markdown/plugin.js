@@ -1,5 +1,5 @@
 (async function() {
-let selectors = $$("[data-markdown-selectors]").map(e => e.getAttribute("data-markdown-selectors"));
+let selectors = $$("[data-markdown-elements]").map(e => e.getAttribute("data-markdown-elements"));
 
 let elements = $$(selectors.join(", "));
 
