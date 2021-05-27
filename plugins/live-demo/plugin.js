@@ -132,18 +132,53 @@ var _ = self.Demo = class Demo {
 					}
 				],
 				inside: this.controls,
-				onsubmit: evt => {
+				onsubmit: async evt => {
+					// Since this can be async, we need more time
+					// We will cancel this submit event, then submit via code when we're ready
+					evt.preventDefault();
+
+					let css = [
+						"/* Base styles, not related to example */",
+						Demo.baseCSS + this.extraCSS,
+						"/* Main CSS */",
+						this.css].join("\n");
+
+					// Inline @import
+					if (!this.noBase) {
+						let imports = [];
+
+						css = css.replace(/@import\s+url\((['"]?)(.+)\1\);/g, (_, q, url) => {
+							imports.push(url);
+							return "";
+						});
+
+						if (imports.length > 0) {
+							let importedCSS = await Promise.all(
+								imports.map(async url => {
+									url = new URL(url, location.href);
+
+									let response = await fetch(url);
+									let css = await response.text();
+
+									return css;
+								})
+							);
+
+							importedCSS = importedCSS.join("\n");
+
+							css = importedCSS + css;
+						}
+					}
+
 					evt.target.elements.data.value = JSON.stringify({
 						title,
 						html: this.html,
-						css: [
-							"/* Base styles, not related to demo */",
-							Demo.baseCSS + this.extraCSS,
-							"/* Our demo CSS */",
-							this.css].join("\n"),
+						css,
 						editors: "1100",
 						head: this.noBase? "" : `<base href="${location.href}" />`
 					});
+
+					evt.target.submit();
 				}
 			});
 
