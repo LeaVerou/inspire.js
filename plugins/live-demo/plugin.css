@@ -29,7 +29,7 @@
 }
 
 .isolated.demo.slide {
-	
+
 }
 
 	.isolated.demo.slide > iframe {
@@ -137,7 +137,7 @@
 
 .demo.slide:not(.horizontal):not(.minimal) div.editor-container {
 	width: calc(var(--division, 60) * 1vw);
-	min-width: 15em;
+	/* min-width: 15em; */
 }
 
 .horizontal.demo.slide:not(.minimal) > div.editor-container:first-child,
