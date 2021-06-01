@@ -33,6 +33,8 @@ var _ = self.Demo = class Demo {
 			inside: this.slide
 		});
 
+		this.baseCSS = this.slide.classList.contains("no-base-css")? "" : Demo.baseCSS;
+
 		$$("textarea", this.slide).forEach(textarea => {
 			textarea.value = Prism.plugins.NormalizeWhitespace.normalize(textarea.value);
 			var editor = new Prism.Live(textarea);
@@ -137,11 +139,17 @@ var _ = self.Demo = class Demo {
 					// We will cancel this submit event, then submit via code when we're ready
 					evt.preventDefault();
 
-					let css = [
-						"/* Base styles, not related to example */",
-						Demo.baseCSS + this.extraCSS,
-						"/* Main CSS */",
-						this.css].join("\n");
+					let baseCSS = this.baseCSS + this.extraCSS;
+
+					if (baseCSS) {
+						baseCSS = [
+							"/* Base styles, not related to example */",
+							baseCSS,
+							"/* Main CSS */",
+						].join("\n");
+					}
+
+					let css = [baseCSS, this.css].join("\n");
 
 					// Inline @import
 					if (!this.noBase) {
@@ -287,7 +295,9 @@ var _ = self.Demo = class Demo {
 				this.style = $("style#live", this.iframe.contentDocument);
 			}
 
-			this.style.textContent = code;
+			if (this.style) {
+				this.style.textContent = code;
+			}
 
 			if (!this.isolated) {
 				// Scope rules to increase specificity
@@ -356,6 +366,7 @@ var _ = self.Demo = class Demo {
 			html: this.html,
 			css: this.css,
 			extraCSS: this.extraCSS,
+			baseCSS: this.baseCSS,
 			js: this.js,
 			title: title || this.title,
 			inline,
@@ -423,7 +434,21 @@ var _ = self.Demo = class Demo {
 		}
 	}
 
-	static getHTMLPage({html="", css="", extraCSS="", js="", title="Demo", inline = true, noBase = false} = {}) {
+	static getHTMLPage ({html="", css="", baseCSS = Demo.baseCSS, extraCSS="", js="", title="Demo", inline = true, noBase = false} = {}) {
+
+		baseCSS = baseCSS + (baseCSS && extraCSS? "\n" : "") + extraCSS;
+
+		// Hoist imports to top
+		let imports = [];
+		baseCSS.replace(/@import .+;/g, $0 => {
+			imports.push($0);
+			return "";
+		});
+
+		if (imports.length > 0) {
+			baseCSS = [...imports, baseCSS].join("\n");
+		}
+
 		if (css !== "undefined") {
 			css = `<style id=live>
 ${css}
@@ -438,8 +463,7 @@ ${noBase? "" : `<base href="${location.href}" />`}
 <title>${title}</title>
 <style>
 /* Base styles, not related to demo */
-${Demo.baseCSS}
-${extraCSS}
+${baseCSS}
 </style>
 ${css}
 </head>
