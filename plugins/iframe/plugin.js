@@ -6,7 +6,8 @@ Inspire.hooks.add({
 			// Uninitialized iframe slide
 			var iframe = $.create("iframe", {
 				"data-src": slide.getAttribute("data-src"),
-				inside: slide
+				inside: slide,
+				loading: "lazy"
 			});
 
 			slide.removeAttribute("data-src");
