@@ -37,24 +37,23 @@ async function balanceLines(h1) {
 
 	const step = 10; // in pixels
 
-	await delay(50);
+	await delay(1);
 
 	h1.style.minWidth = "min-content";
-	h1.style.width = "100%";
-
-	await delay(100);
-
-	let maxWidth = h1.getBoundingClientRect().width;
-
 	h1.style.width = ""; // reset to auto width
 
-	await delay(100);
+	let parent = h1.parentNode;
+	let maxWidth = parent.getBoundingClientRect().width;
+	let parentCS = getComputedStyle(parent);
+	maxWidth -= (parseInt(parentCS.paddingLeft) || 0) + (parseInt(parentCS.paddingRight) || 0);
+
+	await delay(1);
 
 	let rect = h1.getBoundingClientRect();
 	let autoWidth = rect.width;
 	let autoHeight = rect.height;
 
-	if (autoWidth >= maxWidth) { // if auto width is < max width it means no text wrapping is happening
+	if (autoWidth >= maxWidth - step - 1) { // if auto width is < max width it means no text wrapping is happening
 		h1.style.opacity = "0";
 		h1.style.width = autoWidth + "px";
 		h1.style.transition = ".3s opacity";
