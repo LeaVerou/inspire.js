@@ -11,19 +11,15 @@ var resizeObserver = new ResizeObserver(entries => {
 		if (h1.balanced) {
 			h1.balanced = false;
 		}
-		else {
+		else if (!h1.style.width) {
 			balanceLines(h1);
 		}
 	}
 });
 
 Inspire.hooks.add("slidechange", env => {
-	if (env.prevSlide) {
-		$$(selector, env.prevSlide).forEach(h1 => {
-			h1.balanced = true;
-			resizeObserver.unobserve(h1);
-		});
-	}
+	// Stop observing everything
+	resizeObserver.disconnect();
 
 	$$(selector, env.slide).forEach(h1 => {
 		if (!h1.balanced) {
@@ -39,14 +35,17 @@ let delay = ms => new Promise(r => setTimeout(r, ms));
 async function balanceLines(h1) {
 	resizeObserver.unobserve(h1);
 
-	let viewportWidth = innerWidth;
 	const step = 10; // in pixels
+
+	await delay(50);
+
+	h1.style.minWidth = "min-content";
+	h1.style.width = "100%";
 
 	await delay(100);
 
-	let minWidth = h1.getBoundingClientRect().width;
+	let maxWidth = h1.getBoundingClientRect().width;
 
-	h1.style.minWidth = "min-content";
 	h1.style.width = ""; // reset to auto width
 
 	await delay(100);
@@ -55,15 +54,15 @@ async function balanceLines(h1) {
 	let autoWidth = rect.width;
 	let autoHeight = rect.height;
 
-	if (autoWidth > minWidth) {
+	if (autoWidth >= maxWidth) { // if auto width is < max width it means no text wrapping is happening
 		h1.style.opacity = "0";
 		h1.style.width = autoWidth + "px";
 		h1.style.transition = ".3s opacity";
 
 		// Iteratively reduce width until height increases
 		// TODO convert to binary search
-		for (let w = autoWidth; w > minWidth; w -= step) {
-			if (rect.width > viewportWidth) {
+		for (let w = autoWidth; w > step; w -= step) {
+			if (rect.width > maxWidth) {
 				// Something has gone really wrong, abort mission!
 				h1.style.width = "";
 				break;
@@ -84,7 +83,7 @@ async function balanceLines(h1) {
 
 	let slide = Inspire.currentSlide;
 
-	await delay(2000);
+	await delay(1000);
 
 	if (slide === Inspire.currentSlide) {
 		resizeObserver.observe(h1);

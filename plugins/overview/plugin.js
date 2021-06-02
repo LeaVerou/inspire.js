@@ -28,7 +28,7 @@ Inspire.hooks.add({
 			let selector = prompt("Which slides to filter out? Enter a compound selector, or leave empty to show all slides.", defaultSelector);
 
 			document.querySelector("style#inspire-overview-filter")?.remove();
-			
+
 			if (selector) {
 				let style = document.createElement("style");
 				style.id = "inspire-overview-filter";
