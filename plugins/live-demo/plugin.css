@@ -5,6 +5,10 @@
 	--division: 50;
 }
 
+.demo.slide[data-editors="1"] { --editors: 1; }
+.demo.slide[data-editors="2"] { --editors: 2; }
+.demo.slide[data-editors="3"] { --editors: 3; }
+
 .demo.slide:not(.minimal) {
 	padding: 0;
 	display: grid;
@@ -211,8 +215,8 @@ div.prism-live {
 }
 
 /* Hack to fix overflowing height */
-.demo.slide:not(.horizontal) div.prism-live:not(:only-child):not(.collapsed) {
-	max-height: calc(100vh - var(--collapsed-height, var(--min-height)));
+.demo.slide:not(.horizontal) div.prism-live:not(.collapsed) {
+	max-height: calc(100vh - (var(--editors, 1) - 1) * var(--collapsed-height, var(--min-height)));
 }
 
 .slide:not(.minimal) div.prism-live {

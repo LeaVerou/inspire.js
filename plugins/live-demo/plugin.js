@@ -35,12 +35,16 @@ var _ = self.Demo = class Demo {
 
 		this.baseCSS = this.slide.classList.contains("no-base-css")? "" : Demo.baseCSS;
 
-		$$("textarea", this.slide).forEach(textarea => {
+		let textareas = $$("textarea", this.slide);
+
+		this.slide.dataset.editors = textareas.length;
+
+		textareas.forEach(textarea => {
 			textarea.value = Prism.plugins.NormalizeWhitespace.normalize(textarea.value);
 			var editor = new Prism.Live(textarea);
 			var id = Inspire.pluginsLoaded.prism.meta.languages[editor.lang].id;
 
-			if (id === "javascript" ) {
+			if (id === "javascript" || id === "js") {
 				// JS needs this
 				this.updateReload = true;
 			}
