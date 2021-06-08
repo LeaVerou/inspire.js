@@ -151,6 +151,8 @@ var _ = self.Demo = class Demo {
 
 					let css = [baseCSS, this.css].join("\n");
 
+					let js = this.js;
+
 					// Inline @import
 					if (!this.noBase) {
 						let imports = [];
@@ -182,7 +184,8 @@ var _ = self.Demo = class Demo {
 						title,
 						html: this.html,
 						css,
-						editors: "1100",
+						js,
+						editors: `${+!!this.html}${+!!css}${+!!js}0`,
 						head: this.noBase? "" : `<base href="${location.href}" />`
 					});
 
