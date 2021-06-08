@@ -34,7 +34,8 @@ let delay = ms => new Promise(r => setTimeout(r, ms));
 
 async function balanceLines(h1) {
 	resizeObserver.unobserve(h1);
-
+	h1.balanced = true;
+	
 	const step = 10; // in pixels
 
 	await delay(1);
@@ -73,7 +74,6 @@ async function balanceLines(h1) {
 			if (autoHeight < rect.height - 5) {
 				// We found the right width, revert to it and break
 				h1.style.width = w + step + "px";
-				h1.balanced = true;
 				break;
 			}
 		}
