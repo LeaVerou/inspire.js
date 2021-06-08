@@ -4,7 +4,19 @@
 
 Inspire.pluginsLoaded.prism.ready = (async () => {
 
-const PRISM_ROOT = Inspire.u.getAttribute("data-prism-root") || "https://prismjs.com";
+let PRISM_ROOT = Inspire.u.getAttribute("data-prism-root");
+
+if (!PRISM_ROOT) {
+	// Find a good default
+	try {
+		await fetch("https://prismjs.com", { method: 'HEAD' });
+		PRISM_ROOT = "https://prismjs.com";
+	}
+	catch (e) {
+		// Main website is down, fetch from repo
+		PRISM_ROOT = "https://cdn.jsdelivr.net/gh/prismjs/prism";
+	}
+}
 
 // Which languages are used?
 var ids = $$("[class*='lang-'], [class*='language-']").map(e => {
