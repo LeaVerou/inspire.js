@@ -1,5 +1,5 @@
 (function(){
-let selector = $$("[data-balance-elements]").map(e => e.getAttribute("data-balance-elements"));
+let selector = $$("[data-balance-elements]").map(e => e.getAttribute("data-balance-elements")).join(", ");
 
 selector = selector? selector + ", " : "";
 selector += ".balance-lines";
@@ -35,7 +35,7 @@ let delay = ms => new Promise(r => setTimeout(r, ms));
 async function balanceLines(h1) {
 	resizeObserver.unobserve(h1);
 	h1.balanced = true;
-	
+
 	const step = 10; // in pixels
 
 	await delay(1);
