@@ -529,7 +529,7 @@ Demo.fixers = {
 };
 
 Demo.baseCSS = `body {
-	font: 200% Helvetica Neue, Segoe UI, sans-serif;
+	font: 200% system-ui, Helvetica Neue, Segoe UI, sans-serif;
 }
 
 input, select, textarea, button {
