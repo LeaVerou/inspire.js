@@ -52,18 +52,18 @@
 			content: attr(title);
 		}
 .heading-MxN > div[title]::after,
-		.heading-MxN > div .caption,
 		.heading-MxN > article[title]::after,
-		.heading-MxN > article .caption,
 		.heading-MxN > section[title]::after,
-		.heading-MxN > section .caption,
 		.heading-MxN > img[title]::after,
-		.heading-MxN > img .caption,
 		.heading-MxN > video[title]::after,
-		.heading-MxN > video .caption,
 		.heading-MxN > iframe[title]::after,
-		.heading-MxN > iframe .caption,
 		.heading-MxN > a[title]::after,
+		.heading-MxN > div .caption,
+		.heading-MxN > article .caption,
+		.heading-MxN > section .caption,
+		.heading-MxN > img .caption,
+		.heading-MxN > video .caption,
+		.heading-MxN > iframe .caption,
 		.heading-MxN > a .caption {
 			position: absolute;
 			left: 50%;
@@ -76,18 +76,18 @@
 			text-align: center;
 		}
 .heading-MxN > div,
-		.heading-MxN > div > img,
 		.heading-MxN > article,
-		.heading-MxN > article > img,
 		.heading-MxN > section,
-		.heading-MxN > section > img,
 		.heading-MxN > img,
-		.heading-MxN > img > img,
 		.heading-MxN > video,
-		.heading-MxN > video > img,
 		.heading-MxN > iframe,
-		.heading-MxN > iframe > img,
 		.heading-MxN > a,
+		.heading-MxN > div > img,
+		.heading-MxN > article > img,
+		.heading-MxN > section > img,
+		.heading-MxN > img > img,
+		.heading-MxN > video > img,
+		.heading-MxN > iframe > img,
 		.heading-MxN > a > img {
 			display: block;
 			width: 100%;
@@ -95,18 +95,18 @@
 			object-fit: contain;
 		}
 .heading-MxN > div > ol,
-		.heading-MxN > div > ul,
 		.heading-MxN > article > ol,
-		.heading-MxN > article > ul,
 		.heading-MxN > section > ol,
-		.heading-MxN > section > ul,
 		.heading-MxN > img > ol,
-		.heading-MxN > img > ul,
 		.heading-MxN > video > ol,
-		.heading-MxN > video > ul,
 		.heading-MxN > iframe > ol,
-		.heading-MxN > iframe > ul,
 		.heading-MxN > a > ol,
+		.heading-MxN > div > ul,
+		.heading-MxN > article > ul,
+		.heading-MxN > section > ul,
+		.heading-MxN > img > ul,
+		.heading-MxN > video > ul,
+		.heading-MxN > iframe > ul,
 		.heading-MxN > a > ul {
 			padding-left: 1.2em;
 		}
