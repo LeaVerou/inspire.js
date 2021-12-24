@@ -544,7 +544,7 @@ const _ = self.Inspire = {
 
 	updateItems() {
 		_.items = $$(".delayed, .delayed-children > *", _.currentSlide);
-		_.items = _.u.stableSort(_.items, function(a, b) {
+		_.items = _.items.sort((a, b) => {
 			return (a.getAttribute("data-index") || 0) - (b.getAttribute("data-index") || 0);
 		});
 	},
@@ -782,23 +782,6 @@ const _ = self.Inspire = {
 
 	// Utilities
 	u: {
-		// http://ichuan.net/post/52/stable-sort-of-javascript-array/
-		// TODO Once usage of Chrome < 69 drops below 1%, ditch this and just use the native array.sort()
-		stableSort(arr, fn) {
-			if (!fn) {
-				return arr.sort();
-			}
-
-			let newArr = arr.map((i, j) => {
-				return {i, j};
-			});
-
-			return newArr.sort((a, b) => {
-				let result = fn(a.i, b.i);
-				return result === 0? a.j - b.j : result;
-			}).map(i => i.i);
-		},
-
 		// Get attribute value, from the first element it's defined on
 		// Useful for things like global settings where we don't care where the attribute is on
 		getAttribute(attribute) {
