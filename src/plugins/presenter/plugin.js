@@ -1,3 +1,5 @@
+export const hasCSS = true;
+
 Inspire.hooks.add({
 	"init-end": me => {
 		if (window.name === "projector" && window.opener && opener.Inspire) {

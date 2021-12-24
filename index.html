@@ -193,13 +193,28 @@ setInterval(function() {
 	</article>
 
 	<article class="slide">
-		<h1>Presenter View</h1>
+		<h1>Presenter View & Notes plugins</h1>
 
 		<ul>
-			<li>Use <code>&lt;p class="presenter-notes"></code> for presenter notes. You need at least one of these to have the plugin loaded.</li>
-			<li>Presenter view with <kbd>Ctrl</kbd><kbd>P</kbd> (or <kbd>Shift</kbd><kbd>P</kbd>)</li>
-			<li>Also timer, upcoming slide</li>
+			<li><code>&lt;details class="notes"></code> for collapsible slide notes.</li>
+			<li>Any slide notes load the presenter view plugin as well.</li>
+			<li>Split current window into presenter and audience view with <kbd>Ctrl</kbd><kbd>P</kbd> (or <kbd>Shift</kbd><kbd>P</kbd>)</li>
+			<li>
+				The presenter view includes:
+				<ul>
+					<li>Timer</li>
+					<li>Upcoming slide</li>
+					<li>Notes that are expanded by default (collapsed notes are visible in audience view too).</li>
+				</ul>
+			</li>
+			<li>Both-way synchronization of slide status between the two windows.</li>
 		</ul>
+
+		<details class="notes">
+			Sample notes here.
+
+			This works quite nicely with the Markdown plugin, just use <code>data-markdown-elements="details.notes"</code> and all notes will support Markdown!
+		</details>
 	</article>
 
 	<article class="slide" id="slidestyle">

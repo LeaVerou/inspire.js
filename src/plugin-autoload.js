@@ -4,7 +4,7 @@
  */
 export default {
 	timer: "[data-duration]",
-	presenter: ".presenter-notes, details.notes",
+	presenter: "details.notes",
 	"lazy-load": "[data-src]:not(.slide)",
 	"slide-style": "style[data-slide]",
 	overview: "*",
