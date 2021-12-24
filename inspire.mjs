@@ -10,9 +10,6 @@
 // Cache <title> element, we may need it for slides that don"t have titles
 const documentTitle = document.title + "";
 
-// Cache current <script> src, we will need it for loading plugins
-const scriptSrc = document.currentScript ? document.currentScript.src : undefined;
-
 if (!window.Bliss) {
 	// Load Bliss if not loaded
 	console.log("Bliss not loaded. Loading remotely from blissfuljs.com");
