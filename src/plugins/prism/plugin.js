@@ -2,6 +2,8 @@
  * Autoload Prism and Prism plugins as needed
  */
 
+import Inspire from "../../../inspire.mjs";
+
 let PRISM_ROOT = Inspire.u.getAttribute("data-prism-root");
 
 if (!PRISM_ROOT) {

@@ -1,3 +1,4 @@
+import Inspire from "../../../inspire.mjs";
 import * as prism from "../prism/plugin.js";
 
 export const hasCSS = true;

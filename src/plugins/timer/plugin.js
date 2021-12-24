@@ -1,3 +1,5 @@
+import Inspire from "../../../inspire.mjs";
+
 Inspire.hooks.add("init-start", me => {
 	// Create timer, if needed
 	this.duration = document.body.getAttribute("data-duration");

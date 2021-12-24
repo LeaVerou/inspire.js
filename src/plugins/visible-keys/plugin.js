@@ -1,4 +1,6 @@
 // Display certain keys pressed
+import Inspire from "../../../inspire.mjs";
+
 Inspire.hooks.add("slidechange", env => {
 	const visibleKeys = Inspire.plugins["visible-keys"];
 	const symbols = visibleKeys.symbols = {

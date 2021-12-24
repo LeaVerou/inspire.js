@@ -1,3 +1,5 @@
+import Inspire from "../../../inspire.mjs";
+
 export const hasCSS = false;
 
 let selectors = $$("[data-markdown-elements]").map(e => e.getAttribute("data-markdown-elements"));

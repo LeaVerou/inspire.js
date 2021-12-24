@@ -1,4 +1,4 @@
-{
+import Inspire from "../../../inspire.mjs";
 
 $$("[data-resolution]").forEach(element => {
 	let [width, height] = element.closest("[data-resolution]").dataset.resolution.split(/\s+/);
@@ -35,4 +35,3 @@ Inspire.hooks.add("slidechange", env => {
 	}
 });
 
-}

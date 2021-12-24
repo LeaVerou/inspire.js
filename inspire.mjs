@@ -24,7 +24,7 @@ if (!window.Bliss) {
 window.$ = Bliss;
 window.$$ = $.$;
 
-const _ = self.Inspire = {
+const _ = {
 	// Plugin ids and selectors
 	// If selector matches anything, plugin is loaded
 	plugins,

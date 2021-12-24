@@ -1,8 +1,10 @@
 // Links to documentation
+import Inspire from "../../../inspire.mjs";
+
 export const hasCSS = true;
 
 let processDocsLinks = (root = document) => {
-	$$(Inspire.plugins.docs, root).forEach(code => {
+	$$(Inspire.plugins.registry.docs, root).forEach(code => {
 		let text = code.dataset.mdn && !/\/$/.test(code.dataset.mdn)? "" : code.textContent;
 		let path;
 		let cs = getComputedStyle(code);

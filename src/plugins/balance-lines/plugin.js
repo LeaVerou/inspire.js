@@ -1,3 +1,5 @@
+import Inspire from "../../../inspire.mjs";
+
 export const hasCSS = true;
 
 let selector = $$("[data-balance-elements]").map(e => e.getAttribute("data-balance-elements")).join(", ");

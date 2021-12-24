@@ -1,3 +1,5 @@
+import Inspire from "../../../inspire.mjs";
+
 export const hasCSS = false;
 
 Inspire.hooks.add("slidechange", env => {
