@@ -1,31 +1,32 @@
 // Display certain keys pressed
 import Inspire from "../../../inspire.mjs";
 
-Inspire.hooks.add("slidechange", env => {
-	const visibleKeys = Inspire.plugins["visible-keys"];
-	const symbols = visibleKeys.symbols = {
-		Tab: "⇥",
-		Enter: "⏎",
-		DownArrow: "↓",
-		UpArrow: "↑",
-		LeftArrow: "←",
-		RightArrow: "→",
-		Control: "⌃",
-		Shift: "⇧",
-		Alt: "⌥",
-		Meta: "⌘",
-	};
+export const symbols = {
+	Tab: "⇥",
+	Enter: "⏎",
+	DownArrow: "↓",
+	UpArrow: "↑",
+	LeftArrow: "←",
+	RightArrow: "→",
+	Control: "⌃",
+	Shift: "⇧",
+	Alt: "⌥",
+	Meta: "⌘",
+};
 
-	if (visibleKeys.listener) {
+let listener;
+
+Inspire.hooks.add("slidechange", env => {
+	if (listener) {
 		// Remove event listener for keys
-		document.removeEventListener("keyup", visibleKeys.listener);
+		document.removeEventListener("keyup", listener);
 	}
 
 	if (env.slide.matches("[data-visible-keys]")) {
 		var keys = new Set(env.slide.dataset.visibleKeys.split(/\s+/));
 		var delay = +env.slide.dataset.visibleKeysDelay || 600;
 
-		document.addEventListener("keyup", visibleKeys.listener = function(evt) {
+		document.addEventListener("keyup", listener = function(evt) {
 			if (keys.has(evt.key) && evt.target.nodeName != "TEXTAREA") {
 				label = evt.key;
 
