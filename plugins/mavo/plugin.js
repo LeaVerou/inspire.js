@@ -1,4 +1,6 @@
-(async () => {
+export const hasCSS = false;
+
+
 
 if (!window.Mavo) {
 	await Promise.all(["js", "css"].map(ext => $.load(`https://dev.mavo.io/dist/mavo.${ext}`)));
@@ -14,4 +16,3 @@ else if (Inspire.imports.length) {
 	}
 }
 
-})();

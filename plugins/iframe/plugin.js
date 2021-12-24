@@ -1,3 +1,5 @@
+export const hasCSS = true;
+
 Inspire.hooks.add({
 	"slidechange": function(env) {
 		var slide = env.slide;

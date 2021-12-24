@@ -1,3 +1,5 @@
+export const hasCSS = true;
+
 (async function() {
 
 const PLUGIN_SRC = document.currentScript? document.currentScript.src : "";

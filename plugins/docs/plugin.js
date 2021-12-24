@@ -1,4 +1,6 @@
 // Links to documentation
+export const hasCSS = true;
+
 let processDocsLinks = (root = document) => {
 	$$(Inspire.plugins.docs, root).forEach(code => {
 		let text = code.dataset.mdn && !/\/$/.test(code.dataset.mdn)? "" : code.textContent;

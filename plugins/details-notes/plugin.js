@@ -1,3 +1,5 @@
+export const hasCSS = true;
+
 $$("details.notes").forEach(details => {
 	let div = document.createElement("div");
 	div.append(...details.childNodes);

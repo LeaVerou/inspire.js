@@ -1,4 +1,5 @@
-(async function() {
+export const hasCSS = false;
+
 let selectors = $$("[data-markdown-elements]").map(e => e.getAttribute("data-markdown-elements"));
 
 let elements = $$(selectors.join(", "));
@@ -79,5 +80,3 @@ function render(e) {
 
 	return e.innerHTML !== previousHTML;
 }
-
-})();

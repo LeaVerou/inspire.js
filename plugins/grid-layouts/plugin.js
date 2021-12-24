@@ -1,3 +1,5 @@
+export const hasCSS = true;
+
 $$('[class*="heading-"]').forEach(el => {
 	let [, m, n] = el.className.match(/\bheading-(\d)x(\d)/) || [];
 

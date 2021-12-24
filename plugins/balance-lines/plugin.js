@@ -1,4 +1,5 @@
-(function(){
+export const hasCSS = true;
+
 let selector = $$("[data-balance-elements]").map(e => e.getAttribute("data-balance-elements")).join(", ");
 
 selector = selector? selector + ", " : "";
@@ -91,4 +92,3 @@ async function balanceLines(h1) {
 }
 
 
-})();
