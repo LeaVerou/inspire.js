@@ -1,28 +1,39 @@
-/**
- * Plugin registry that maps plugins to selectors that will auto-load them.
- * Any dependencies are managed by the plugin itself.
- */
-export default {
-	timer: "[data-duration]",
-	presenter: ".presenter-notes, details.notes",
-	"lazy-load": "[data-src]:not(.slide)",
-	"slide-style": "style[data-slide]",
-	overview: "*",
-	iframe: ".slide[data-src], .iframe.slide",
-	prism: "[class*='lang-'], [class*='language-']",
-	media: "[data-video], .media-frame",
-	"live-demo": ".demo.slide",
-	"resolution": "[data-resolution]",
-	"docs": `code.property, .property code,
-			code.css, .css code,
-			code.function, .function code,
-			code.element, .element code,
-			code.attribute, .attribute code,
-			code[data-mdn], [data-mdn] code`,
-	"mavo": "[mv-app]",
-	"visible-keys": "[data-visible-keys]",
-	"grid-layouts": "[class*='heading-']",
-	"balance-lines": ".balance-lines, [data-balance-elements]",
-	"details-notes": "details.notes",
-	"markdown": "[data-markdown-elements]"
-};
+import registry from "./plugin-autoload.js";
+
+export {registry};
+
+export let loaded = {};
+
+export function load (id, def = {}) {
+	if (!loaded[id]) {
+		let path = def.path || "plugins";
+		let pluginURL = new URL(`${path}/${id}/plugin.js`, import.meta.url);
+		let loadCSS = !$(`.no-css-${id}, .no-${id}-css, .${id}-no-css`);
+		let plugin = loaded[id] = {};
+
+		plugin.loaded = import(pluginURL).then(module => {
+			plugin.module = module;
+
+			if (loadCSS && module.hasCSS) {
+				return $.load("plugin.css", pluginURL);
+			}
+		});
+	}
+
+	return loaded[id].loaded;
+}
+
+export function loadAll () {
+	let ret = [];
+
+	for (let id in registry) {
+		let def = registry[id];
+		let test = def.test || def;
+
+		if (($(test) || document.body.matches(`[data-load-plugins~="${id}"]`)) && !document.body.matches(`.no-${id}`)) {
+			ret.push(load(id, def));
+		}
+	}
+
+	return ret;
+}

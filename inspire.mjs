@@ -5,7 +5,7 @@
 	 * Copyright (C) 2010-2018 Lea Verou, http://lea.verou.me
 	 */
 
-
+import * as plugins from "./src/plugins.js";
 
 // Cache <title> element, we may need it for slides that don"t have titles
 const documentTitle = document.title + "";
@@ -24,14 +24,10 @@ if (!window.Bliss) {
 window.$ = Bliss;
 window.$$ = $.$;
 
-import pluginRegistry from "./src/plugins.js";
-
 const _ = self.Inspire = {
 	// Plugin ids and selectors
 	// If selector matches anything, plugin is loaded
-	plugins: pluginRegistry,
-
-	pluginsLoaded: {},
+	plugins,
 
 	hooks: new $.Hooks(),
 
@@ -44,17 +40,10 @@ const _ = self.Inspire = {
 
 		await _.importsLoaded;
 
-		for (let id in _.plugins) {
-			let def = _.plugins[id];
-			let test = def.test || def;
-
-			if (($(test) || document.body.matches(`[data-load-plugins~="${id}"]`)) && !document.body.matches(`.no-${id}`)) {
-				_.dependencies.push(_.loadPlugin(id, def));
-			}
-		}
+		_.dependencies.push(...plugins.loadAll());
 
 		_.ready = Promise.all(_.dependencies).then(() => {
-			let loaded = Object.keys(_.pluginsLoaded);
+			let loaded = Object.keys(plugins.loaded);
 			console.log("Inspire.js plugins loaded:", loaded.length? loaded.join(", ") : "none");
 
 			Promise.all(_.delayInit).then(_.init);
@@ -750,25 +739,6 @@ const _ = self.Inspire = {
 
 			return doc;
 		}));
-	},
-
-	async loadPlugin(id, def = {}) {
-		if (!_.pluginsLoaded[id]) {
-			let path = def.path || "plugins";
-			let pluginURL = new URL(`${path}/${id}/plugin.js`, import.meta.url);
-			let loadCSS = !$(`.no-css-${id}, .no-${id}-css, .${id}-no-css`);
-			let plugin = _.pluginsLoaded[id] = {};
-
-			plugin.loaded = import(pluginURL).then(module => {
-				plugin.module = module;
-
-				if (loadCSS && module.hasCSS) {
-					return $.load("plugin.css", pluginURL);
-				}
-			});
-		}
-
-		return _.pluginsLoaded[id].loaded;
 	},
 
 	// Plugins can call this to signify to other plugins that the DOM changed

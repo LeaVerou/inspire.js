@@ -2,8 +2,6 @@
  * Autoload Prism and Prism plugins as needed
  */
 
-Inspire.pluginsLoaded.prism.ready = (async () => {
-
 let PRISM_ROOT = Inspire.u.getAttribute("data-prism-root");
 
 if (!PRISM_ROOT) {
@@ -49,7 +47,7 @@ if (ids.size) {
 
 // Load metadata
 await $.include(`${PRISM_ROOT}/components.js`);
-var meta = components;
+let meta = components;
 
 var languages = meta.languages;
 
@@ -143,8 +141,7 @@ Inspire.hooks.add("slidechange", env => {
 
 });
 
-// Exports
-Object.assign(Inspire.pluginsLoaded.prism, { meta, languages: ids, plugins });
+
 
 // Utilities
 function toArray(arr) {
@@ -176,4 +173,4 @@ function promise(constructor) {
 	return promise;
 };
 
-})();
+export { meta, ids as languages, plugins };

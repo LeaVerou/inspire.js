@@ -1,4 +1,4 @@
-{
+export const hasCSS = true;
 
 let exitOverview = () => {
 	document.body.classList.remove("show-thumbnails", "show-all");
@@ -54,4 +54,3 @@ Inspire.hooks.add({
 	}
 });
 
-}

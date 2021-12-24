@@ -1,8 +1,10 @@
+import * as prism from "../prism/plugin.js";
+
 export const hasCSS = true;
 
 (async function() {
 
-const PLUGIN_SRC = document.currentScript? document.currentScript.src : "";
+// const PLUGIN_SRC = import.meta.url;
 
 $$(".demo.slide").forEach(slide => {
 	// This is before editors have been created
@@ -44,7 +46,7 @@ var _ = self.Demo = class Demo {
 		textareas.forEach(textarea => {
 			textarea.value = Prism.plugins.NormalizeWhitespace.normalize(textarea.value);
 			var editor = new Prism.Live(textarea);
-			var id = Inspire.pluginsLoaded.prism.meta.languages[editor.lang].id;
+			var id = prism.meta.languages[editor.lang].id;
 
 			if (id === "javascript" || id === "js") {
 				// JS needs this
@@ -539,9 +541,6 @@ input, select, textarea, button {
 }
 `;
 
-await Inspire.loadPlugin("prism");
-await Inspire.pluginsLoaded.prism.ready;
-
 var baseCSSTemplate = $(".live-demo-base-css");
 if (baseCSSTemplate) {
 	// textContent doesn't work on <template>
@@ -552,7 +551,7 @@ if (!Prism.Live) {
 	// Filter loaded languages to only languages used in demo slides
 	var languages = [];
 
-	for (let [id, lang] of Object.entries(Inspire.pluginsLoaded.prism.meta.languages)) {
+	for (let [id, lang] of Object.entries(prism.meta.languages)) {
 		if (id === lang.id && $(`.demo.slide .language-${id}, .language-${id} .demo.slide, .demo.slide.language-${id}`)) {
 			languages.push(id);
 		}
