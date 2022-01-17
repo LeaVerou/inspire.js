@@ -26,3 +26,15 @@ export function getAttribute(attribute) {
 	return element && element.getAttribute(attribute);
 }
 
+export async function importCJS(src) {
+	let prevModule = window.module;
+	window.module = { exports: {} };
+	await import(src);
+	let ret = module.exports;
+	window.module = prevModule;
+	return ret;
+}
+
+export function toArray(arr) {
+	return arr === undefined? [] : Array.isArray(arr)? arr : [arr];
+}

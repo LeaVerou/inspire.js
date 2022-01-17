@@ -7,7 +7,7 @@ let selectors = $$("[data-markdown-elements]").map(e => e.getAttribute("data-mar
 let elements = $$(selectors.join(", "));
 
 if (elements.length === 0) {
-	return;
+	await new Promise(r => {});
 }
 
 await import("https://cdn.jsdelivr.net/npm/markdown-it@12.0.6/dist/markdown-it.js");

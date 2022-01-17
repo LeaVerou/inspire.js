@@ -1,9 +1,8 @@
 import Inspire from "../../../inspire.mjs";
 import * as prism from "../prism/plugin.js";
+import LiveDemo from "./live-demo.js";
 
 export const hasCSS = true;
-
-(async function() {
 
 // const PLUGIN_SRC = import.meta.url;
 
@@ -14,526 +13,15 @@ $$(".demo.slide").forEach(slide => {
 
 $$("style.demo").forEach(style => style.dataset.slide = "");
 
-/*
-	Requirements:
-	- HTML, CSS, or both
-	- Applied immediately or upon Cmd + Enter
-	- In an iframe, or in the slide itself (.isolated)
-	- Ability to provide hidden custom CSS for the example
-	- CSS fixup (selector scoping, selector adding, custom fixup?)
-	- HTML fixup
- */
-
-var _ = self.Demo = class Demo {
-	constructor(slide) {
-		this.slide = slide;
-		this.isolated = this.slide.classList.contains("isolated");
-		this.updateReload = this.slide.classList.contains("update-reload");
-		this.noBase = this.slide.classList.contains("no-base");
-
-		this.editors = {};
-
-		this.editorContainer = $.create({
-			className: "editor-container",
-			inside: this.slide
-		});
-
-		this.baseCSS = this.slide.classList.contains("no-base-css")? "" : Demo.baseCSS;
-
-		let textareas = $$("textarea", this.slide);
-
-		this.slide.dataset.editors = textareas.length;
-
-		textareas.forEach(textarea => {
-			textarea.value = Prism.plugins.NormalizeWhitespace.normalize(textarea.value);
-			var editor = new Prism.Live(textarea);
-			var id = prism.meta.languages[editor.lang].id;
-
-			if (id === "javascript" || id === "js") {
-				// JS needs this
-				this.updateReload = true;
-			}
-
-			this.editors[id] = editor;
-			this.editorContainer.append(editor.wrapper);
-			editor.realtime = !textarea.classList.contains("no-realtime");
-
-			if (editor.realtime && id !== "javascript") {
-				textarea.addEventListener("input", evt => this.output(id));
-			}
-			else {
-				textarea.addEventListener("keyup", evt => {
-					if (evt.key == "Enter" && (evt.ctrlKey || evt.metaKey)) {
-						this.output(id);
-					}
-				});
-			}
-		});
-
-		this.controls = $.create({
-			className: "demo-controls",
-			contents: this.slide.classList.contains("minimal")? [] : $("details.notes", this.slide),
-			after: this.editorContainer
-		});
-
-		if (!this.isolated) {
-			this.element = $(".demo-target", this.slide) || $.create({inside: this.slide, className: "demo-target"});
-
-			if (!this.editors.markup) {
-				let exclude = [".editor-container", "style", ".demo-controls", ".demo-target", ".demo-exclude", ".notes"].map(s => `:not(${s})`)
-				this.element.append(...$$(`.slide > ${exclude.join("")}`, this.slide));
-			}
-		}
-
-		if (this.editors.css) {
-			if (!this.isolated) {
-				this.style = $.create("style", {
-					"data-slide": "",
-					start: this.slide
-				});
-			}
-		}
-
-		if (this.isolated) {
-			this.iframe = $("iframe.demo-target", this.slide) || $.create("iframe", {
-				className: "demo-target",
-				inside: this.slide
-			});
-
-			this.iframe.name = this.iframe.name || "iframe-" + slide.id;
-
-			this.extraCSS = $$("style.demo", this.slide).map(s => {
-				s.remove();
-				return s.textContent;
-			}).join("\n");
-			this.extraCSS = Prism.plugins.NormalizeWhitespace.normalize(this.extraCSS);
-
-			this.ready = this.updateIframe();
-
-			var title = (slide.title || slide.dataset.title || "") + " Demo";
-
-			// Open in new Tab button
-			var a = $.create("a", {
-				className: "button new-tab",
-				textContent: "↗️ New Tab",
-				inside: this.controls,
-				target: "_blank",
-				events: {
-					"click mouseenter": evt => {
-						a.href = Demo.createURL(this.getHTMLPage({inline: false, noBase: this.noBase}), self.safari);
-					}
-				}
-			});
-
-			// Open in codepen button
-			$.create("form", {
-				action: "https://codepen.io/pen/define",
-				method: "POST",
-				target: "_blank",
-				contents: [
-					{
-						tag: "input",
-						type: "hidden",
-						name: "data",
-					},
-					{
-						tag: "button",
-						textContent: "↗️ CodePen",
-						className: "play"
-					}
-				],
-				inside: this.controls,
-				onsubmit: async evt => {
-					// Since this can be async, we need more time
-					// We will cancel this submit event, then submit via code when we're ready
-					evt.preventDefault();
-
-					let baseCSS = this.baseCSS + this.extraCSS;
-
-					if (baseCSS) {
-						baseCSS = [
-							"/* Base styles, not related to example */",
-							baseCSS,
-							"/* Main CSS */",
-						].join("\n");
-					}
-
-					let css = [baseCSS, this.css].join("\n");
-
-					let js = this.js;
-
-					// Inline @import
-					if (!this.noBase) {
-						let imports = [];
-
-						css = css.replace(/@import\s+url\((['"]?)(.+)\1\);/g, (_, q, url) => {
-							imports.push(url);
-							return "";
-						});
-
-						if (imports.length > 0) {
-							let importedCSS = await Promise.all(
-								imports.map(async url => {
-									url = new URL(url, location.href);
-
-									let response = await fetch(url);
-									let css = await response.text();
-
-									return css;
-								})
-							);
-
-							importedCSS = importedCSS.join("\n");
-
-							css = importedCSS + css;
-						}
-					}
-
-					evt.target.elements.data.value = JSON.stringify({
-						title,
-						html: this.html,
-						css,
-						js,
-						editors: `${+!!this.html}${+!!css}${+!!js}0`,
-						head: this.noBase? "" : `<base href="${location.href}" />`
-					});
-
-					evt.target.submit();
-				}
-			});
-
-			// Next & previous slide buttons
-			$.create("button", {
-				className: "prev",
-				textContent: "◂",
-				title: "Previous slide",
-				start: this.controls,
-				events: {
-					click: Inspire.previous
-				}
-			});
-
-			$.create("button", {
-				className: "next",
-				textContent: "Next ▸",
-				inside: this.controls,
-				events: {
-					click: Inspire.next
-				}
-			});
-
-			var h1 = $(".slide > h1", this.slide);
-			if (h1) {
-				this.controls.prepend(h1);
-			}
-		}
-		else {
-			this.ready = Promise.resolve();
-
-			this.ready.then(() => {
-				for (let id in this.editors) {
-					this.output(id);
-				}
-			});
-		}
-
-		this.slide.addEventListener("slidechange", evt => {
-			for (let id in this.editors) {
-				this.editors[id].textarea.dispatchEvent(new InputEvent("input"));
-			}
-		});
-
-		var editorKeys = Object.keys(this.editors);
-
-		if (editorKeys.length > 1) {
-			// More than 1 editors, need the ability to toggle
-			editorKeys.forEach((id, i) => {
-				var editor = this.editors[id];
-
-				var label = $.create("label", {
-					htmlFor: editor.textarea.id,
-					inside: editor.wrapper,
-					textContent: editor.lang,
-					tabIndex: "0",
-					onclick: evt => this.openEditor(id)
-				});
-
-				editor.textarea.addEventListener("focus", evt => this.openEditor(id));
-
-				if (i == 0) {
-					this.openEditor(id);
-				}
-			});
-		}
-	}
-
-	fixCode(id, code) {
-		if (_.fixers[id] && _.fixers[id].length) {
-			for (let fixer of _.fixers[id]) {
-				var newCode = fixer(code);
-
-				if (newCode !== undefined) {
-					code = newCode;
-				}
-			}
-		}
-
-		return code;
-	}
-
-	output(id) {
-		var editor = this.editors[id];
-		var code = editor.textarea.value;
-
-		code = this.fixCode(id, code);
-
-		if (this.updateReload) {
-			this.updateIframe();
-			return;
-		}
-
-		if (id === "markup") {
-			if (this.isolated) {
-				if (this.iframe.contentDocument.body) {
-					this.iframe.contentDocument.body.innerHTML = code;
-				}
-			}
-			else {
-				this.element.innerHTML = code;
-			}
-		}
-		else if (id === "css") {
-			if (this.isolated && !this.style) {
-				this.style = $("style#live", this.iframe.contentDocument);
-			}
-
-			if (this.style) {
-				this.style.textContent = code;
-			}
-
-			if (!this.isolated) {
-				// Scope rules to increase specificity
-				if (!this.style.sheet) {
-					// Stupid Chrome bug
-					this.style.textContent = this.style.textContent + "/**/";
-				}
-
-				if (this.style.sheet) {
-					let scope = this.editors.css.textarea.getAttribute("data-scope") || `#${this.slide.id} .demo-target `;
-
-					for (let rule of this.style.sheet.cssRules) {
-						_.scopeRule(rule, this.slide, scope);
-					}
-				}
-				else {
-					console.log("FAIL on", this.slide.id, this.style.outerHTML, this.style.media);
-				}
-			}
-		}
-	}
-
-	updateIframe() {
-		this.iframe.srcdoc = this.getHTMLPage();
-
-		return new Promise(resolve => {
-			this.iframe.onload = resolve;
-		}).then(evt => {
-			this.style = $("style#live", this.iframe.contentDocument);
-			return evt;
-		});
-	}
-
-	get html() {
-		if (!this.editors.markup) {
-			// No HTML editor
-			return "";
-		}
-
-		var editor = this.editors.markup.source;
-
-		if (editor) {
-			var prepend = editor.dataset.prepend? editor.dataset.prepend + "\n" : "";
-			var append = editor.dataset.append? "\n" + editor.dataset.append : "";
-			return `${prepend}${editor.value}${append}`;
-		}
-		else {
-			return this.element.innerHTML;
-		}
-	}
-
-	get css() {
-		return $.value(this.editors.css, "value");
-	}
-
-	get js() {
-		return $.value(this.editors.js || this.editors.javascript, "value");
-	}
-
-	get title() {
-		return (this.slide.title || this.slide.dataset.title || "") + " Demo";
-	}
-
-	getHTMLPage({title, inline} = {}) {
-		return Demo.getHTMLPage({
-			html: this.html,
-			css: this.css,
-			extraCSS: this.extraCSS,
-			baseCSS: this.baseCSS,
-			js: this.js,
-			title: title || this.title,
-			inline,
-			noBase: this.noBase
-		});
-	}
-
-	openEditor(id) {
-		for (let i in this.editors) {
-			this.editors[i].wrapper.classList.toggle("collapsed", i !== id);
-		}
-	}
-
-	static createEditor(slide, label, o = {}) {
-		var lang = o.lang || label;
-
-		var textarea = $.create("textarea", {
-			id: `${slide.id}-${label}-editor`,
-			className: `language-${lang} editor`,
-			"data-lang": lang,
-			inside: o.container || slide,
-			value: o.fromSource(),
-			events: {
-				input: o.toSource
-			}
-		});
-
-		return new Prism.Live(textarea);
-	}
-
-	static createURL(html, useDataURI, type = "text/html") {
-		html = html.replace(/&#x200b;/g, "");
-
-		if (useDataURI) {
-			return `data:${type},${encodeURIComponent(html)}`;
-		}
-		else {
-			return URL.createObjectURL(new Blob([html], {type}));
-		}
-	}
-
-	static scopeRule(rule, slide, scope) {
-		let selector = rule.selectorText;
-
-		if (rule.cssRules) {
-			// If this rule contains rules, scope those too
-			// Mainly useful for @supports and @media
-			for (let innerRule of rule.cssRules) {
-				_.scopeRule(innerRule, slide, scope);
-			}
-		}
-
-		if (selector && rule instanceof CSSStyleRule) {
-			let shouldScope = !(
-				selector.includes("#")  // don't do anything if the selector already contains an id
-				|| selector == ":root"
-			);
-
-			if (selector == "article" || selector == ".slide") {
-				rule.selectorText = `#${slide.id}`;
-			}
-			else if (shouldScope && selector.indexOf(scope) !== 0) {
-				rule.selectorText = selector.split(",").map(s => `${scope} ${s}`).join(", ");
-			}
-		}
-	}
-
-	static getHTMLPage ({html="", css="", baseCSS = Demo.baseCSS, extraCSS="", js="", title="Demo", inline = true, noBase = false} = {}) {
-
-		baseCSS = baseCSS + (baseCSS && extraCSS? "\n" : "") + extraCSS;
-
-		// Hoist imports to top
-		let imports = [];
-		baseCSS.replace(/@import .+;/g, $0 => {
-			imports.push($0);
-			return "";
-		});
-
-		if (imports.length > 0) {
-			baseCSS = [...imports, baseCSS].join("\n");
-		}
-
-		if (css !== "undefined") {
-			css = `<style id=live>
-${css}
-</style>`;
-		}
-
-		return `<!DOCTYPE html>
-<html lang="en">
-<head>
-${noBase? "" : `<base href="${location.href}" />`}
-<meta charset="UTF-8">
-<title>${title}</title>
-<style>
-/* Base styles, not related to demo */
-${baseCSS}
-</style>
-${css}
-</head>
-<body>
-${html}
-${js || inline? `
-<script>
-${js}
-
-${inline? `document.addEventListener("click", evt => {
-	if (evt.target.matches('a[href^="#"]:not([target])')) {
-		let prevented = evt.defaultPrevented;
-		evt.preventDefault();
-
-		if (!prevented) {
-			let href = evt.target.getAttribute("href");
-			let target = document.querySelector(href);
-			// evt.preventDefault();
-			target.scrollIntoView()
-		}
-	}
-})` : ""}
-
-</script>` : ""}
-
-</body>
-</html>`;
-	}
-
-	static init(slide) {
-		if (slide.matches(".demo") && !slide.demo) {
-			slide.demo = new Demo(slide);
-		}
-	}
-
-	static initAll() {
-		$$(".demo.slide").forEach(slide => {
-			if (!slide.demo) {
-				slide.demo = new Demo(slide);
-			}
-		});
-	}
-};
-
-Demo.fixers = {
-	html: [],
-	css: [
-		code => {
-			if (!/\{[\S\s]+\}/.test(code.replace(/'[\S\s]+'/g, ""))) {
-				return `.slide {
+LiveDemo.fixers.css.push(code => {
+	if (!/\{[\S\s]+\}/.test(code.replace(/'[\S\s]+'/g, ""))) {
+		return `.slide {
 	${code}
 }`;
-			}
-		}
-	]
-};
+	}
+});
 
-Demo.baseCSS = `body {
+LiveDemo.baseCSS = `body {
 	font: 200% system-ui, Helvetica Neue, Segoe UI, sans-serif;
 }
 
@@ -542,14 +30,41 @@ input, select, textarea, button {
 }
 `;
 
-var baseCSSTemplate = $(".live-demo-base-css");
-if (baseCSSTemplate) {
-	// textContent doesn't work on <template>
-	Demo.baseCSS = baseCSSTemplate.textContent || baseCSSTemplate.innerHTML;
-}
+LiveDemo.hooks.add("after-init", function() {
+	if (this.isolated) {
+		// Next & previous slide buttons
+		$.create("button", {
+			className: "prev",
+			textContent: "◂",
+			title: "Previous slide",
+			start: this.controls,
+			events: {
+				click: Inspire.previous
+			}
+		});
+
+		$.create("button", {
+			className: "next",
+			textContent: "Next ▸",
+			inside: this.controls,
+			events: {
+				click: Inspire.next
+			}
+		});
+	}
+});
+
+LiveDemo.hooks.add("scoperule", function(env) {
+	let selector = env.rule.selectorText;
+
+	if (selector == "article" || selector == ".slide") {
+		env.rule.selectorText = `#${env.container.id}`;
+		env.returnValue = undefined;
+	}
+})
 
 if (!Prism.Live) {
-	// Filter loaded languages to only languages used in demo slides
+	// Filter loaded languages to only languages used in demos
 	var languages = [];
 
 	for (let [id, lang] of Object.entries(prism.meta.languages)) {
@@ -569,24 +84,37 @@ if (!Prism.Live) {
 	}
 }
 
-document.addEventListener("slidechange", evt => {
-	Demo.init(evt.target);
-});
-
-if (Inspire.currentSlide) {
-	$.ready().then(() => {
-		Demo.init(Inspire.currentSlide);
-	});
+var baseCSSTemplate = $(".live-demo-base-css");
+if (baseCSSTemplate) {
+	// textContent doesn't work on <template>
+	LiveDemo.baseCSS = baseCSSTemplate.textContent || baseCSSTemplate.innerHTML;
 }
 
-await Inspire.importsLoaded;
+document.addEventListener("slidechange", evt => {
+	let slide = evt.target;
+	if (slide.classList.contains("demo")){
+		let demo = LiveDemo.init(evt.target);
 
-var io = new IntersectionObserver(entries => {
-	entries.forEach(entry => Demo.init(entry.target));
+		for (let id in demo.editors) {
+			demo.editors[id].textarea.dispatchEvent(new InputEvent("input"));
+		}
+	}
 });
 
-$$(".demo.slide").forEach(demo => {
-	io.observe(demo);
-})
+$.ready().then(async _ => {
+	await Inspire.slideshowCreated;
 
-})();
+	if (Inspire.currentSlide?.classList.contains("demo")){
+		LiveDemo.init(Inspire.currentSlide);
+	}
+
+	var io = new IntersectionObserver(entries => {
+		entries.forEach(entry => LiveDemo.init(entry.target));
+	});
+
+	$$(".demo.slide").forEach(demo => {
+		io.observe(demo);
+	});
+});
+
+

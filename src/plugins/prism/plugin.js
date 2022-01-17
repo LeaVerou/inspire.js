@@ -3,20 +3,10 @@
  */
 
 import Inspire from "../../../inspire.mjs";
+import * as util from "../../util.js";
+import * as meta from "./meta.js";
 
-let PRISM_ROOT = Inspire.u.getAttribute("data-prism-root");
-
-if (!PRISM_ROOT) {
-	// Find a good default
-	try {
-		await fetch("https://prismjs.com", { method: 'HEAD' });
-		PRISM_ROOT = "https://prismjs.com";
-	}
-	catch (e) {
-		// Main website is down, fetch from repo
-		PRISM_ROOT = "https://cdn.jsdelivr.net/gh/prismjs/prism";
-	}
-}
+let PRISM_ROOT = meta.PRISM_ROOT;
 
 // Which languages are used?
 var ids = $$("[class*='lang-'], [class*='language-']").map(e => {
@@ -27,7 +17,7 @@ var ids = $$("[class*='lang-'], [class*='language-']").map(e => {
 ids = new Set(ids);
 
 // Which plugins to load?
-let plugins = Inspire.u.getAttribute("data-prism-plugins");
+let plugins = util.getAttribute("data-prism-plugins");
 plugins = plugins? plugins.split(/\s*,\s*/) : [];
 
 if (ids.size) {
@@ -47,23 +37,13 @@ if (ids.size) {
 	}
 }
 
-// Load metadata
-await $.include(`${PRISM_ROOT}/components.js`);
-let meta = components;
-
-var languages = meta.languages;
+let languages = meta.components.languages;
 
 // Replace aliases with their canonical id
 for (let [id, lang] of Object.entries(languages)) {
-	lang.id = id;
-
 	if (lang.alias) {
-		var alias = toArray(lang.alias);
-
-		alias.forEach(a => languages[a] = lang);
-
 		for (let i of ids) {
-			if (alias.indexOf(i) > -1) {
+			if (lang.alias.indexOf(i) > -1) {
 				ids.delete(i);
 				ids.add(id);
 			}
@@ -90,8 +70,8 @@ var loadLanguage = async id => {
 		return;
 	}
 
-	var deps = toArray(languages[id].require);
-	ok[id] = promise();
+	var deps = util.toArray(languages[id].require);
+	ok[id] = util.defer();
 
 	await Promise.all(deps.map(loadLanguage));
 
@@ -142,37 +122,5 @@ Inspire.hooks.add("slidechange", env => {
 	}
 
 });
-
-
-
-// Utilities
-function toArray(arr) {
-	return arr === undefined? [] : Array.isArray(arr)? arr : [arr];
-}
-
-function promise(constructor) {
-	var res, rej;
-
-	var promise = new Promise((resolve, reject) => {
-		if (constructor) {
-			constructor(resolve, reject);
-		}
-
-		res = resolve;
-		rej = reject;
-	});
-
-	promise.resolve = a => {
-		res(a);
-		return promise;
-	};
-
-	promise.reject = a => {
-		rej(a);
-		return promise;
-	};
-
-	return promise;
-};
 
 export { meta, ids as languages, plugins };
