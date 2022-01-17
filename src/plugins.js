@@ -1,4 +1,5 @@
 import registry from "./plugin-autoload.js";
+import * as util from "./util.js"
 
 export {registry};
 
@@ -17,7 +18,7 @@ export function load (id, def = {}) {
 			if (loadCSS && module.hasCSS) {
 				return $.load("plugin.css", pluginURL);
 			}
-		});
+		}).catch(console.log);
 	}
 
 	return loaded[id].loaded;

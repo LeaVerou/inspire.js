@@ -6,6 +6,7 @@
 	 */
 
 import * as plugins from "./src/plugins.js";
+import * as util from "./src/util.js";
 
 // Cache <title> element, we may need it for slides that don"t have titles
 const documentTitle = document.title + "";
@@ -35,6 +36,9 @@ const _ = {
 	// This is useful for plugins to delay initialization until they've fetched stuff
 	delayInit: [],
 
+	slideshowCreated: util.defer(),
+	importsLoaded: util.defer(),
+
 	async setup() {
 		_.dependencies = [];
 
@@ -42,7 +46,7 @@ const _ = {
 
 		_.dependencies.push(...plugins.loadAll());
 
-		_.ready = Promise.all(_.dependencies).then(() => {
+		_.ready = Promise.allSettled(_.dependencies).then(() => {
 			let loaded = Object.keys(plugins.loaded);
 			console.log("Inspire.js plugins loaded:", loaded.length? loaded.join(", ") : "none");
 
@@ -300,6 +304,8 @@ const _ = {
 		});
 
 		_.hooks.run("init-end", this);
+
+		_.slideshowCreated.resolve();
 
 		return this;
 	},
@@ -632,13 +638,7 @@ const _ = {
 		return element.closest(".slide");
 	},
 
-	importsLoaded: new Promise(async resolve => {
-		await $.ready();
-		await _.loadImports();
-		resolve();
-	}),
-
-	loadImports() {
+	async loadImports() {
 		let parser = new DOMParser();
 
 		_.imports = $$('link[rel="inspire-import"]').map(async link => {
@@ -653,7 +653,7 @@ const _ = {
 
 		let talkCSS = $('link[href$="talk.css"]');
 
-		return Promise.all(_.imports.map(async imported => {
+		let ret = await Promise.all(_.imports.map(async imported => {
 			let info = await imported;
 			let link = info.link;
 			let doc = info.doc;
@@ -739,22 +739,16 @@ const _ = {
 
 			return doc;
 		}));
+
+		_.importsLoaded.resolve();
+
+		return ret;
 	},
 
 	// Plugins can call this to signify to other plugins that the DOM changed
 	domchanged: element => {
 		let evt = new CustomEvent("inspire-domchanged", {bubbles: true});
 		element.dispatchEvent(evt);
-	},
-
-	// Utilities
-	u: {
-		// Get attribute value, from the first element it's defined on
-		// Useful for things like global settings where we don't care where the attribute is on
-		getAttribute(attribute) {
-			let element = $(`[${attribute}]`);
-			return element && element.getAttribute(attribute);
-		},
 	},
 };
 
@@ -766,7 +760,9 @@ if (profile) {
 	document.documentElement.dataset.profile = profile;
 }
 
-$.ready().then(_.setup);
+await $.ready();
+await _.loadImports();
+_.setup();
 
 export default _;
 
