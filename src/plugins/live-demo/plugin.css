@@ -1,6 +1,7 @@
 
 	.live-demo:not(.minimal) {
 		background: hsl(220,10%,95%);
+		color: black;
 		font-size: 200%;
 	}
 .live-demo pre.prism-live {

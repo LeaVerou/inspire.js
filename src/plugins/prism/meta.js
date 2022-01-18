@@ -17,6 +17,7 @@ if (!PRISM_ROOT) {
 
 export const components = await util.importCJS(`${PRISM_ROOT}/components.js`);
 let languages = components.languages;
+let plugins = components.plugins;
 
 // Make it easier to find canonical id
 for (let [id, lang] of Object.entries(components.languages)) {
@@ -29,4 +30,4 @@ for (let [id, lang] of Object.entries(components.languages)) {
 	}
 }
 
-export {languages};
+export {languages, plugins};

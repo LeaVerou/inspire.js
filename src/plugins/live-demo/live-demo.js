@@ -32,8 +32,6 @@ export default class LiveDemo {
 			inside: this.container
 		});
 
-
-
 		let textareas = $$("textarea", this.container);
 
 		this.container.dataset.editors = textareas.length;
@@ -211,6 +209,54 @@ export default class LiveDemo {
 			});
 		}
 
+		this.script = $("script[type='application/json'].demo-script", this.container);
+
+		if (this.script) {
+			const PLAY_LABEL = "▶️ Play", PAUSE_LABEL = "⏸️ Pause";
+			let playButton = create("button", {
+				className: "replay",
+				textContent: PLAY_LABEL,
+				inside: this.controls,
+				onclick: async evt => {
+					let isPlay = playButton.textContent === PLAY_LABEL;
+					playButton.textContent = isPlay? PAUSE_LABEL : PLAY_LABEL;
+
+					if (this.replayer) {
+						if (this.replayer.queue.length > 0) {
+							if (this.replayer.paused) {
+								Object.values(this.editors)[0].textarea.focus();
+								await this.replayer.resume();
+								playButton.textContent = PLAY_LABEL;
+
+								if (this.replayer.queue.length === 0) {
+									playButton.disabled = true; // Can't play twice, as the content has changed!
+								}
+
+								return;
+							}
+							else {
+								await this.replayer.pause();
+								playButton.textContent = PLAY_LABEL;
+							}
+						}
+
+
+
+					}
+
+					try {
+						let script = JSON.parse(this.script.textContent);
+						Object.values(this.editors)[0].textarea.focus();
+						await this.play(script);
+						playButton.textContent = PLAY_LABEL;
+					}
+					catch (e) {
+						console.error("Cannot play live demo script due to JSON parse error:", e);
+					}
+				}
+			});
+		}
+
 		var editorKeys = Object.keys(this.editors);
 
 		if (editorKeys.length > 1) {
@@ -360,6 +406,19 @@ export default class LiveDemo {
 		for (let i in this.editors) {
 			this.editors[i].wrapper.classList.toggle("collapsed", i !== id);
 		}
+	}
+
+	async play (script) {
+		if (!this.replayer) {
+			let Replayer = await import("http://rety.verou.me/src/replayer.js").then(m => m.default);
+			let editors = Object.fromEntries(Object.entries(this.editors).map(([id, editor]) => [id, editor.textarea]));
+
+			this.replayer = new Replayer(editors, {
+				pauses: "pause"
+			});
+		}
+
+		return this.replayer.runAll(script);
 	}
 
 	static createEditor(container, label, o = {}) {

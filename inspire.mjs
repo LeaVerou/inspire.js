@@ -766,3 +766,4 @@ _.setup();
 
 export default _;
 
+window.Inspire = _;
