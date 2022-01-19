@@ -15,6 +15,10 @@ import Hooks from "https://v2.blissfuljs.com/src/Hooks.js";
 	- HTML fixup
  */
 
+if (!Prism.plugins.NormalizeWhitespace) {
+	await prismMeta.loadPlugin("normalize-whitespace");
+}
+
 export default class LiveDemo {
 	constructor(container, o = {}) {
 		this.container = container;

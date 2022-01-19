@@ -84,23 +84,7 @@ await Promise.all(ids.map(loadLanguage));
 
 // Load plugins
 if (plugins.length) {
-	// Drop plugins already loaded
-	plugins = plugins.filter(id => {
-		var CamelCase = id.replace(/(?:^|\-)(\w)/g, ($0, $1) => $1.toUpperCase());
-		return !Prism.plugins[CamelCase];
-	});
-
-	await Promise.all(plugins.map(id => {
-		if (!meta.plugins[id]) {
-			return;
-		}
-
-		if (!meta.plugins[id].noCSS) {
-			$.include(`${PRISM_ROOT}/plugins/${id}/prism-${id}.css`);
-		}
-
-		return $.include(`${PRISM_ROOT}/plugins/${id}/prism-${id}.js`)
-	}));
+	await Promise.all(plugins.map(id => meta.loadPlugin(id)));
 }
 
 var message = !prismAlreadyLoaded? ["Prism Core"] : [];

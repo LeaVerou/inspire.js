@@ -30,4 +30,24 @@ for (let [id, lang] of Object.entries(components.languages)) {
 	}
 }
 
+export async function loadPlugin(id) {
+	let CamelCase = id.replace(/(?:^|\-)(\w)/g, ($0, $1) => $1.toUpperCase());
+
+	if (!Prism.plugins[CamelCase]) {
+		// Not already loaded
+		if (!plugins[id]) {
+			// Unknown plugin
+			return;
+		}
+
+		if (!plugins[id].noCSS) {
+			$.include(`${PRISM_ROOT}/plugins/${id}/prism-${id}.css`);
+		}
+
+		await $.include(`${PRISM_ROOT}/plugins/${id}/prism-${id}.js`)
+	}
+
+	return Prism.plugins[CamelCase];
+}
+
 export {languages, plugins};
