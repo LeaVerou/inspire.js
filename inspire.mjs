@@ -104,6 +104,10 @@ let _ = {
 				slideContainers.add(ancestor);
 			}
 
+			if (slide.id && !slide.dataset.originalid) {
+				slide.dataset.originalid = slide.id;
+			}
+
 			// Set data-title attribute to the title of the slide
 			let title = slide.title || slide.getAttribute("data-title");
 
