@@ -8,29 +8,10 @@
 import * as plugins from "./src/plugins.js";
 import * as util from "./src/util.js";
 
-// Cache <title> element, we may need it for slides that don"t have titles
-const documentTitle = document.title + "";
-
-if (!window.Bliss) {
-	// Load Bliss if not loaded
-	console.log("Bliss not loaded. Loading remotely from blissfuljs.com");
-
-	let bliss = document.createElement("script");
-	bliss.src = "https://blissfuljs.com/bliss.shy.min.js";
-	document.head.appendChild(bliss);
-
-	await new Promise(resolve => bliss.onload = resolve);
-}
-
-window.$ = Bliss;
-window.$$ = $.$;
-
-const _ = {
+let _ = {
 	// Plugin ids and selectors
 	// If selector matches anything, plugin is loaded
 	plugins,
-
-	hooks: new $.Hooks(),
 
 	// Inspire will not initialize until any promises pushed here are resolved
 	// This is useful for plugins to delay initialization until they've fetched stuff
@@ -161,7 +142,6 @@ const _ = {
 					slide.id = id; // Ok if it's duplicate, next bit of code will fix that
 				}
 			}
-
 
 			if (slide.id) {
 				// If duplicate id, append number to make it unique
@@ -752,18 +732,53 @@ const _ = {
 	},
 };
 
-const url = new URL(location);
-const profile = url.searchParams && url.searchParams.get("profile");
+// Cache <title> element, we may need it for slides that don"t have titles
+const documentTitle = document.title + "";
 
-if (profile) {
-	_.profile = profile;
-	document.documentElement.dataset.profile = profile;
+
+
+
+if (!window.Inspire || !window.Inspire.loaded) {
+	// Setup Inspire iif it has not already been loaded
+	if (!window.Bliss) {
+		// Load Bliss if not loaded
+		console.log("Bliss not loaded. Loading remotely from blissfuljs.com");
+
+		let bliss = document.createElement("script");
+		bliss.src = "https://blissfuljs.com/bliss.shy.min.js";
+		document.head.appendChild(bliss);
+
+		await new Promise(resolve => bliss.onload = resolve);
+	}
+
+	window.$ = Bliss;
+	window.$$ = $.$;
+
+	_.hooks = new $.Hooks();
+	_.loaded = true;
+	window.Inspire = _;
+
+	const url = new URL(location);
+	const profile = url.searchParams && url.searchParams.get("profile");
+
+	if (profile) {
+		_.profile = profile;
+		document.documentElement.dataset.profile = profile;
+	}
+
+	await $.ready();
+
+	// Commenting slides out works sometimes, but fails if the slides you're commenting also have comments.
+	// These classes work with nesting too
+	$$(".inspire-remove, .inspire-comment").forEach(element => element.remove());
+
+	await _.loadImports();
+	_.setup();
 }
-
-await $.ready();
-await _.loadImports();
-_.setup();
+else {
+	// If Inspire has already been loaded, export that and discard this one
+	_ = window.Inspire;
+}
 
 export default _;
 
-window.Inspire = _;
