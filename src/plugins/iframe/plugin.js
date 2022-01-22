@@ -45,11 +45,9 @@ Inspire.hooks.add({
 			slide.classList.add("onscreen-nav");
 		}
 
-		if (slide.matches(".iframe")) {
-			var iframe = $("iframe", slide), src;
-
-			if (iframe && !iframe.hasAttribute("src") && (src = iframe.getAttribute("data-src"))) {
-				iframe.setAttribute("src", src);
+		for (let iframe of $$("iframe[data-src]", slide)) {
+			if (!iframe.hasAttribute("src")) {
+				iframe.setAttribute("src", iframe.dataset.src);
 			}
 		}
 	}

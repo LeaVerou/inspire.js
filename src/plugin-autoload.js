@@ -8,7 +8,7 @@ export default {
 	"lazy-load": "[data-src]:not(.slide)",
 	"slide-style": "style[data-slide]",
 	overview: "*",
-	iframe: ".slide[data-src], .iframe.slide",
+	iframe: ".slide[data-src], .iframe.slide, iframe[data-src]",
 	prism: "[class*='lang-'], [class*='language-']",
 	media: "[data-video], .media-frame",
 	"live-demo": ".demo.slide",
