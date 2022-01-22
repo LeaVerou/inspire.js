@@ -93,7 +93,7 @@
 			display: block;
 			width: 100%;
 			height: 100%;
-			object-fit: contain;
+			object-fit: cover;
 		}
 .heading-MxN > div > ol,
 		.heading-MxN > article > ol,
