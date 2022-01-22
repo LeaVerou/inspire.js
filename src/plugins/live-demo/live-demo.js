@@ -15,6 +15,17 @@ import Hooks from "https://v2.blissfuljs.com/src/Hooks.js";
 	- HTML fixup
  */
 
+function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Postpone init if Prism is not loaded
+let interval = 100;
+while (!window.Prism) {
+	await sleep(interval);
+	interval *= 2;
+}
+
 if (!Prism.plugins.NormalizeWhitespace) {
 	await prismMeta.loadPlugin("normalize-whitespace");
 }
