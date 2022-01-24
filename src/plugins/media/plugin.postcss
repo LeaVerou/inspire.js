@@ -28,10 +28,9 @@
 
 	box-shadow: 0 20px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(0,0,0,.3) inset;
 	padding-top: calc(var(--frame-top) * 1px);
-	background-color: white
-}
+	background-color: white;
 
-.media-frame::before, .browser::before {
+	&::before {
 		content: "";
 		position: absolute;
 		top: 0; right: 0; left: 0;
@@ -41,15 +40,15 @@
 		border-image-source: url("chrome.png");
 	}
 
-.media-frame.small, .browser.small {
-		padding-top: calc(var(--frame-top) * 1px / 2)
-	}
+	&.small {
+		padding-top: calc(var(--frame-top) * 1px / 2);
 
-.media-frame.small::before, .browser.small::before {
+		&::before {
 			border-width: 19px calc(var(--frame-right) * 1px / 2) 0 calc(var(--frame-left) * 1px / 2);
 		}
+	}
 
-.media-frame > :first-child:first-child, .browser > :first-child:first-child {
+	& > :first-child:first-child {
 		display: block;
 		max-width: 100%;
 		max-height: calc(100vh - 6vw);
@@ -61,7 +60,7 @@
 		border-bottom-right-radius: inherit;
 	}
 
-.media-frame::after, .browser::after {
+	&::after {
 		content: var(--url);
 		position: absolute;
 		top: .45em;
@@ -70,6 +69,7 @@
 		color: black;
 		font-weight: 400;
 	}
+}
 
 .browser > iframe:only-child {
 	width: 100%;
@@ -77,10 +77,9 @@
 }
 
 .video-container {
-	position: relative
-}
+	position: relative;
 
-.video-container .annotation {
+	& .annotation {
 		background: rgba(0,0,0,.6);
 		color: white;
 		position: absolute;
@@ -98,26 +97,25 @@
 
 		--pointer-height: .3em;
 		--pointer-left: 1em;
-		--pointer-aspect-ratio: 2
-	}
+		--pointer-aspect-ratio: 2;
 
-.video-container .annotation.centered {
+		&.centered {
 			left: 50%;
 			top: 50%;
 			transform: translate(-50%);
 			transform-origin: center;
 		}
 
-.video-container .annotation.top-pointer {
-			transform-origin: var(--pointer-left) calc(-1 * var(--pointer-height))
-		}
+		&.top-pointer {
+			transform-origin: var(--pointer-left) calc(-1 * var(--pointer-height));
 
-.video-container .annotation.top-pointer::before {
+			&::before {
 				bottom: calc(100% - .5px);
 				clip-path: polygon(0 100%, 50% 0, 100% 100%);
 			}
+		}
 
-.video-container .annotation:not(.no-pointer)::before {
+		&:not(.no-pointer)::before {
 			content: "";
 			position: absolute;
 			left: var(--pointer-left);
@@ -126,17 +124,19 @@
 			background: inherit;
 		}
 
-.video-container .annotation.bottom-pointer::before {
+		&.bottom-pointer::before {
 			top: calc(100% - .5px);
 			clip-path: polygon(0 0, 50% 100%, 100% 0);
 		}
 
-.video-container .annotation:is(code) {
+		&:is(code) {
 			white-space: pre;
 		}
+	}
 
-.video-container video:not(.paused) ~ .annotation.on-pause,
-	.video-container .annotation.hidden {
+	& video:not(.paused) ~ .annotation.on-pause,
+	& .annotation.hidden {
 		opacity: 0;
 		transform: scale(.5);
 	}
+}

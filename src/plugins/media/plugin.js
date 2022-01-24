@@ -6,6 +6,8 @@
 * 		Annotation attributes: data-time="1000 to 2000", data-pause="3000"
  */
 
+export const hasCSS = true;
+
 var $ = Bliss, $$ = $.$;
 
 $$(".slide[data-video]").forEach(slide => slide.classList.add("dont-resize"));
