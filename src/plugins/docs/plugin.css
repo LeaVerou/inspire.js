@@ -16,15 +16,15 @@ h1 .docs-link::before {
 }
 
 a[href^="https://developer.mozilla.org/en-US/docs/"]::before {
-	--image: url("https://developer.mozilla.org/static/img/favicon32.7f3da72dcea1.png");
+	--image: url("icons/mdn.png");
 }
 
 a[href^="https://www.w3.org/"]::before {
-	--image: url("https://www.w3.org/favicon.ico");
+	--image: url("w3.ico");
 }
 
 a[href*="whatwg.org"]::before {
-	--image: url("https://resources.whatwg.org/logo.svg");
+	--image: url("whatwg.svg");
 }
 
 .element {
