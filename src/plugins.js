@@ -12,13 +12,25 @@ export function load (id, def = {}) {
 		let loadCSS = !$(`.no-css-${id}, .no-${id}-css, .${id}-no-css`);
 		let plugin = loaded[id] = {};
 
-		plugin.loaded = import(pluginURL).then(module => {
+		plugin.loadedJS = util.defer();
+		plugin.loadedCSS = loadCSS ? util.defer() : Promise.resolve(false);
+		plugin.loaded = Promise.all([plugin.loadedJS, plugin.loadedCSS]);
+
+		import(pluginURL).then(module => {
 			plugin.module = module;
 
-			if (loadCSS && module.hasCSS) {
-				return $.load("plugin.css", pluginURL);
-			}
-		}).catch(console.log);
+
+		}).catch(console.log).then(() => plugin.loadedJS.resolve(plugin));
+
+		if (loadCSS) {
+			plugin.loadedJS.then(({module}) => {
+				if (module.hasCSS) {
+					return $.load("plugin.css", pluginURL);
+				}
+			}).then(() => plugin.loadedCSS.resolve(plugin));
+		}
+
+
 	}
 
 	return loaded[id].loaded;

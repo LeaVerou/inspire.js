@@ -4,6 +4,7 @@ import Inspire from "../../../inspire.mjs";
 export const hasCSS = true;
 
 let processDocsLinks = (root = document) => {
+
 	$$(Inspire.plugins.registry.docs, root).forEach(code => {
 		let text = code.dataset.mdn && !/\/$/.test(code.dataset.mdn)? "" : code.textContent;
 		let path;
@@ -50,7 +51,9 @@ let processDocsLinks = (root = document) => {
 	});
 };
 
-processDocsLinks(document.body);
+Inspire.plugins.loaded.docs.loadedCSS.then(() => {
+	processDocsLinks(document.body);
+});
 
 document.addEventListener("inspire-domchanged", evt => {
 	processDocsLinks(evt.target);
