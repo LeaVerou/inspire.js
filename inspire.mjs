@@ -739,45 +739,48 @@ let _ = {
 // Cache <title> element, we may need it for slides that don"t have titles
 const documentTitle = document.title + "";
 
-
-
-
 if (!window.Inspire || !window.Inspire.loaded) {
-	// Setup Inspire iif it has not already been loaded
-	if (!window.Bliss) {
-		// Load Bliss if not loaded
-		console.log("Bliss not loaded. Loading remotely from blissfuljs.com");
-
-		let bliss = document.createElement("script");
-		bliss.src = "https://blissfuljs.com/bliss.shy.min.js";
-		document.head.appendChild(bliss);
-
-		await new Promise(resolve => bliss.onload = resolve);
-	}
-
-	window.$ = Bliss;
-	window.$$ = $.$;
-
-	_.hooks = new $.Hooks();
-	_.loaded = true;
 	window.Inspire = _;
+	_.loaded = util.defer();
 
-	const url = new URL(location);
-	const profile = url.searchParams && url.searchParams.get("profile");
+	(async () => {
+		// Setup Inspire iif it has not already been loaded
+		if (!window.Bliss) {
+			// Load Bliss if not loaded
+			console.log("Bliss not loaded. Loading remotely from blissfuljs.com");
 
-	if (profile) {
-		_.profile = profile;
-		document.documentElement.dataset.profile = profile;
-	}
+			let bliss = document.createElement("script");
+			bliss.src = "https://blissfuljs.com/bliss.shy.min.js";
+			document.head.appendChild(bliss);
 
-	await $.ready();
+			await new Promise(resolve => bliss.onload = resolve);
+		}
 
-	// Commenting slides out works sometimes, but fails if the slides you're commenting also have comments.
-	// These classes work with nesting too
-	$$(".inspire-remove, .inspire-comment").forEach(element => element.remove());
+		window.$ = Bliss;
+		window.$$ = $.$;
 
-	await _.loadImports();
-	_.setup();
+		_.hooks = new $.Hooks();
+		_.loaded.resolve(true);
+
+		const url = new URL(location);
+		const profile = url.searchParams && url.searchParams.get("profile");
+
+		if (profile) {
+			_.profile = profile;
+			document.documentElement.dataset.profile = profile;
+		}
+
+		await $.ready();
+
+		// Commenting slides out works sometimes, but fails if the slides you're commenting also have comments.
+		// These classes work with nesting too
+		$$(".inspire-remove, .inspire-comment").forEach(element => element.remove());
+
+		await _.loadImports();
+		_.setup();
+	})();
+
+
 }
 else {
 	// If Inspire has already been loaded, export that and discard this one
