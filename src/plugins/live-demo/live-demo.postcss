@@ -105,8 +105,9 @@
 
 		&:not(.horizontal) {
 			 /* if it breaks, use 1.5em as height of first row */
+			--fr: calc(2fr * var(--division, 50) / 100);
 			grid-template: "editor controls" auto
-						   "editor target" minmax(0, 1fr) / .5fr minmax(0, .5fr);
+						   "editor target" minmax(0, 1fr) / 1fr minmax(0, 1fr);
 		}
 
 		& .demo-target {
