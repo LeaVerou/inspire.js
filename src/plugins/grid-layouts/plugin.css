@@ -25,17 +25,21 @@
 			margin-bottom: 0;
 			font-size: 250%;
 		}
-.heading-MxN > figure {
+.heading-MxN {
+
+	/*& > figure {
 		display: flex;
 		flex-flow: column;
 		margin: 0;
 		box-sizing: border-box;
-		height: 100%
-	}
-.heading-MxN > figure > :not(figcaption) {
+		height: 100%;
+
+		& > :not(figcaption) {
 			flex: 1;
 			flex-basis: 0;
 		}
+	}*/
+}
 .heading-MxN > div,
 	.heading-MxN > article,
 	.heading-MxN > section,
