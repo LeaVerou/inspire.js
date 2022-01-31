@@ -8,7 +8,7 @@ Inspire.hooks.add({
 			// Projector window was reloaded
 			document.body.classList.add("projector");
 			Inspire.presenter = opener;
-			Inspire.presenter.Inspire.projector = this;
+			Inspire.presenter.Inspire.projector = window;
 		}
 	},
 	"keyup": env => {

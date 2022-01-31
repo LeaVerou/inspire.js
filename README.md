@@ -92,6 +92,14 @@ document.addEventListener("slidechange", evt => {
 });
 ```
 
+or:
+
+```js
+$("#slide-id").addEventListener("slidechange", evt => {
+	// Code to run
+}, {once: true});
+```
+
 ### Running code after a specific slide has been displayed
 
 You can do this via the `slidechange` hook:
