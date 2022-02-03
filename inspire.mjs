@@ -684,10 +684,16 @@ let _ = {
 			}
 
 			for (let script of $$('script[src$="talk.js"]', doc)) {
-				$.create("script", {
-					src: script.src,
-					inside: document.head
-				});
+				if (script.type == "module"){
+					import(script.src);
+				}
+				else {
+					$.create("script", {
+						src: script.src,
+						inside: document.head
+					});
+				}
+
 			}
 
 			// Replace imported slides with their correct HTML

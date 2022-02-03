@@ -18,19 +18,18 @@ export function load (id, def = {}) {
 
 		import(pluginURL).then(module => {
 			plugin.module = module;
-
-
-		}).catch(console.log).then(() => plugin.loadedJS.resolve(plugin));
+		})
+		.catch(console.error)
+		.then(() => plugin.loadedJS.resolve(plugin));
 
 		if (loadCSS) {
-			plugin.loadedJS.then(({module}) => {
-				if (module.hasCSS) {
+			plugin.loadedJS.then(plugin => {
+
+				if (plugin.module?.hasCSS) {
 					return $.load("plugin.css", pluginURL);
 				}
 			}).then(() => plugin.loadedCSS.resolve(plugin));
 		}
-
-
 	}
 
 	return loaded[id].loaded;
