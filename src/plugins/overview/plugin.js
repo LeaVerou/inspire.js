@@ -12,6 +12,7 @@ Inspire.hooks.add({
 	"keyup": function(env) {
 		// Ctrl+H / Shift + H : Show section overview
 		// Ctrl + Shift + H: Show overview of all slides
+		// Alt can also be used instead of Ctrl
 		// Esc: Escape
 
 		if (!(env.evt.key === "Escape" || env.letter === "H")) {
@@ -20,12 +21,12 @@ Inspire.hooks.add({
 		}
 
 		var evt = env.evt;
-		var headersOnly = !(evt.shiftKey && evt.ctrlKey);
+		var headersOnly = !(evt.shiftKey && (evt.ctrlKey || evt.altKey));
 
 		if (document.body.matches(".show-thumbnails") && env.evt.key === "Escape") {
 			exitOverview();
 		}
-		else if (env.letter === "H" && evt.ctrlKey) {
+		else if (env.letter === "H" && (evt.ctrlKey || evt.altKey)) {
 			let defaultSelector = enteredSelector || (headersOnly? ".slide:not(header):not(:target)" : "");
 			let selector = prompt("Which slides to filter out? Enter a compound selector, or leave empty to show all slides.", defaultSelector);
 
