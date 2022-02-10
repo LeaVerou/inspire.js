@@ -20,3 +20,7 @@
 .presenter.show-next .slide.next:hover {
 	transform: scale(.5);
 }
+
+.presenter-only:not(.presenter *) {
+	display: none;
+}

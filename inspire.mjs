@@ -460,6 +460,7 @@ let _ = {
 				}
 			}
 
+			// Make videos without visible controls play/pause on click
 			for (let video of $$("video:not([controls])", env.slide)) {
 				video.addEventListener("click", evt => {
 					if (video.paused) {
