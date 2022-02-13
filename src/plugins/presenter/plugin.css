@@ -24,3 +24,7 @@
 .presenter-only:not(.presenter *) {
 	display: none;
 }
+
+.presenter .presenter-hide {
+	display: none;
+}
