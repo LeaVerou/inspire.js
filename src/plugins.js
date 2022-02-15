@@ -35,11 +35,11 @@ export function load (id, def = {}) {
 	return loaded[id].loaded;
 }
 
-export function loadAll () {
+export function loadAll (plugins = registry) {
 	let ret = [];
 
-	for (let id in registry) {
-		let def = registry[id];
+	for (let id in plugins) {
+		let def = plugins[id];
 		let test = def.test || def;
 
 		if (($(test) || document.body.matches(`[data-load-plugins~="${id}"]`)) && !document.body.matches(`.no-${id}`)) {
@@ -48,4 +48,12 @@ export function loadAll () {
 	}
 
 	return ret;
+}
+
+export function register (plugins) {
+	for (let id in plugins) {
+		registry[id] = plugins[id];
+	}
+
+	loadAll(plugins);
 }
