@@ -228,6 +228,7 @@ export default class LiveDemo {
 
 		if (this.script) {
 			const PLAY_LABEL = "▶️ Play", PAUSE_LABEL = "⏸️ Pause";
+
 			let playButton = create("button", {
 				className: "replay",
 				textContent: PLAY_LABEL,
@@ -237,9 +238,13 @@ export default class LiveDemo {
 					playButton.textContent = isPlay? PAUSE_LABEL : PLAY_LABEL;
 
 					if (this.replayer) {
+						// Restore delay (that skip may have messed with)
+						this.replayer.options.delay = this.replayer.constructor.defaultOptions.delay;
+
 						if (this.replayer.queue.length > 0) {
 							if (this.replayer.paused) {
 								Object.values(this.editors)[0].textarea.focus();
+
 								await this.replayer.resume();
 								playButton.textContent = PLAY_LABEL;
 
@@ -254,10 +259,9 @@ export default class LiveDemo {
 								playButton.textContent = PLAY_LABEL;
 							}
 						}
-
-
-
 					}
+
+
 
 					try {
 						let script = JSON.parse(this.script.textContent);
@@ -268,6 +272,23 @@ export default class LiveDemo {
 					catch (e) {
 						console.error("Cannot play live demo script due to JSON parse error:", e);
 					}
+				}
+			});
+			create("button", {
+				className: "skip",
+				textContent: "⏭️",
+				title: "Skip",
+				inside: this.controls,
+				onclick: async evt => {
+					if (this.replayer) {
+						if (this.replayer.paused) {
+							playButton.click();
+						}
+
+						this.replayer.options.delay = 0;
+					}
+
+
 				}
 			});
 		}
