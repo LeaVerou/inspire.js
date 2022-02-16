@@ -154,11 +154,11 @@ details.notes {
 	margin-left: auto;
 }
 
-/* <hr> in notes separates notes for revisits */
-.slide[data-visit="1"] details.notes hr,
-.slide[data-visit="1"] details.notes hr ~ *,
+/* <hr> in notes separates notes for revisits
+   we want the actual lines visible, so that we know how many more times we'll see the slide
+ */
 
-.slide[data-visit="2"] details.notes hr:nth-of-type(2),
+.slide[data-visit="1"] details.notes hr ~ *,
 .slide[data-visit="2"] details.notes hr:nth-of-type(2) ~ * {
 	display: none;
 }
