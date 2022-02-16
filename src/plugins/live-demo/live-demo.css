@@ -131,6 +131,7 @@
 			}
 
 .live-demo.isolated > iframe {
+			width: 100%;
 			justify-self: stretch;
 			border: 0;
 			box-sizing: border-box;
@@ -151,6 +152,7 @@
 			}
 
 .live-demo.isolated:not(.horizontal) > iframe {
+
 					margin-bottom: var(--padding);
 					border-bottom-left-radius: 0;
 					border-top-left-radius: 0;
@@ -179,8 +181,8 @@
 	}
 
 .live-demo div.prism-live.collapsed {
-			max-height: var(--collapsed-height, var(--min-height));
-			min-height: var(--min-height);
+			min-height: var(--collapsed-height, var(--min-height));
+			/* min-height: var(--min-height); */
 			overflow: hidden;
 			flex: none
 		}
