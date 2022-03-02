@@ -146,3 +146,7 @@ kbd {
 	kbd + kbd {
 		margin-left: .1em;
 	}
+
+.slide[data-visit="1"] [data-visit]:not([data-visit~="1"]) {
+	display: none;
+}
