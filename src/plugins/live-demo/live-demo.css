@@ -131,7 +131,6 @@
 			}
 
 .live-demo.isolated > iframe {
-			width: 100%;
 			justify-self: stretch;
 			border: 0;
 			box-sizing: border-box;
@@ -182,7 +181,8 @@
 
 .live-demo div.prism-live.collapsed {
 			min-height: var(--collapsed-height, var(--min-height));
-			/* min-height: var(--min-height); */
+
+
 			overflow: hidden;
 			flex: none
 		}
@@ -196,22 +196,31 @@
 				overflow: hidden;
 			}
 
+.live-demo.horizontal div.prism-live.collapsed {
+				height: var(--collapsed-height, var(--min-height));
+				min-height: var(--min-height);
+			}
+
+.live-demo.horizontal pre.prism-live {
+			max-height: calc(var(--division, 50) * var(--_height, 100vh) / 100);
+		}
+
 .live-demo {
 
 	/* Hack to fix overflowing height */
 }
 
+.live-demo:not(.horizontal) div.prism-live {
+			contain: size
+		}
+
 .live-demo:not(.horizontal) div.prism-live:not(.collapsed) {
-		max-height: calc(var(--_height) - (var(--editors, 1) - 1) * var(--collapsed-height, var(--min-height)));
-	}
+				/* max-height: calc(var(--_height) - (var(--editors, 1) - 1) * var(--collapsed-height, var(--min-height))); */
+			}
 
 .live-demo textarea.prism-live {
 		max-width: 100%;
 		min-height: 1.6em;
-	}
-
-.live-demo.horizontal pre.prism-live {
-		max-height: calc(var(--division, 50) * var(--_height) / 100vh);
 	}
 
 .live-demo pre.prism-live {
