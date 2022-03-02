@@ -5,6 +5,8 @@ export {registry};
 
 export let loaded = {};
 
+export const TIMEOUT = 4000;
+
 export function load (id, def = {}) {
 	if (!loaded[id]) {
 		let path = def.path || "plugins";
@@ -12,23 +14,32 @@ export function load (id, def = {}) {
 		let loadCSS = !$(`.no-css-${id}, .no-${id}-css, .${id}-no-css`);
 		let plugin = loaded[id] = {};
 
-		plugin.loadedJS = util.defer();
-		plugin.loadedCSS = loadCSS ? util.defer() : Promise.resolve(false);
-		plugin.loaded = Promise.all([plugin.loadedJS, plugin.loadedCSS]);
 
-		import(pluginURL).then(module => {
+
+		let loadedJS = import(pluginURL).then(module => {
 			plugin.module = module;
 		})
 		.catch(console.error)
 		.then(() => plugin.loadedJS.resolve(plugin));
 
+		plugin.loadedJS = util.defer(loadedJS);
+		plugin.loadedCSS = loadCSS ? util.defer() : Promise.resolve(false);
+		plugin.loaded = Promise.allSettled([plugin.loadedJS, plugin.loadedCSS]);
+
+		setTimeout(() => {
+			plugin.loadedJS.reject(new Error(`Plugin ${id} failed to load JS`));
+		}, TIMEOUT);
+
 		if (loadCSS) {
 			plugin.loadedJS.then(plugin => {
-
 				if (plugin.module?.hasCSS) {
 					return $.load("plugin.css", pluginURL);
 				}
 			}).then(() => plugin.loadedCSS.resolve(plugin));
+
+			setTimeout(() => {
+				plugin.loadedCSS.reject(new Error(`Plugin ${id} failed to load CSS`));
+			}, TIMEOUT);
 		}
 	}
 

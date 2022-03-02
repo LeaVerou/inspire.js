@@ -1,11 +1,13 @@
 import $ from "https://v2.blissfuljs.com/src/$.js";
 
-export function defer() {
+export function defer(source) {
 	var res, rej;
 
 	var promise = new Promise((resolve, reject) => {
 		res = resolve;
 		rej = reject;
+
+		source?.then(res, rej);
 	});
 
 	promise.resolve = res;
