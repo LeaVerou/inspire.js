@@ -446,7 +446,7 @@ export default class LiveDemo {
 
 	async play (script) {
 		if (!this.replayer) {
-			let Replayer = await import("http://rety.verou.me/src/replayer.js").then(m => m.default);
+			let Replayer = await import("https://rety.verou.me/src/replayer.js").then(m => m.default);
 			let editors = Object.fromEntries(Object.entries(this.editors).map(([id, editor]) => [id, editor.textarea]));
 
 			this.replayer = new Replayer(editors, {
