@@ -108,13 +108,13 @@ $.ready().then(async _ => {
 		LiveDemo.init(Inspire.currentSlide);
 	}
 
-	var io = new IntersectionObserver(entries => {
-		entries.forEach(entry => LiveDemo.init(entry.target));
-	});
+	// var io = new IntersectionObserver(entries => {
+	// 	entries.forEach(entry => LiveDemo.init(entry.target));
+	// });
 
-	$$(".demo.slide").forEach(demo => {
-		io.observe(demo);
-	});
+	// $$(".demo.slide").forEach(demo => {
+	// 	io.observe(demo);
+	// });
 });
 
 export {LiveDemo};
