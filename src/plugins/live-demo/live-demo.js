@@ -69,9 +69,10 @@ export default class LiveDemo {
 				textarea.addEventListener("input", evt => this.output(id));
 			}
 			else {
-				textarea.addEventListener("keyup", evt => {
+				textarea.addEventListener("keydown", evt => {
 					if (evt.key == "Enter" && (evt.ctrlKey || evt.metaKey)) {
 						this.output(id);
+						evt.preventDefault();
 					}
 				});
 			}
