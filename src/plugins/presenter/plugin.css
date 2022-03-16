@@ -21,10 +21,11 @@
 	transform: scale(.5);
 }
 
-.presenter-only:not(.presenter *) {
+.presenter-only:not(.presenter *),
+.presenter .presenter-hide {
 	display: none;
 }
 
-.presenter .presenter-hide {
-	display: none;
+.presenter :where(.delayed, .delayed-children > *):not(.displayed, .current) {
+	opacity: .2;
 }
