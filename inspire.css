@@ -76,7 +76,7 @@ body.show-all .slide {
 }
 
 	#indicator:not(:empty)::after {
-		counter-reset: total var(--total);
+		counter-reset: total var(--total-slides);
 		content: counter(total);
 		display: block;
 		border-top: 1px solid;

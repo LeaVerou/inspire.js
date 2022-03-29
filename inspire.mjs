@@ -85,7 +85,7 @@ let _ = {
 
 		// Get the slide elements into an array
 		_.slides = $$(".slide", document.body);
-		_.indicator.style.setProperty("--total", _.slides.length);
+		document.documentElement.style.setProperty("--total-slides", _.slides.length);
 
 		// Order of the slides
 		_.order = [];
