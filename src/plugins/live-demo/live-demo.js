@@ -516,7 +516,7 @@ export default class LiveDemo {
 		}
 	}
 
-	static getHTMLPage ({html="", css="", baseCSS = LiveDemo.baseCSS, extraCSS="", js="", title="Demo", inline = true, noBase = false} = {}) {
+	static getHTMLPage ({html="", css="", baseCSS = LiveDemo.baseCSS, extraCSS="", js="", title="Demo", inline = true, noBase = false, module = false} = {}) {
 
 		baseCSS = baseCSS + (baseCSS && extraCSS? "\n" : "") + extraCSS;
 
@@ -552,7 +552,7 @@ ${css}
 <body>
 ${html}
 ${js || inline? `
-<script>
+<script${module? ' type="module"' : ""}>
 ${js}
 
 ${inline? `document.addEventListener("click", evt => {
