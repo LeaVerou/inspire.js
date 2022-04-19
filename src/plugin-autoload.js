@@ -24,5 +24,6 @@ export default {
 	"grid-layouts": "[class*='heading-']",
 	"balance-lines": ".balance-lines, [data-balance-elements]",
 	"details-notes": "details.notes",
-	"markdown": "[data-markdown-elements]"
+	"markdown": "[data-markdown-elements]",
+	"delayed-actions": "inspire-action",
 };
