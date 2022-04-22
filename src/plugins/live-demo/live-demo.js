@@ -347,8 +347,18 @@ export default class LiveDemo {
 	}
 
 	output(id) {
-		var editor = this.editors[id];
-		var code = editor.textarea.value;
+		let editor = this.editors[id];
+		let code;
+
+		if (id in this) {
+			code = this[id];
+		}
+		else if (id === "markup"){
+			code = this.html;
+		}
+		else if (id === "javascript") {
+			code = this.js;
+		}
 
 		code = this.fixCode(id, code);
 
@@ -417,8 +427,8 @@ export default class LiveDemo {
 		var editor = this.editors.markup.source;
 
 		if (editor) {
-			var prepend = editor.dataset.prepend? editor.dataset.prepend + "\n" : "";
-			var append = editor.dataset.append? "\n" + editor.dataset.append : "";
+			let prepend = editor.dataset.prepend? editor.dataset.prepend + "\n" : "";
+			let append = editor.dataset.append? "\n" + editor.dataset.append : "";
 			return `${prepend}${editor.value}${append}`;
 		}
 		else {
