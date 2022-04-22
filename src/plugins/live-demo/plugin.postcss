@@ -3,31 +3,33 @@
 		background: hsl(220,10%,95%);
 		color: black;
 		font-size: 200%;
-	}
 
-	& pre.prism-live {
-		background: hsl(200, 10%, 20%) linear-gradient(rgba(0,0,0,.1) 50%, transparent 0);
-		background-origin: content-box;
-		background-size: auto 3em;
-		background-attachment: local;
-		color: white;
-	}
-
-	&:not(.horizontal) {
-		& textarea.prism-live {
-			box-shadow: -.1em 0 .2em rgba(0,0,0,.3) inset;
+		& div.prism-live {
+			background: hsl(200, 10%, 15%);
 		}
-	}
 
-	&.horizontal {
-		& textarea.prism-live {
-			box-shadow: 0 .1em .2em rgba(0,0,0,.3) inset;
+		& pre.prism-live {
+			background: hsl(200, 10%, 20%) linear-gradient(rgba(0,0,0,.1) 50%, transparent 0);
+			background-origin: content-box;
+			background-size: auto 3em;
+			background-attachment: local;
+			color: white;
+		}
+
+		&:not(.horizontal) {
+			& textarea.prism-live {
+				box-shadow: -.1em 0 .2em rgba(0,0,0,.3) inset;
+			}
+		}
+
+		&.horizontal {
+			& textarea.prism-live {
+				box-shadow: 0 .1em .2em rgba(0,0,0,.3) inset;
+			}
 		}
 	}
 
 	& div.prism-live {
-		background: hsl(200, 10%, 15%);
-
 		& ::-webkit-scrollbar {
 			width: 10px;
 			height: 10px;
