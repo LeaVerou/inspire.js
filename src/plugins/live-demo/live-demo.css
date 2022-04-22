@@ -130,32 +130,34 @@
 				/* min-width: 15em; */
 			}
 
-.live-demo.isolated > iframe {
-			justify-self: stretch;
-			border: 0;
-			box-sizing: border-box;
-			margin: 0;
-			border-radius: 8px;
-			background: hsl(0 0% 100% / .8);
-			resize: both;
-		}
-
-.live-demo.isolated.horizontal > iframe {
-					border-bottom-left-radius: 0;
-					border-bottom-right-radius: 0;
-					margin: 0 .5em;
-				}
-
-.live-demo.isolated:not(.horizontal) {
-				padding-right: var(--padding)
+.live-demo.isolated:not(.minimal) > iframe {
+				justify-self: stretch;
+				border-radius: 8px;
+				background: hsl(0 0% 100% / .8);
 			}
 
-.live-demo.isolated:not(.horizontal) > iframe {
+.live-demo.isolated.horizontal:not(.minimal) > iframe {
+						border-bottom-left-radius: 0;
+						border-bottom-right-radius: 0;
+						margin: 0 .5em;
+					}
 
-					margin-bottom: var(--padding);
-					border-bottom-left-radius: 0;
-					border-top-left-radius: 0;
+.live-demo.isolated:not(.minimal):not(.horizontal) {
+					padding-right: var(--padding)
 				}
+
+.live-demo.isolated:not(.minimal):not(.horizontal) > iframe {
+						margin-bottom: var(--padding);
+						border-bottom-left-radius: 0;
+						border-top-left-radius: 0;
+					}
+
+.live-demo.isolated > iframe {
+			border: 0;
+			margin: 0;
+			box-sizing: border-box;
+			resize: both;
+		}
 
 .live-demo.horizontal:not(.isolated) .demo-target {
 				padding: 0 1rem;
