@@ -228,7 +228,8 @@ export default class LiveDemo {
 		this.script = $("script[type='application/json'].demo-script", this.container);
 
 		if (this.script) {
-			const PLAY_LABEL = "▶️ Play", PAUSE_LABEL = "⏸️ Pause";
+			const PLAY_LABEL = "▶️ Play";
+			const PAUSE_LABEL = "⏸️ Pause";
 
 			let playButton = create("button", {
 				className: "replay",
@@ -248,6 +249,7 @@ export default class LiveDemo {
 
 								await this.replayer.resume();
 								playButton.textContent = PLAY_LABEL;
+								document.activeElement.blur(); // blur editor
 
 								if (this.replayer.queue.length === 0) {
 									playButton.disabled = true; // Can't play twice, as the content has changed!
@@ -258,23 +260,31 @@ export default class LiveDemo {
 							else {
 								await this.replayer.pause();
 								playButton.textContent = PLAY_LABEL;
+								document.activeElement.blur(); // blur editor
 							}
 						}
 					}
-
-
 
 					try {
 						let script = JSON.parse(this.script.textContent);
 						Object.values(this.editors)[0].textarea.focus();
 						await this.play(script);
 						playButton.textContent = PLAY_LABEL;
+						document.activeElement.blur(); // blur editor
 					}
 					catch (e) {
 						console.error("Cannot play live demo script due to JSON parse error:", e);
 					}
 				}
 			});
+
+			this.editorContainer.addEventListener("keydown", evt => {
+				if (evt.key === "Escape" && playButton.textContent === PAUSE_LABEL) {
+					document.activeElement.blur(); // blur editor
+					this.replayer.pause();
+				}
+			})
+
 			create("button", {
 				className: "skip",
 				textContent: "⏭️",
@@ -288,8 +298,6 @@ export default class LiveDemo {
 
 						this.replayer.options.delay = 0;
 					}
-
-
 				}
 			});
 		}
