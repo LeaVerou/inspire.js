@@ -52,6 +52,25 @@ LiveDemo.hooks.add("after-init", function() {
 			}
 		});
 	}
+
+	if (this.script) {
+		let pauses = JSON.parse(this.script.textContent).filter(step => step.type === "pause").length;
+
+		// Trigger play automatically when you hit next
+		for (let i = 0; i < pauses + 1; i++) {
+			$.create("inspire-action", {
+				attributes: {
+					"target": "button.replay",
+					"once": ""
+				},
+				inside: this.controls
+			});
+		}
+
+		if (this.container === Inspire.currentSlide) {
+			Inspire.updateItems();
+		}
+	}
 });
 
 LiveDemo.hooks.add("scoperule", function(env) {
