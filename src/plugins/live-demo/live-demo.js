@@ -34,6 +34,7 @@ export default class LiveDemo {
 	constructor(container, o = {}) {
 		this.container = container;
 		this.isolated = "isolated" in o? o.isolated : this.container.classList.contains("isolated");
+		this.minimal = "minimal" in o? o.minimal : this.container.classList.contains("minimal");
 		this.updateReload = "updateReload" in o? o.updateReload : this.container.classList.contains("update-reload");
 		this.noBase = "base" in o? o.base === false : this.container.classList.contains("no-base");
 		this.baseCSS = "baseCSS" in o? o.baseCSS === false : this.container.classList.contains("no-base-css")? "" : LiveDemo.baseCSS;
@@ -80,7 +81,7 @@ export default class LiveDemo {
 
 		this.controls = create({
 			className: "demo-controls",
-			contents: this.container.classList.contains("minimal")? [] : $("details.notes", this.container),
+			contents: this.minimal? [] : $("details.notes", this.container),
 			after: this.editorContainer
 		});
 
@@ -210,10 +211,13 @@ export default class LiveDemo {
 				}
 			});
 
-			var h1 = $(":scope > h1", this.container);
-			if (h1) {
-				this.controls.prepend(h1);
+			if (!this.minimal) {
+				let h1 = $(":scope > h1", this.container);
+				if (h1) {
+					this.controls.prepend(h1);
+				}
 			}
+
 		}
 		else {
 			this.ready = Promise.resolve();
