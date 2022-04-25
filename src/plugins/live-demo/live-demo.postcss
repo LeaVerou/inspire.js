@@ -107,7 +107,7 @@
 			 /* if it breaks, use 1.5em as height of first row */
 			--fr: calc(2fr * var(--division, 50) / 100);
 			grid-template: "editor controls" auto
-						   "editor target" minmax(0, 1fr) / minmax(0, 1fr) minmax(0, 1fr);
+						   "editor target" minmax(0, 1fr) / calc(100% * var(--division, 50) / 100) minmax(0, 1fr);
 		}
 
 		& .demo-target {
