@@ -57,7 +57,7 @@ export default class InspireAction extends HTMLElement {
 
 	connectedCallback() {
 		this.classList.add("delayed");
-		this.innerHTML = `<slot></slot> ACTION HERE`;
+		this.innerHTML = `<slot></slot>`;
 	}
 
 	attributeChangedCallback(name, oldValue, newValue) {
