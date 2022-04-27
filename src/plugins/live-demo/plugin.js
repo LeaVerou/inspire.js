@@ -53,7 +53,7 @@ LiveDemo.hooks.add("after-init", function() {
 		});
 	}
 
-	if (this.script) {
+	if (this.script && this.minimal) {
 		let pauses = JSON.parse(this.script.textContent).filter(step => step.type === "pause").length;
 
 		// Trigger play automatically when you hit next
