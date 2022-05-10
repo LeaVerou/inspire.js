@@ -107,16 +107,16 @@ body.show-all .slide {
 		display: none;
 		opacity: 0;
 	}
-}
 
-#onscreen-nav:hover {
-	opacity: 1;
-}
-
-	#onscreen-nav:not(:hover) button {
-		margin-top: -1.5em;
-		pointer-events: none;
+	#onscreen-nav:hover {
+		opacity: 1;
 	}
+
+		#onscreen-nav:not(:hover) button {
+			margin-top: -1.5em;
+			pointer-events: none;
+		}
+}
 
 	button.onscreen-nav {
 		padding: .2em .5em;
@@ -129,12 +129,9 @@ body.show-all .slide {
 		cursor: pointer;
 	}
 
-	button.onscreen-nav:hover {
+	button.onscreen-nav:hover,
+	button.onscreen-nav:active {
 		background: black;
-	}
-
-	button.onscreen-nav.prev {
-
 	}
 
 /* If there's nothing selected, show the first */
