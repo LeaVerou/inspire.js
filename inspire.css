@@ -98,18 +98,14 @@ body.show-all .slide {
 	justify-content: space-between;
 	padding: 0 1em 1.4em;
 	font-size: 150%;
-	opacity: 0;
+	opacity: 1;
 	transition: 1s opacity;
 }
 
-#onscreen-nav.hidden {
-	display: none;
-}
-
-@media (pointer: coarse) {
+@media all and not (pointer: coarse) {
 	#onscreen-nav.hidden {
-		display: block;
-		opacity: 1;
+		display: none;
+		opacity: 0;
 	}
 }
 
