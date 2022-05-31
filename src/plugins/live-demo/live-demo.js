@@ -256,7 +256,7 @@ export default class LiveDemo {
 								document.activeElement.blur(); // blur editor
 
 								if (this.replayer.queue.length === 0) {
-									playButton.disabled = true; // Can't play twice, as the content has changed!
+									playButton.disabled = skipButton.disabled = true; // Can't play twice, as the content has changed!
 								}
 
 								return;
@@ -289,7 +289,7 @@ export default class LiveDemo {
 				}
 			})
 
-			create("button", {
+			let skipButton = create("button", {
 				className: "skip",
 				textContent: "⏭️",
 				title: "Skip",

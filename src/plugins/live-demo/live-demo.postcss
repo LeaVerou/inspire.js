@@ -64,12 +64,19 @@
 			cursor: pointer;
 			font-weight: bold;
 			white-space: nowrap;
+
+			&:disabled,
+			&:not(:hover):not(:focus) {
+				opacity: .6;
+			}
+
+			&:disabled {
+				cursor: not-allowed;
+				filter: grayscale(100%);
+			}
 		}
 
-		& .button:not(:hover):not(:focus),
-		& button:not(:hover):not(:focus) {
-			opacity: .6;
-		}
+
 	}
 
 	& .editor-container {
@@ -266,5 +273,16 @@
 			background: var(--label-hover-color, hsl(15, 100%, 45%));
 			opacity: 1;
 		}
+	}
+}
+
+.demo-controls {
+	container-name: demo_controls;
+	container-type: inline-size;
+}
+
+@container demo_controls (inline-size < 32em) {
+	.demo-controls button:is(.next, .prev) {
+		display: none;
 	}
 }

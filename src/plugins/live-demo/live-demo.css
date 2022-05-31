@@ -31,6 +31,8 @@
 		padding: .3em;
 		font-size: 60%;
 		line-height: 1.5
+
+
 	}
 
 .live-demo .demo-controls:empty {
@@ -67,13 +69,18 @@
 			border-radius: .2em;
 			cursor: pointer;
 			font-weight: bold;
-			white-space: nowrap;
+			white-space: nowrap
 		}
 
-.live-demo .demo-controls .button:not(:hover):not(:focus),
-		.live-demo .demo-controls button:not(:hover):not(:focus) {
-			opacity: .6;
-		}
+:is(.live-demo .demo-controls details.notes > summary,.live-demo .demo-controls .button,.live-demo .demo-controls button):disabled,
+			:is(.live-demo .demo-controls details.notes > summary,.live-demo .demo-controls .button,.live-demo .demo-controls button):not(:hover):not(:focus) {
+				opacity: .6;
+			}
+
+:is(.live-demo .demo-controls details.notes > summary,.live-demo .demo-controls .button,.live-demo .demo-controls button):disabled {
+				cursor: not-allowed;
+				filter: grayscale(100%);
+			}
 
 .live-demo .editor-container {
 		display: flex;
@@ -249,3 +256,14 @@
 			background: var(--label-hover-color, hsl(15, 100%, 45%));
 			opacity: 1;
 		}
+
+.demo-controls {
+	container-name: demo_controls;
+	container-type: inline-size;
+}
+
+@container demo_controls (inline-size < 32em) {
+	.demo-controls button:is(.next, .prev) {
+		display: none;
+	}
+}
