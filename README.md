@@ -1,5 +1,13 @@
 # Inspire.js
+
 ### Lean, hackable, extensible slide deck framework. Create basic slides by just writing HTML and CSS, do fancy custom stuff with JS, the sky is the limit!
+
+## Getting started
+
+- Copy blank.html somewhere
+- Also inspire.css, talk.css, theme.css
+- Add Your Own Content
+- Add talk-specific styling to talk.css
 
 ## Previously known as CSSS.
 
