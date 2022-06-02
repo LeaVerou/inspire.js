@@ -4,8 +4,8 @@
 
 ## Getting started
 
-- Copy blank.html somewhere
-- Also inspire.css, talk.css, theme.css
+- Copy (and rename) blank.html somewhere
+- Also copy talk.css, theme.css
 - Add Your Own Content
 - Add talk-specific styling to talk.css
 
