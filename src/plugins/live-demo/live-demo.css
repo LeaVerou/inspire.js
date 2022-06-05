@@ -26,6 +26,7 @@
 
 .live-demo .demo-controls {
 		grid-area: controls;
+		z-index: 1;
 		display: flex;
 		flex-wrap: wrap;
 		padding: .3em;
@@ -80,6 +81,17 @@
 :is(.live-demo .demo-controls details.notes > summary,.live-demo .demo-controls .button,.live-demo .demo-controls button):disabled {
 				cursor: not-allowed;
 				filter: grayscale(100%);
+			}
+
+.live-demo .demo-controls details.notes > summary,
+		.live-demo .demo-controls .button,
+		.live-demo .demo-controls button {
+
+			/* Prevent jumping around when the Play button becomes Pause */
+		}
+
+.replay:is(.live-demo .demo-controls details.notes > summary,.live-demo .demo-controls .button,.live-demo .demo-controls button) {
+				min-width: 7.5ch;
 			}
 
 .live-demo .editor-container {

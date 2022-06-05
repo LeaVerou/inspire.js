@@ -23,6 +23,7 @@
 
 	& .demo-controls {
 		grid-area: controls;
+		z-index: 1;
 		display: flex;
 		flex-wrap: wrap;
 		padding: .3em;
@@ -73,6 +74,11 @@
 			&:disabled {
 				cursor: not-allowed;
 				filter: grayscale(100%);
+			}
+
+			/* Prevent jumping around when the Play button becomes Pause */
+			&.replay {
+				min-width: 7.5ch;
 			}
 		}
 
