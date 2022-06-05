@@ -582,6 +582,10 @@ let _ = {
 			return;
 		}
 
+		if (getComputedStyle(slide).getPropertyValue("--dont-resize")) {
+			return;
+		}
+
 		slide.style.fontSize = "";
 
 		if (slide.scrollHeight <= innerHeight && slide.scrollWidth <= innerWidth) {
