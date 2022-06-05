@@ -37,6 +37,11 @@ if (ids.size) {
 	}
 }
 
+// Support prism-ignore to opt out of highlighting
+Prism.hooks.add("before-all-elements-highlight", function(env) {
+	env.elements = env.elements.filter(e => !e.matches(".prism-ignore, .prism-ignore *"));
+});
+
 let languages = meta.components.languages;
 
 // Replace aliases with their canonical id
