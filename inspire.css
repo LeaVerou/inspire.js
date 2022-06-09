@@ -32,6 +32,7 @@ body {
 	font-size: calc(100% + 1vw + 1vh);
 	transition: var(--transition-duration);
 	transition-property: var(--transition-properties);
+	contain: strict;
 }
 
 /* So that people can override and do things like
