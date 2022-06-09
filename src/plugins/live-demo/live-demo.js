@@ -19,6 +19,14 @@ function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+const PAUSE_THRESHOLD = 3000;
+
+const replayerOptions = {
+	delay: 140,
+	pauses: action => action.delay < PAUSE_THRESHOLD? "delay" : "pause",
+	// pauses: "pause",
+};
+
 // Postpone init if Prism is not loaded
 let interval = 100;
 while (!window.Prism) {
@@ -245,7 +253,8 @@ export default class LiveDemo {
 
 					if (this.replayer) {
 						// Restore delay (that skip may have messed with)
-						this.replayer.options.delay = this.replayer.constructor.defaultOptions.delay;
+						this.replayer.options.pauses = replayerOptions.pauses;
+						this.replayer.options.delay = replayerOptions.delay;
 
 						if (this.replayer.queue.length > 0) {
 							if (this.replayer.paused) {
@@ -254,12 +263,6 @@ export default class LiveDemo {
 								await this.replayer.resume();
 								playButton.textContent = PLAY_LABEL;
 								document.activeElement.blur(); // blur editor
-
-								if (this.replayer.queue.length === 0) {
-									playButton.disabled = skipButton.disabled = true; // Can't play twice, as the content has changed!
-								}
-
-								return;
 							}
 							else {
 								await this.replayer.pause();
@@ -267,6 +270,16 @@ export default class LiveDemo {
 								document.activeElement.blur(); // blur editor
 							}
 						}
+
+						if (this.replayer.queue.length === 0) {
+							playButton.disabled = skipButton.disabled = true; // Can't play twice, as the content has changed!
+							playButton.title = "";
+						}
+						else {
+							playButton.title = "Next action type: " + this.replayer.queue[0]?.type;
+						}
+
+						return;
 					}
 
 					try {
@@ -292,7 +305,7 @@ export default class LiveDemo {
 			let skipButton = create("button", {
 				className: "skip",
 				textContent: "⏭️",
-				title: "Skip",
+				title: "Skip (Ctrl/Cmd + click to skip to end)",
 				inside: this.controls,
 				onclick: async evt => {
 					if (this.replayer) {
@@ -301,6 +314,7 @@ export default class LiveDemo {
 						}
 
 						this.replayer.options.delay = 0;
+						this.replayer.options.pauses = action => action.delay < PAUSE_THRESHOLD || evt.metaKey || evt.ctrlKey? "ignore" : "pause";
 					}
 				}
 			});
@@ -473,9 +487,7 @@ export default class LiveDemo {
 			// let editors = Object.fromEntries(Object.entries(this.editors).map(([id, editor]) => [id, editor.textarea]));
 			let editors = Object.values(this.editors).map(editor => editor.textarea);
 
-			this.replayer = new Replayer(editors, {
-				pauses: "pause"
-			});
+			this.replayer = new Replayer(editors, replayerOptions);
 		}
 
 		return this.replayer.runAll(script);

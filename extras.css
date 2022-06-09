@@ -33,7 +33,7 @@
 	white-space: pre-line;
 	min-width: 20em;
 	box-shadow: 0 10px 5px -5px rgba(0,0,0,.3);
-	transform: rotate(45deg) translate(6em, -2em);
+	transform: rotate(45deg) translate(6em, var(--ribbon-offset, -2em));
 }
 
 /* Full image slides */
