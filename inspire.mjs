@@ -594,6 +594,7 @@ let _ = {
 
 		let size = parseInt(getComputedStyle(slide).fontSize);
 		let prev = {scrollHeight: slide.scrollHeight, scrollWidth: slide.scrollWidth};
+		let limit = 0;
 
 		for (
 			let factor = size / parseInt(getComputedStyle(document.body).fontSize);
@@ -603,10 +604,13 @@ let _ = {
 			slide.style.fontSize = factor * 100 + "%";
 
 			if (prev && prev.scrollHeight <= slide.scrollHeight && prev.scrollWidth <= slide.scrollWidth) {
-				// Reducing font-size is having no effect, abort mission
-				break;
+				// Reducing font-size is having no effect, abort mission after a few more tries
+				if (++limit > 5) {
+					break;
+				}
 			}
 			else {
+				limit = 0;
 				prev = null;
 			}
 		}
