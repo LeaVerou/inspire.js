@@ -582,7 +582,9 @@ let _ = {
 			return;
 		}
 
-		if (getComputedStyle(slide).getPropertyValue("--dont-resize")) {
+		let cs = getComputedStyle(slide);
+
+		if (cs.getPropertyValue("--dont-resize") || cs.overflow === "hidden" || cs.overflow === "clip") {
 			return;
 		}
 

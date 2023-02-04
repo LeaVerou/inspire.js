@@ -14,6 +14,11 @@
 }
 
 /* Ribbon */
+.slide[data-type],
+.slide:has(> .ribbon) {
+	overflow: clip;
+}
+
 [data-type].slide::after,
 .slide .ribbon {
 	content: attr(data-type);
