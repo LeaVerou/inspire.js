@@ -51,6 +51,14 @@ export default class LiveDemo {
 
 		this.editors = {};
 
+		this.replayerOptions = Object.assign({}, replayerOptions);
+
+		for (const attr of this.container.attributes) {
+			if (attr.name.startsWith("data-replayer-")) {
+				this.replayerOptions[attr.name.slice(14)] = attr.value;
+			}
+		}
+
 		this.editorContainer = create({
 			className: "editor-container",
 			inside: this.container
@@ -253,8 +261,8 @@ export default class LiveDemo {
 
 					if (this.replayer) {
 						// Restore delay (that skip may have messed with)
-						this.replayer.options.pauses = replayerOptions.pauses;
-						this.replayer.options.delay = replayerOptions.delay;
+						this.replayer.options.pauses = this.replayerOptions.pauses;
+						this.replayer.options.delay = this.replayerOptions.delay;
 
 						if (this.replayer.queue.length > 0) {
 							if (this.replayer.paused) {
@@ -487,7 +495,7 @@ export default class LiveDemo {
 			// let editors = Object.fromEntries(Object.entries(this.editors).map(([id, editor]) => [id, editor.textarea]));
 			let editors = Object.values(this.editors).map(editor => editor.textarea);
 
-			this.replayer = new Replayer(editors, replayerOptions);
+			this.replayer = new Replayer(editors, this.replayerOptions);
 		}
 
 		return this.replayer.runAll(script);
