@@ -30,7 +30,8 @@
 	opacity: .2;
 }
 
-.slide[data-offset]::after {
+.slide[data-offset] {
+	&::after {
 		content: "Right on time! 🎉";
 		position: absolute;
 		top: 0;
@@ -39,12 +40,13 @@
 		color: hsl(90 80% 80%);
 	}
 
-.slide[data-offset][data-running="ahead"]::after {
+	&[data-running="ahead"]::after {
 		content: "Running " attr(data-offset) " ahead";
 		color: hsl(70 80% 80%);
 	}
 
-.slide[data-offset][data-running="behind"]::after {
+	&[data-running="behind"]::after {
 		content: "⚠️ Running " attr(data-offset) " behind";
 		color: hsl(0 90% 85%);
 	}
+}

@@ -36,7 +36,37 @@ Inspire.hooks.add({
 		}
 
 		if (Inspire.projector) {
+			// We are in the presenter window
 			$$("details.notes", Inspire.currentSlide).forEach(d => d.open = true);
+
+			if (Inspire.currentSlide.matches("[data-start-time] [data-time]")) {
+				// This slide has a time hint, show if we're running behind
+
+				// Scheduled start time
+				let startTime = Inspire.currentSlide.closest("[data-start-time]")?.getAttribute("data-start-time");
+				let startTimeParsed = startTime.split(":").map(n => +n);
+
+				// Ideal offset from start time
+				let time = Inspire.currentSlide.dataset.time;
+				let timeParsed = time.split(":").map(n => +n);
+
+				// Current local time
+				let currentTime = new Date().toLocaleString("en", {timeStyle: "short", hour12: false});
+				let currentTimeParsed = currentTime.split(":").map(n => +n);
+
+				// Actual offset from start time, in minutes
+				let actualTime = (currentTimeParsed[0] - startTimeParsed[0]) * 60 + (currentTimeParsed[1] - startTimeParsed[1]);
+
+				let offset = actualTime - (timeParsed[0] * 60 + timeParsed[1]);
+				let offsetHours = Math.floor(Math.abs(offset / 60)).toString().padStart(2, "0");
+				let offsetMinutes = (Math.abs(offset) % 60).toString().padStart(2, "0");
+
+				Inspire.currentSlide.dataset.offset = `${offsetHours}:${offsetMinutes}`;
+
+				if (offset !== 0) {
+					Inspire.currentSlide.dataset.running = offset > 0? "behind" : "ahead";
+				}
+			}
 		}
 	},
 	"gotoitem-end": env => {
