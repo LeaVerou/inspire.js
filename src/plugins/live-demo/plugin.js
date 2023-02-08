@@ -28,6 +28,10 @@ LiveDemo.baseCSS = `body {
 input, select, textarea, button {
 	font: inherit;
 }
+
+input[type="number"] {
+	width: 4em;
+}
 `;
 
 LiveDemo.hooks.add("after-init", function() {

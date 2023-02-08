@@ -397,6 +397,16 @@ export default class LiveDemo {
 			}
 			else {
 				this.element.innerHTML = code;
+
+				// Make sure any scripts are executed
+				// Not a good idea to execute scripts multiple times in the same document
+				// let scripts = this.element.querySelectorAll("script");
+				// for (let script of scripts) {
+				// 	let clone = document.createElement("script");
+				// 	clone.innerHTML = script.innerHTML;
+				// 	script.getAttributeNames().forEach(attr => clone.setAttribute(attr, script.getAttribute(attr)));
+				// 	script.replaceWith(clone);
+				// }
 			}
 		}
 		else if (id === "css") {
@@ -479,7 +489,8 @@ export default class LiveDemo {
 			js: this.js,
 			title: title || this.title,
 			inline,
-			noBase: this.noBase
+			noBase: this.noBase,
+			module: /^\s*import/m.test(this.js),
 		});
 	}
 
@@ -591,14 +602,8 @@ ${noBase? "" : `<base href="${location.href}" />`}
 ${baseCSS}
 </style>
 ${css}
-</head>
-<body>
-${html}
-${js || inline? `
-<script${module? ' type="module"' : ""}>
-${js}
-
-${inline? `document.addEventListener("click", evt => {
+${inline? `<script>
+document.addEventListener("click", evt => {
 	if (evt.target.matches('a[href^="#"]:not([target])')) {
 		let prevented = evt.defaultPrevented;
 		evt.preventDefault();
@@ -610,8 +615,15 @@ ${inline? `document.addEventListener("click", evt => {
 			target.scrollIntoView()
 		}
 	}
-})` : ""}
+})
+</script>` : ""}
 
+</head>
+<body>
+${html}
+${js? `
+<script${module? ' type="module"' : ""}>
+${js}
 </script>` : ""}
 
 </body>
