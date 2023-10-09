@@ -7,7 +7,7 @@
 :root {
 	--transition-duration: .5s;
 	--transition-properties: transform, opacity, left, top, right, bottom, background;
-	--slide-base-font-size: calc(100% + 1vw + 1vh);
+	--slide-base-font-size: calc(1rem + 1vw + 1vh);
 }
 
 /**
