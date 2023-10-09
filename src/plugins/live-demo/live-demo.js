@@ -554,7 +554,7 @@ export default class LiveDemo {
 		if (selector && rule instanceof CSSStyleRule) {
 			let shouldScope = !(
 				selector.includes("#")  // don't do anything if the selector already contains an id
-				|| selector == ":root"
+				|| [":root", "body"].includes(selector) // don't scope these
 			);
 
 			let env = {context: this, rule, container, scope, shouldScope};
