@@ -7,6 +7,7 @@
 :root {
 	--transition-duration: .5s;
 	--transition-properties: transform, opacity, left, top, right, bottom, background;
+	--slide-base-font-size: calc(100% + 1vw + 1vh);
 }
 
 /**
@@ -29,7 +30,7 @@ body {
 	bottom: 0;
 	left: 0;
 	z-index: 1;
-	font-size: calc(100% + 1vw + 1vh);
+	font-size: var(--slide-base-font-size);
 	transition: var(--transition-duration);
 	transition-property: var(--transition-properties);
 	contain: strict;
