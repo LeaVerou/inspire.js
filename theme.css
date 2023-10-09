@@ -18,17 +18,13 @@
 	--medium1: var(--color-yellow);
 	--dark1: hsl(200, 15%, 20%);
 	--dark2: hsl(335, 100%, 35%);
-
 }
 
-body {
+html {
 	font: 300 100%/1.5 var(--font-body);
 	font-family: var(--font-body);
-	--darker: rgba(0,0,0,.12);
-	background: linear-gradient(45deg, var(--darker) 25%, transparent 25%, transparent 75%, var(--darker) 75%),
-	            linear-gradient(45deg, var(--darker) 25%, transparent 25%, transparent 75%, var(--darker) 75%) 20px 20px;
-	background-color: hsl(220, 10%, 97%);
-	background-size: 40px 40px;
+	--checkerboard: repeating-conic-gradient(rgb(0 0 0 / .12) 0 25%, transparent 0 50%) 0 0 / 40px 40px;
+	background: var(--checkerboard) hsl(220, 10%, 97%);
 	font-synthesis: none;
 }
 
