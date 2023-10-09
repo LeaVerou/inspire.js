@@ -24,7 +24,7 @@
 		flex-flow: column;
 	}
 
-.live-demo .demo-controls {
+.live-demo:not(.minimal) .demo-controls {
 		grid-area: controls;
 		z-index: 1;
 		display: flex;
@@ -36,11 +36,11 @@
 
 	}
 
-.live-demo .demo-controls:empty {
+.live-demo:not(.minimal) .demo-controls:empty {
 			display: none;
 		}
 
-.live-demo .demo-controls h1 {
+.live-demo:not(.minimal) .demo-controls h1 {
 			margin: 0;
 			margin-right: .5em;
 			font-size: 150%;
@@ -49,17 +49,17 @@
 			letter-spacing: -.02em;
 		}
 
-.live-demo .demo-controls form {
+.live-demo:not(.minimal) .demo-controls form {
 			display: contents;
 		}
 
-.live-demo .demo-controls details.notes {
+.live-demo:not(.minimal) .demo-controls details.notes {
 			font-size: 100%;
 		}
 
-.live-demo .demo-controls details.notes > summary,
-		.live-demo .demo-controls .button,
-		.live-demo .demo-controls button {
+.live-demo:not(.minimal) .demo-controls details.notes > summary,
+		.live-demo:not(.minimal) .demo-controls .button,
+		.live-demo:not(.minimal) .demo-controls button {
 			all: unset;
 			display: flex;
 			justify-content: center;
@@ -73,26 +73,34 @@
 			white-space: nowrap
 		}
 
-:is(.live-demo .demo-controls details.notes > summary,.live-demo .demo-controls .button,.live-demo .demo-controls button):disabled,
-			:is(.live-demo .demo-controls details.notes > summary,.live-demo .demo-controls .button,.live-demo .demo-controls button):not(:hover):not(:focus) {
+:is(.live-demo:not(.minimal) .demo-controls details.notes > summary,.live-demo:not(.minimal) .demo-controls .button,.live-demo:not(.minimal) .demo-controls button):disabled,
+			:is(.live-demo:not(.minimal) .demo-controls details.notes > summary,.live-demo:not(.minimal) .demo-controls .button,.live-demo:not(.minimal) .demo-controls button):not(:hover):not(:focus) {
 				opacity: .6;
 			}
 
-:is(.live-demo .demo-controls details.notes > summary,.live-demo .demo-controls .button,.live-demo .demo-controls button):disabled {
+:is(.live-demo:not(.minimal) .demo-controls details.notes > summary,.live-demo:not(.minimal) .demo-controls .button,.live-demo:not(.minimal) .demo-controls button):disabled {
 				cursor: not-allowed;
 				filter: grayscale(100%);
 			}
 
-.live-demo .demo-controls details.notes > summary,
-		.live-demo .demo-controls .button,
-		.live-demo .demo-controls button {
+.live-demo:not(.minimal) .demo-controls details.notes > summary,
+		.live-demo:not(.minimal) .demo-controls .button,
+		.live-demo:not(.minimal) .demo-controls button {
 
 			/* Prevent jumping around when the Play button becomes Pause */
 		}
 
-.replay:is(.live-demo .demo-controls details.notes > summary,.live-demo .demo-controls .button,.live-demo .demo-controls button) {
+.replay:is(.live-demo:not(.minimal) .demo-controls details.notes > summary,.live-demo:not(.minimal) .demo-controls .button,.live-demo:not(.minimal) .demo-controls button) {
 				min-width: 7.5ch;
 			}
+
+.live-demo.horizontal .demo-controls {
+		padding: .3em .6em;
+	}
+
+.live-demo.minimal .demo-controls {
+		display: none;
+	}
 
 .live-demo .editor-container {
 		display: flex;
@@ -107,10 +115,6 @@
 .live-demo .editor-container div.prism-live:not(.collapsed) {
 				flex: auto;
 			}
-
-.live-demo.minimal .demo-controls {
-			display: none;
-		}
 
 .live-demo:not(.minimal) {
 		padding: 0;
@@ -178,17 +182,13 @@
 			resize: both;
 		}
 
-.live-demo.horizontal:not(.isolated) .demo-target {
+.live-demo.horizontal:not(.isolated, .minimal) .demo-target {
 				padding: 0 1rem;
 			}
 
-.live-demo:not(.isolated):not(.horizontal) div.editor-container {
+.live-demo:not(.isolated, .minimal):not(.horizontal) div.editor-container {
 				margin-right: 1em;
 			}
-
-.live-demo.horizontal .demo-controls {
-		padding: .3em .6em;
-	}
 
 .live-demo div.prism-live {
 		color: inherit;
@@ -203,7 +203,6 @@
 .live-demo div.prism-live.collapsed {
 			min-height: var(--collapsed-height, var(--min-height));
 
-
 			overflow: hidden;
 			flex: none
 		}
@@ -217,12 +216,12 @@
 				overflow: hidden;
 			}
 
-.live-demo.horizontal div.prism-live.collapsed {
+.live-demo.horizontal:not(.minimal) div.prism-live.collapsed {
 				height: var(--collapsed-height, var(--min-height));
 				min-height: var(--min-height);
 			}
 
-.live-demo.horizontal pre.prism-live {
+.live-demo.horizontal:not(.minimal) pre.prism-live {
 			max-height: calc(var(--division, 50) * var(--_height, 100vh) / 100);
 		}
 
@@ -231,11 +230,11 @@
 	/* Hack to fix overflowing height */
 }
 
-.live-demo:not(.horizontal) div.prism-live {
+.live-demo:not(.horizontal, .minimal) div.prism-live {
 			contain: size
 		}
 
-.live-demo:not(.horizontal) div.prism-live:not(.collapsed) {
+.live-demo:not(.horizontal, .minimal) div.prism-live:not(.collapsed) {
 				/* max-height: calc(var(--_height) - (var(--editors, 1) - 1) * var(--collapsed-height, var(--min-height))); */
 			}
 

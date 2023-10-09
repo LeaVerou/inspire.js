@@ -21,7 +21,7 @@
 		flex-flow: column;
 	}
 
-	& .demo-controls {
+	&:not(.minimal) .demo-controls {
 		grid-area: controls;
 		z-index: 1;
 		display: flex;
@@ -85,6 +85,14 @@
 
 	}
 
+	&.horizontal .demo-controls {
+		padding: .3em .6em;
+	}
+
+	&.minimal .demo-controls {
+		display: none;
+	}
+
 	& .editor-container {
 		display: flex;
 		flex-flow: column;
@@ -96,12 +104,6 @@
 			&:not(.collapsed) {
 				flex: auto;
 			}
-		}
-	}
-
-	&.minimal {
-		& .demo-controls {
-			display: none;
 		}
 	}
 
@@ -181,8 +183,7 @@
 		}
 	}
 
-
-	&:not(.isolated) {
+	&:not(.isolated, .minimal) {
 		&.horizontal {
 			& .demo-target {
 				padding: 0 1rem;
@@ -196,10 +197,6 @@
 		}
 	}
 
-	&.horizontal .demo-controls {
-		padding: .3em .6em;
-	}
-
 	& div.prism-live {
 		color: inherit;
 		font-size: calc(var(--font-size-multiplier, 1) * 100%);
@@ -211,7 +208,6 @@
 
 		&.collapsed {
 			min-height: var(--collapsed-height, var(--min-height));
-
 
 			overflow: hidden;
 			flex: none;
@@ -227,7 +223,7 @@
 		}
 	}
 
-	&.horizontal {
+	&.horizontal:not(.minimal) {
 		& div.prism-live {
 			&.collapsed {
 				height: var(--collapsed-height, var(--min-height));
@@ -241,7 +237,7 @@
 	}
 
 	/* Hack to fix overflowing height */
-	&:not(.horizontal) {
+	&:not(.horizontal, .minimal) {
 		& div.prism-live {
 			contain: size;
 
