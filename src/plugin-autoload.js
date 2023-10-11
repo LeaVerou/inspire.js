@@ -26,4 +26,5 @@ export default {
 	"details-notes": "details.notes",
 	"markdown": "[data-markdown-elements]",
 	"delayed-actions": "inspire-action",
+	"clone": "[data-clone]",
 };
