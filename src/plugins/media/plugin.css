@@ -24,6 +24,7 @@
 
 	position: relative;
 	width: fit-content;
+	min-width: 347px;
 	box-sizing: border-box;
 	border-radius: 4px;
 
@@ -70,6 +71,11 @@
 		font-size: 38%;
 		color: black;
 		font-weight: 400;
+	}
+
+.media-frame:not(:has(> :only-child:is(video, iframe))), .browser:not(:has(> :only-child:is(video, iframe))) {
+		padding: 8px 12px;
+		padding-top: calc(var(--frame-top) * 1px + 10px);
 	}
 
 .browser > iframe:only-child {
