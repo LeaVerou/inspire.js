@@ -15,9 +15,6 @@
 	--color-accent-3: var(--color-yellow);
 	--color-accent-4: var(--color-magenta);
 	--light1: hsl(200, 40%, 80%);
-	--medium1: var(--color-yellow);
-	--dark1: hsl(200, 15%, 20%);
-	--dark2: hsl(335, 100%, 35%);
 }
 
 html {
@@ -26,6 +23,7 @@ html {
 	--checkerboard: repeating-conic-gradient(rgb(0 0 0 / .12) 0 25%, transparent 0 50%) 0 0 / 40px 40px;
 	background: var(--checkerboard) hsl(220, 10%, 97%);
 	font-synthesis: none;
+	color-scheme: dark;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -94,8 +92,8 @@ img {
 }
 
 ::selection {
-	background: var(--dark1);
-	color: white;
+	background: canvas;
+	color: canvastext;
 	text-shadow: none;
 }
 
@@ -105,8 +103,10 @@ img {
 	align-items: center;
 	justify-content: center;
 	padding: 2.5rem;
-	background: radial-gradient(transparent, rgba(0,0,0,.7)) var(--dark1);
-	color: white;
+	--background-color-overlay: hsl(200 20% 50% / .3);
+	background: radial-gradient(transparent, rgba(0,0,0,.7)), linear-gradient(var(--background-color-overlay), var(--background-color-overlay)) canvas;
+
+	color: canvastext;
 }
 
 @media (max-width: 1024px) {
@@ -156,7 +156,7 @@ section > section > header.slide {
 	}
 
 #indicator {
-	color: white;
+	color: canvastext;
 }
 
 /* Quotes */
