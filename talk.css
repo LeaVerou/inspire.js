@@ -19,7 +19,7 @@
 
 @supports (-webkit-background-clip: text) {
 	#intro h1 {
-		background: linear-gradient(to bottom right, var(--color1), var(--color2), var(--color3), var(--color2), var(--color1));
+		background: linear-gradient(to bottom right, var(--color-accent-3), var(--color-accent-2), var(--color-accent-1), var(--color-accent-2), var(--color-accent-3));
 		-webkit-background-clip: text;
 		color: transparent;
 	}

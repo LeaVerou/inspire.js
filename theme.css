@@ -7,13 +7,13 @@
 	--color-yellow: hsl(50, 100%, 50%);
 	--color-green: hsl(100, 60%, 50%);
 	--color-aqua: hsl(190, 100%, 40%);
-	--color1: var(--color-yellow);
-	--color2: var(--color-green);
-	--color3: var(--color-aqua);
-	--accent1: var(--color-aqua);
-	--accent2: var(--color-green);
-	--accent3: var(--color-yellow);
-	--accent4: hsl(336, 100%, 55%);
+	--color-magenta: hsl(336, 100%, 55%);
+	--color-gray-medium: hsl(200 15% 50%);
+
+	--color-accent-1: var(--color-aqua);
+	--color-accent-2: var(--color-green);
+	--color-accent-3: var(--color-yellow);
+	--color-accent-4: var(--color-magenta);
 	--light1: hsl(200, 40%, 80%);
 	--medium1: var(--color-yellow);
 	--dark1: hsl(200, 15%, 20%);
@@ -133,16 +133,16 @@ img {
 		}
 
 	.slide h2 {
-		color: var(--accent2);
+		color: var(--color-accent-2);
 		font-size: 120%;
 	}
 
 section > header.slide {
-	background: linear-gradient(to bottom right, var(--accent3), var(--accent2), var(--accent1), var(--accent2), var(--accent3));
+	background: linear-gradient(to bottom right, var(--color-accent-3), var(--color-accent-2), var(--color-accent-1), var(--color-accent-2), var(--color-accent-3));
 }
 
 section > section > header.slide {
-	background: linear-gradient(to bottom right, var(--accent4), var(--accent3), var(--accent1), var(--accent3), var(--accent4));
+	background: linear-gradient(to bottom right, var(--color-accent-4), var(--color-accent-3), var(--color-accent-1), var(--color-accent-3), var(--color-accent-4));
 }
 
 	section > header.slide > h1 {
@@ -174,7 +174,7 @@ blockquote {
 		top: -.3em;
 		margin-right: .2em;
 		font-size: 300%;
-		color: var(--accent1);
+		color: var(--color-accent-1);
 		font-style: normal;
 	}
 
@@ -183,7 +183,7 @@ blockquote {
 		font-style: normal;
 		font-size: 60%;
 		font-weight: bold;
-		color: var(--accent1);
+		color: var(--color-accent-1);
 	}
 
 		blockquote .cite::before {
@@ -226,7 +226,7 @@ blockquote {
 	thead th {
 		vertical-align: top;
 		font-size: 75%;
-		background: var(--accent1);
+		background: var(--color-accent-1);
 		padding: .3em .5em;
 	}
 
@@ -265,7 +265,7 @@ blockquote {
 .token.number,
 .token.constant,
 .token.symbol {
-	color: var(--accent2);
+	color: var(--color-accent-2);
 }
 
 .token.selector,
@@ -273,7 +273,7 @@ blockquote {
 .token.string,
 .token.char,
 .token.builtin {
-	color: var(--accent1);
+	color: var(--color-accent-1);
 }
 
 .token.operator,
@@ -282,13 +282,13 @@ blockquote {
 .language-css > .token.string,
 .token.inserted,
 .token.function {
-	color: var(--accent4); /* deep pink */
+	color: var(--color-accent-4); /* deep pink */
 }
 
 .token.attr-value,
 .token.keyword,
 .token.variable {
-	color: var(--accent3);
+	color: var(--color-accent-3);
 }
 
 .token.atrule,
