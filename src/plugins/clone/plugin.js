@@ -7,7 +7,7 @@
 
 for (let element of document.querySelectorAll("[data-clone]")) {
 	let selector = element.dataset.clone;
-	let attributes = element.getAttributeNames().filter(name => /^data-clone($|-)/.test(name));
+	let attributes = element.getAttributeNames().filter(name => !/^data-clone($|-)/.test(name));
 	let target = querySelectorRelative(selector, element);
 
 	if (!target) {
