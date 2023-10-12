@@ -17,7 +17,7 @@ let md = new markdownit("commonmark", {
 	typographer: true,
 	linkify: true,
 	// breaks: true
-}).enable([ "table" ]);
+}).enable([ "table" ]).disable("code");
 
 for (let e of elements) {
 	let changed = render(e);
@@ -27,16 +27,25 @@ for (let e of elements) {
 	}
 }
 
-function fixupCode(code) {
-	// Remove indented code blocks
-	code = code.replace(/^\t+|^ {4,}/gm, "");
+function getCommonPrefix(strings) {
+	return strings.reduce((prefix, str) => {
+		let i = [...str].findIndex((c, i) => c !== prefix[i]);
+		return i > -1 ? prefix.slice(0, i) : prefix;
+	});
+}
 
-	return code;
+function getIndent(code) {
+	let indents = code.match(/^[\t ]+/gm);
+	return indents? getCommonPrefix(indents) : "";
 }
 
 function renderCode(code) {
-	// Remove indented code blocks
-	code = code.replace(/^\t+|^ {4,}/gm, "");
+	// Remove overall indentation
+	let indent = getIndent(code);
+	if (indent) {
+		code = code.replace(new RegExp("^" + indent, "gm"), "");
+	}
+
 	return /\r?\n/.test(code.trim())? md.render(code) : md.renderInline(code);
 }
 
