@@ -1,29 +1,40 @@
+import { deduplicateId } from "../../util.js";
+
 /*
 	TODO:
 	- Nesting (data-clone of an element that contains data-clone)
-	- Clone inside, clone contents inside (keep shell)
+	- Clone inside
+	- Clone text content
 	- Wait for stuff to happen (events, hooks etc) before cloning or even fetching the cloned element
+	- Compose rather than override certain attributes (class, style, etc)
+	- Remove attributes
+	- Resolve duplicate ids
  */
 
-for (let element of document.querySelectorAll("[data-clone]")) {
-	let selector = element.dataset.clone;
-	let attributes = element.getAttributeNames().filter(name => !/^data-clone($|-)/.test(name));
-	let target = querySelectorRelative(selector, element);
+for (let target of document.querySelectorAll("[data-clone]")) {
+	let selector = target.dataset.clone;
 
-	if (!target) {
-		console.warn(`[data-clone] target not found: ${selector}, specified by `, element);
+	let source = querySelectorRelative(selector, target);
+
+	if (!source) {
+		console.warn(`[data-clone] target not found: ${selector}, specified by `, target);
 		continue;
 	}
 
-	let clone = target.cloneNode(true);
+	let clone = source.cloneNode(true);
 
-	if (attributes.length) {
-		for (let attribute of attributes) {
-			clone.setAttribute(attribute, element.getAttribute(attribute));
+	let attributes = source.getAttributeNames();
+	for (let attribute of attributes) {
+		if (!target.hasAttribute(attribute)) {
+			target.setAttribute(attribute, source.getAttribute(attribute));
 		}
 	}
 
-	element.replaceWith(clone);
+	target.append(...clone.childNodes);
+
+	if (target.id) {
+		deduplicateId(clone);
+	}
 }
 
 function querySelectorRelative(selector, element) {

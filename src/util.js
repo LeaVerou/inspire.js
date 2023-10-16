@@ -40,3 +40,27 @@ export async function importCJS(src) {
 export function toArray(arr) {
 	return arr === undefined? [] : Array.isArray(arr)? arr : [arr];
 }
+
+export function deduplicateId(element) {
+	// The first element with an id gets to keep it
+	// Otherwise we'd end up with foo-2 before foo
+	let firstWithId = document.getElementById(element.id);
+
+	if (firstWithId === element) {
+		// Already first with its id
+		return;
+	}
+
+	let id = element.id.replace(/-\d+$/, ""); // avoid foo-1-1
+	let related = [...document.querySelectorAll(`[id^="${id}-"]`)].filter(e => e !== element && RegExp(`^${id}-\\d+$`).test(e.id));
+	let relatedIds = new Set(related.map(e => e.id))
+
+	for (let i=2; ; i++) {
+		let newId = `${id}-${i}`;
+
+		if (!relatedIds.has(newId)) {
+			element.id = newId;
+			return;
+		}
+	}
+}
