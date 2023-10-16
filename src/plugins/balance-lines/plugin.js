@@ -1,5 +1,5 @@
 import Inspire from "../../../inspire.mjs";
-
+console.log("This plugin is deprecated. Please use text-wrap: balance instead.");
 export const hasCSS = true;
 
 let selector = $$("[data-balance-elements]").map(e => e.getAttribute("data-balance-elements")).join(", ");
