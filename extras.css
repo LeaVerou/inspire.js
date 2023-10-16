@@ -122,11 +122,11 @@
 	bottom: 5px;
 	right: 10px;
 	z-index: 100;
-	color: white;
+	color: canvastext;
 	font-size: 15px;
 	font-weight: 300;
-	text-shadow: 0 0 .1em black;
-	text-shadow: 0 0 .1em .1em black;
+	text-shadow: 0 0 .1em canvas;
+	text-shadow: 0 0 .1em .1em canvas;
 }
 
 .image.slide > h1:only-child,

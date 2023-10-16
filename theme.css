@@ -29,6 +29,7 @@ html {
 h1, h2, h3, h4, h5, h6 {
 	line-height: 1.2;
 	text-align: center;
+	text-wrap: balance;
 }
 
 a {
@@ -137,23 +138,24 @@ img {
 		font-size: 120%;
 	}
 
-section > header.slide {
+:where(section) > header.slide { /* exclude cover */
 	background: linear-gradient(to bottom right, var(--color-accent-3), var(--color-accent-2), var(--color-accent-1), var(--color-accent-2), var(--color-accent-3));
-}
 
-section > section > header.slide {
-	background: linear-gradient(to bottom right, var(--color-accent-4), var(--color-accent-3), var(--color-accent-1), var(--color-accent-3), var(--color-accent-4));
-}
-
-	section > header.slide > h1 {
+	> h1 {
 		margin: auto;
 		padding: .5em .7em;
 		background: black;
+		color: white;
 		text-align: center;
 		font-size: 250%;
 		line-height: 1.2;
 		font-weight: 300;
 	}
+}
+
+section > section > header.slide {
+	background: linear-gradient(to bottom right, var(--color-accent-4), var(--color-accent-3), var(--color-accent-1), var(--color-accent-3), var(--color-accent-4));
+}
 
 #indicator {
 	color: canvastext;

@@ -14,8 +14,6 @@ export function load (id, def = {}) {
 		let loadCSS = !$(`.no-css-${id}, .no-${id}-css, .${id}-no-css`);
 		let plugin = loaded[id] = {};
 
-
-
 		let loadedJS = import(pluginURL).then(module => {
 			plugin.module = module;
 		})
