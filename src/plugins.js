@@ -8,40 +8,42 @@ export let loaded = {};
 export const TIMEOUT = 4000;
 
 export function load (id, def = {}) {
-	if (!loaded[id]) {
-		let path = def.path || "plugins";
-		let pluginURL = new URL(`${path}/${id}/plugin.js`, import.meta.url);
-		let loadCSS = !$(`.no-css-${id}, .no-${id}-css, .${id}-no-css`);
-		let plugin = loaded[id] = {};
-
-		let loadedJS = import(pluginURL).then(module => {
-			plugin.module = module;
-		})
-		.catch(console.error)
-		.then(() => plugin.loadedJS.resolve(plugin));
-
-		plugin.loadedJS = util.defer(loadedJS);
-		plugin.loadedCSS = loadCSS ? util.defer() : Promise.resolve(false);
-		plugin.loaded = Promise.allSettled([plugin.loadedJS, plugin.loadedCSS]);
-
-		setTimeout(() => {
-			plugin.loadedJS.reject(new Error(`Plugin ${id} failed to load JS`));
-		}, TIMEOUT);
-
-		if (loadCSS) {
-			plugin.loadedJS.then(plugin => {
-				if (plugin.module?.hasCSS) {
-					return $.load("plugin.css", pluginURL);
-				}
-			}).then(() => plugin.loadedCSS.resolve(plugin));
-
-			setTimeout(() => {
-				plugin.loadedCSS.reject(new Error(`Plugin ${id} failed to load CSS`));
-			}, TIMEOUT);
-		}
+	if (loaded[id]) {
+		return loaded[id];
 	}
 
-	return loaded[id].loaded;
+	let path = def.path || "plugins";
+	let pluginURL = new URL(`${path}/${id}/plugin.js`, import.meta.url);
+	let noCSS = document.querySelector(`.no-css-${id}, .no-${id}-css, .${id}-no-css`);
+
+	let plugin = loaded[id] = {};
+	plugin.loaded = util.defer();
+	plugin.loading = pluginURL;
+	plugin.loadedJS = import(pluginURL).then(module => plugin.module = module);
+	plugin.loadedCSS = plugin.loadedJS.then(module => {
+		if (!noCSS && module.hasCSS) {
+			let pluginCSS = new URL(`${path}/${id}/plugin.css`, import.meta.url);
+			plugin.loading = pluginCSS;
+			document.head.insertAdjacentHTML("beforeend", `<link rel="stylesheet" href="${pluginCSS}">`);
+			let link = document.head.lastElementChild;
+			return new Promise((res, rej) => {
+				link.onload = res;
+				link.onerror = rej;
+			});
+		}
+	});
+	plugin.loaded = Promise.race([
+		plugin.loadedCSS,
+		// util.timeout(TIMEOUT, {
+		// 	reject: true,
+		// 	value: `Timed out while loading ${plugin.loading} (timeout: ${TIMEOUT} ms)`
+		// })
+	]);
+	plugin.done = plugin.loaded.finally(_ => {
+		plugin.loading = "";
+	});
+
+	return loaded[id];
 }
 
 export function loadAll (plugins = registry) {
@@ -51,8 +53,14 @@ export function loadAll (plugins = registry) {
 		let def = plugins[id];
 		let test = def.test || def;
 
-		if (($(test) || document.body.matches(`[data-load-plugins~="${id}"]`)) && !document.body.matches(`.no-${id}`)) {
-			ret.push(load(id, def));
+		if ((document.querySelector(test) || document.body.matches(`[data-load-plugins~="${id}"]`)) && !document.body.matches(`.no-${id}`)) {
+			let plugin = load(id, def);
+			// plugin.loaded.then(_ => ret.push(plugin));
+			plugin.loaded.then(
+				plugin => ret.push(plugin),
+
+			).catch(e => console.error(`Plugin ${id} error:`, e))
+			;
 		}
 	}
 

@@ -1,12 +1,10 @@
-import Inspire from "../../../inspire.mjs";
-
 export const hasCSS = false;
 
 let selectors = $$("[data-markdown-elements]").map(e => e.getAttribute("data-markdown-elements"));
-
 let elements = $$(selectors.join(", "));
 
 if (elements.length === 0) {
+	// Basically return;
 	await new Promise(r => {});
 }
 
@@ -19,6 +17,7 @@ let md = new markdownit("commonmark", {
 	// breaks: true
 }).enable([ "table" ]).disable("code");
 
+const Inspire = (await import("../../../inspire.mjs")).default;
 for (let e of elements) {
 	let changed = render(e);
 

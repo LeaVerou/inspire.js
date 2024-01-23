@@ -51,7 +51,7 @@ let processDocsLinks = (root = document) => {
 	});
 };
 
-Inspire.plugins.loaded.docs.loadedCSS.then(() => {
+Inspire.plugins.loaded.docs.loaded.then(() => {
 	processDocsLinks(document.body);
 });
 

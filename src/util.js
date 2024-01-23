@@ -1,6 +1,4 @@
-import $ from "https://v2.blissfuljs.com/src/$.js";
-
-export function defer(source) {
+export function defer (source) {
 	var res, rej;
 
 	var promise = new Promise((resolve, reject) => {
@@ -17,14 +15,16 @@ export function defer(source) {
 }
 
 
-export function timeout(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms));
+export function timeout (ms, {reject, value} = {}) {
+	return new Promise((res, rej) => setTimeout(_ => {
+		(reject? rej : res)(value)
+	}, ms));
 }
 
 // Get attribute value, from the first element it's defined on
 // Useful for things like global settings where we don't care where the attribute is on
 export function getAttribute(attribute) {
-	let element = $(`[${attribute}]`);
+	let element = document.querySelector(`[${attribute}]`);
 	return element && element.getAttribute(attribute);
 }
 
