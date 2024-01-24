@@ -542,11 +542,11 @@ let _ = {
 
 			// support for nested lists
 			for (let i = _.item - 1, cur = _.items[i], j; i > 0; i--) {
-			  j = _.items[i - 1];
-			  if (j.contains(cur)) {
-				j.classList.remove("displayed");
-				j.classList.add("current");
-			  }
+				j = _.items[i - 1];
+				if (j.contains(cur)) {
+					j.classList.remove("displayed");
+					j.classList.add("current");
+				}
 			}
 
 			if (item.classList.contains("dummy") && item.dummyFor) {
