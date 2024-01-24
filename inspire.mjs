@@ -550,14 +550,14 @@ let _ = {
 			}
 
 			if (item.classList.contains("dummy") && item.dummyFor) {
+				let dummyStep = item.dummyIndex;
+
 				if (item.closest(".additive-steps")) {
 					let numbers = [...Array(item.dummyIndex).keys()].map(n => n + 1);
+					dummyStep = numbers.join(" ");
+				}
 
-					item.dummyFor.setAttribute("data-step", numbers.join(" "));
-				}
-				else {
-					item.dummyFor.setAttribute("data-step", item.dummyIndex);
-				}
+				item.dummyFor.setAttribute("data-step", dummyStep);
 			}
 		}
 
