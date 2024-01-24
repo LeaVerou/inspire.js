@@ -539,6 +539,7 @@ let _ = {
 			let item = _.items[_.item - 1];
 
 			item.classList.add("current");
+			item.dispatchEvent(new CustomEvent("itemcurrent", {bubbles: true}));
 
 			// support for nested lists
 			for (let i = _.item - 1, cur = _.items[i], j; i > 0; i--) {
@@ -546,6 +547,7 @@ let _ = {
 				if (j.contains(cur)) {
 					j.classList.remove("displayed");
 					j.classList.add("current");
+					j.dispatchEvent(new CustomEvent("itemcurrent", {bubbles: true}));
 				}
 			}
 
