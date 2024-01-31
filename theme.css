@@ -52,12 +52,14 @@ select {
 	color: inherit;
 }
 
-input:not([type]),
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="url"] {
-	padding: 0 .3em;
+input {
+	&:not([type]),
+	&[type="text"],
+	&[type="email"],
+	&[type="tel"],
+	&[type="url"] {
+		padding: 0 .3em;
+	}
 }
 
 code, textarea, pre {
@@ -106,55 +108,55 @@ img {
 	padding: 2.5rem;
 	--background-color-overlay: hsl(200 20% 50% / .3);
 	background: radial-gradient(transparent, rgba(0,0,0,.7)), linear-gradient(var(--background-color-overlay), var(--background-color-overlay)) canvas;
-
 	color: canvastext;
-}
 
-@media (max-width: 1024px) {
-	.slide {
+	@media (max-width: 1024px) {
 		padding: 3vmin;
 	}
-}
 
-	.light.slide {
+	&.light {
 		background: var(--light1);
 		color: black;
 	}
 
-	.slide > h1,
-	.slide > header > h1 {
+	> h1,
+	> header > h1 {
 		text-align: center;
 		margin: 0 0 .6em;
 		font-size: 200%;
 	}
 
-		.slide > header > h1 + h2,
-		.slide > header > h1 + p {
+		> header > h1 + h2,
+		> header > h1 + p {
 			margin-top: 0;
 		}
 
-	.slide h2 {
+	h2 {
 		color: var(--color-accent-2);
 		font-size: 120%;
 	}
-
-:where(section) > header.slide { /* exclude cover */
-	background: linear-gradient(to bottom right, var(--color-accent-3), var(--color-accent-2), var(--color-accent-1), var(--color-accent-2), var(--color-accent-3));
-
-	> h1 {
-		margin: auto;
-		padding: .5em .7em;
-		background: black;
-		color: white;
-		text-align: center;
-		font-size: 250%;
-		line-height: 1.2;
-		font-weight: 300;
-	}
 }
 
-section > section > header.slide {
-	background: linear-gradient(to bottom right, var(--color-accent-4), var(--color-accent-3), var(--color-accent-1), var(--color-accent-3), var(--color-accent-4));
+/* Header slides */
+header.slide {
+	:where(section) > & {
+		background: linear-gradient(to bottom right, var(--color-accent-3), var(--color-accent-2), var(--color-accent-1), var(--color-accent-2), var(--color-accent-3));
+
+		> h1 {
+			margin: auto;
+			padding: .5em .7em;
+			background: black;
+			color: white;
+			text-align: center;
+			font-size: 250%;
+			line-height: 1.2;
+			font-weight: 300;
+		}
+
+		:where(section) > & {
+			background: linear-gradient(to bottom right, var(--color-accent-4), var(--color-accent-3), var(--color-accent-1), var(--color-accent-3), var(--color-accent-4));
+		}
+	}
 }
 
 #indicator {
@@ -162,14 +164,12 @@ section > section > header.slide {
 }
 
 /* Quotes */
-
 blockquote {
 	position: relative;
 	font-style: italic;
 	max-width: calc(80vw - 4.5em);
-}
 
-	blockquote::before {
+	&::before {
 		content: "❝";
 		position: absolute;
 		right: 100%;
@@ -180,30 +180,29 @@ blockquote {
 		font-style: normal;
 	}
 
-	blockquote .cite {
+	.cite {
 		text-align: right;
 		font-style: normal;
 		font-size: 60%;
 		font-weight: bold;
 		color: var(--color-accent-1);
-	}
 
-		blockquote .cite::before {
+		&::before {
 			content: "— "
 		}
 
-		blockquote .cite a:not(:hover) {
+		a:not(:hover) {
 			text-decoration: none;
 		}
+	}
+}
 
 /* Tables */
-
 .slide > table {
 	border-spacing: 0;
 	margin: 1em;
-}
 
-	table caption {
+	caption {
 		font-weight: bold;
 		letter-spacing: -.05em;
 		color: var(--color-orange);
@@ -244,6 +243,7 @@ blockquote {
 	th:first-child {
 		text-align: left;
 	}
+}
 
 /* Syntax highlighting */
 .token.comment,

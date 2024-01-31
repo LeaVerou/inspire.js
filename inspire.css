@@ -34,38 +34,42 @@ body {
 	transition: var(--transition-duration);
 	transition-property: var(--transition-properties);
 	contain: strict;
-}
 
-/* So that people can override and do things like
-   .slide { display: flex; }
-   without having to specify :not(:target) all the bloody time
-*/
-@media screen {
-	body:not(.show-all) .slide:not(.previous):not(:target):not(.next) {
-		display: none !important;
+	/* So that people can override and do things like
+	   .slide { display: flex; }
+	   without having to specify :not(:target) all the bloody time
+	*/
+	@media screen {
+		&:not(.show-all *):not(.previous):not(:target):not(.next) {
+			display: none !important;
+		}
+	}
+
+	&.previous,
+	&.next {
+		visibility: hidden;
+		overflow: hidden;
+	}
+
+	&:is(.show-all *) {
+		visibility: visible;
+	}
+
+	&:target {
+		z-index: 100;
+		opacity: 1;
+		visibility: visible;
+		overflow: auto;
+	}
+
+	/* If there's nothing selected, show the first */
+	&:first-child {
+		z-index: 2;
 	}
 }
 
-.slide.previous,
-.slide:target,
-.slide.next {
-	visibility: hidden;
-	overflow:hidden;
-}
-
-body.show-all .slide {
-	visibility: visible;
-}
-
-.slide:target {
-	z-index: 100;
-	opacity: 1;
-	visibility: visible;
-	overflow: auto;
-}
-
 /**
-	Slide numbers
+ * Slide numbers
  */
 #indicator {
 	position: absolute;
@@ -75,9 +79,8 @@ body.show-all .slide {
 	font-size: 2vh;
 	text-align: center;
 	font-weight: bold;
-}
 
-	#indicator:not(:empty)::after {
+	&:not(:empty)::after {
 		counter-reset: total var(--total-slides);
 		content: counter(total);
 		display: block;
@@ -85,9 +88,10 @@ body.show-all .slide {
 		line-height: 1.2;
 		font-weight: 300;
 	}
+}
 
 /**
-	On-screen navigation
+ * On-screen navigation
  */
 #onscreen-nav {
 	z-index: 1010;
@@ -102,23 +106,25 @@ body.show-all .slide {
 	font-size: 150%;
 	opacity: 1;
 	transition: 1s opacity;
-}
 
-/* Non-touchscreen styles */
-@media not all and (pointer: coarse) {
-	#onscreen-nav.hidden {
-		display: none;
-		opacity: 0;
-	}
-
-	#onscreen-nav:hover {
-		opacity: 1;
-	}
-
-		#onscreen-nav:not(:hover) button {
-			margin-top: -1.5em;
-			pointer-events: none;
+	/* Non-touchscreen styles */
+	@media not all and (pointer: coarse) {
+		&.hidden {
+			display: none;
+			opacity: 0;
 		}
+
+		&:hover {
+			opacity: 1;
+		}
+
+		&:not(:hover) {
+			button {
+				margin-top: -1.5em;
+				pointer-events: none;
+			}
+		}
+	}
 }
 
 	button.onscreen-nav {
@@ -130,17 +136,14 @@ body.show-all .slide {
 		text-shadow: 0 -.05em .05em black;
 		text-transform: uppercase;
 		cursor: pointer;
+
+		&:hover,
+		&:active {
+			background: black;
+		}
 	}
 
-	button.onscreen-nav:hover,
-	button.onscreen-nav:active {
-		background: black;
-	}
 
-/* If there's nothing selected, show the first */
-.slide:first-child {
-	z-index: 2;
-}
 
 /* Delayed items that are shown incrementally after the slide is */
 @media screen {
@@ -148,20 +151,16 @@ body.show-all .slide {
 	.delayed-children > * {
 		opacity: 0;
 		transition-property: var(--transition-properties);
-	}
 
-	.delayed.displayed,
-	.delayed-children > .displayed {
-		opacity: .3;
-	}
+		&.displayed {
+			opacity: .3;
+		}
 
-	.delayed.current,
-	.delayed-children > .current,
-	.delayed.displayed.persistent,
-	.delayed-children > .displayed.persistent,
-	.delayed-children.persistent > .displayed {
-		opacity: 1;
-		transition-duration: var(--transition-duration);
+		&.current,
+		&.displayed:is(.persistent, .persistent *) {
+			opacity: 1;
+			transition-duration: var(--transition-duration);
+		}
 	}
 }
 
