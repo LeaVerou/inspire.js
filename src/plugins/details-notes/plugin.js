@@ -2,6 +2,8 @@ import Inspire from "../../../inspire.mjs";
 
 export const hasCSS = true;
 
+import { $, $$, create } from "../../bliss.js";
+
 $$("details.notes").forEach(details => {
 	let div = document.createElement("div");
 	div.append(...details.childNodes);
@@ -15,7 +17,7 @@ $$("details.notes").forEach(details => {
 	let summary = $("summary", details);
 
 	if (!summary) {
-		summary = $.create("summary", {textContent: "Notes"});
+		summary = create("summary", {textContent: "Notes"});
 	}
 
 	details.prepend(summary);

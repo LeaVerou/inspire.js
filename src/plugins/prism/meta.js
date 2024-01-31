@@ -41,10 +41,10 @@ export async function loadPlugin(id) {
 		}
 
 		if (!plugins[id].noCSS) {
-			$.include(`${PRISM_ROOT}/plugins/${id}/prism-${id}.css`);
+			document.head.insertAdjacentHTML("beforeend", `<link rel="stylesheet" href="${PRISM_ROOT}/plugins/${id}/prism-${id}.css" />`);
 		}
 
-		await $.include(`${PRISM_ROOT}/plugins/${id}/prism-${id}.js`)
+		await import(`${PRISM_ROOT}/plugins/${id}/prism-${id}.js`)
 	}
 
 	return Prism.plugins[CamelCase];

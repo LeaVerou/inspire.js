@@ -23,12 +23,12 @@ export function timeout (ms, {reject, value} = {}) {
 
 // Get attribute value, from the first element it's defined on
 // Useful for things like global settings where we don't care where the attribute is on
-export function getAttribute(attribute) {
+export function getAttribute (attribute) {
 	let element = document.querySelector(`[${attribute}]`);
 	return element && element.getAttribute(attribute);
 }
 
-export async function importCJS(src) {
+export async function importCJS (src) {
 	let prevModule = window.module;
 	window.module = { exports: {} };
 	await import(src);
@@ -37,11 +37,11 @@ export async function importCJS(src) {
 	return ret;
 }
 
-export function toArray(arr) {
+export function toArray (arr) {
 	return arr === undefined? [] : Array.isArray(arr)? arr : [arr];
 }
 
-export function deduplicateId(element) {
+export function deduplicateId (element) {
 	// The first element with an id gets to keep it
 	// Otherwise we'd end up with foo-2 before foo
 	let firstWithId = document.getElementById(element.id);

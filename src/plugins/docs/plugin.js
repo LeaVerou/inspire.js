@@ -3,6 +3,8 @@ import Inspire from "../../../inspire.mjs";
 
 export const hasCSS = true;
 
+import { $, $$, create } from "../../bliss.js";
+
 let processDocsLinks = (root = document) => {
 
 	$$(Inspire.plugins.registry.docs, root).forEach(code => {
@@ -42,7 +44,7 @@ let processDocsLinks = (root = document) => {
 			code.textContent += "()";
 		}
 
-		$.create("a", {
+		create("a", {
 			className: "docs-link",
 			href: `https://developer.mozilla.org/en-US/docs/Web/${path}/${text}`,
 			around: code,

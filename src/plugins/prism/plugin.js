@@ -3,6 +3,7 @@
  */
 
 import Inspire from "../../../inspire.mjs";
+import { $$ } from "../../bliss.js";
 import * as util from "../../util.js";
 import * as meta from "./meta.js";
 
@@ -33,7 +34,7 @@ if (ids.size) {
 		}
 	}
 	else {
-		await $.include(`${PRISM_ROOT}/components/prism-core.js`);
+		await import(`${PRISM_ROOT}/components/prism-core.js`);
 	}
 }
 
@@ -80,7 +81,7 @@ var loadLanguage = async id => {
 
 	await Promise.all(deps.map(loadLanguage));
 
-	await $.include(`${PRISM_ROOT}/components/prism-${id}.js`);
+	await import(`${PRISM_ROOT}/components/prism-${id}.js`);
 	ok[id].resolve(id);
 };
 

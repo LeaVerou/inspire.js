@@ -1,5 +1,6 @@
 import Inspire from "../../../inspire.mjs";
 import * as prism from "../prism/plugin.js";
+import { $, $$, create, load, ready } from "../../bliss.js";
 import LiveDemo from "./live-demo.js";
 
 export const hasCSS = true;
@@ -37,7 +38,7 @@ input[type="number"] {
 LiveDemo.hooks.add("after-init", function() {
 	if (this.isolated) {
 		// Next & previous slide buttons
-		$.create("button", {
+		create("button", {
 			className: "prev",
 			textContent: "◂",
 			title: "Previous slide",
@@ -47,7 +48,7 @@ LiveDemo.hooks.add("after-init", function() {
 			}
 		});
 
-		$.create("button", {
+		create("button", {
 			className: "next",
 			textContent: "Next ▸",
 			inside: this.controls,
@@ -62,7 +63,7 @@ LiveDemo.hooks.add("after-init", function() {
 
 		// Trigger play automatically when you hit next
 		for (let i = 0; i < pauses + 1; i++) {
-			$.create("inspire-action", {
+			create("inspire-action", {
 				attributes: {
 					"target": "button.replay",
 					"once": ""
@@ -96,7 +97,7 @@ if (!Prism.Live) {
 		}
 	}
 
-	await $.load(`https://live.prismjs.com/src/prism-live.js?load=${languages.join(",")}`);
+	await load(`https://live.prismjs.com/src/prism-live.js?load=${languages.join(",")}`);
 	await Prism.Live.ready;
 
 	// Move Prism Live CSS before ours
@@ -124,7 +125,7 @@ document.addEventListener("slidechange", evt => {
 	}
 });
 
-$.ready().then(async _ => {
+ready().then(async _ => {
 	await Inspire.slideshowCreated;
 
 	if (Inspire.currentSlide?.classList.contains("demo")){

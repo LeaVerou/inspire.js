@@ -8,25 +8,25 @@
 
 export const hasCSS = true;
 
-var $ = Bliss, $$ = $.$;
+import { $$, create } from "../../bliss.js";
 
 $$(".slide[data-video]").forEach(slide => slide.classList.add("dont-resize"));
 
-$.events(document, "slidechange", evt => {
-	var slide = evt.target;
+document.addEventListener("slidechange", evt => {
+	let slide = evt.target;
 
 	// Create the videos for slides with a data-video attribute
 	if (slide.matches(".slide[data-video]")) {
 		if (!slide.matches(".initialized")) {
 			// Initialization code
-			let container = slide.classList.contains("cover")? slide : $.create("div", {
+			let container = slide.classList.contains("cover")? slide : create("div", {
 				className: "video-container " + (slide.hasAttribute("data-frame-class")? slide.getAttribute("data-frame-class") : "media-frame"),
 				inside: slide
 			});
 
 			let timedAnnotations = new Map();
 
-			let video = $.create("video", {
+			let video = create("video", {
 				src: slide.getAttribute("data-video"),
 				loop: slide.classList.contains("looping"),
 				inside: container,

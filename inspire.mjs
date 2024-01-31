@@ -7,6 +7,9 @@
 
 import * as plugins from "./src/plugins.js";
 import * as util from "./src/util.js";
+import * as Bliss from "./src/bliss.js";
+
+const { $, $$, create, ready, bind, Hooks } = Bliss;
 
 let _ = {
 	// Plugin ids and selectors
@@ -51,13 +54,13 @@ let _ = {
 		_.hooks.run("init-start");
 
 		// Create slide indicator
-		_.indicator = $.create({
+		_.indicator = create({
 			id: "indicator",
 			inside: document.body
 		});
 
 		// Add on screen navigation
-		let onscreen = $.create("nav", {
+		let onscreen = create("nav", {
 			id: "onscreen-nav",
 			className: "hidden",
 			inside: document.body,
@@ -212,7 +215,7 @@ let _ = {
 		// If there"s already a hash, update current slide number
 		_.goto(location.hash.substr(1) || 0);
 
-		$.bind(window, {
+		bind(window, {
 			// Adjust the font-size when the window is resized
 			"load resize": evt => _.adjustFontSize(),
 			/**
@@ -486,7 +489,7 @@ let _ = {
 			// Run the slidechange event and hook
 			requestAnimationFrame(() => {
 				let evt = new CustomEvent("slidechange", {"bubbles": true});
-				$.extend(evt, {prevSlide, firstTime});
+				Object.assign(evt, {prevSlide, firstTime});
 				slide.dispatchEvent(evt);
 
 				_.hooks.run("slidechange-async", env);
@@ -645,7 +648,7 @@ let _ = {
 			let doc = info.doc;
 
 			// Make sure local links in the import resolve correctly
-			doc.head.append($.create(doc.createElement("base"), {href: link.href}));
+			doc.head.append(create(doc.createElement("base"), {href: link.href}));
 
 			// Go through all linked resources and absolutize their URLs
 			let attributes = ["src", "data-src", "href"];
@@ -690,7 +693,7 @@ let _ = {
 					import(script.src);
 				}
 				else {
-					$.create("script", {
+					create("script", {
 						src: script.src,
 						inside: document.head
 					});
@@ -753,21 +756,7 @@ if (!window.Inspire || !window.Inspire.loaded) {
 
 	(async () => {
 		// Setup Inspire iif it has not already been loaded
-		if (!window.Bliss) {
-			// Load Bliss if not loaded
-			console.log("Bliss not loaded. Loading remotely from blissfuljs.com");
-
-			let bliss = document.createElement("script");
-			bliss.src = "https://blissfuljs.com/bliss.shy.min.js";
-			document.head.appendChild(bliss);
-
-			await new Promise(resolve => bliss.onload = resolve);
-		}
-
-		window.$ = Bliss;
-		window.$$ = $.$;
-
-		_.hooks = new $.Hooks();
+		_.hooks = new Hooks();
 		_.loaded.resolve(true);
 
 		const url = new URL(location);
@@ -778,7 +767,7 @@ if (!window.Inspire || !window.Inspire.loaded) {
 			document.documentElement.dataset.profile = profile;
 		}
 
-		await $.ready();
+		await ready();
 
 		// Commenting slides out works sometimes, but fails if the slides you're commenting also have comments.
 		// These classes work with nesting too
@@ -787,13 +776,14 @@ if (!window.Inspire || !window.Inspire.loaded) {
 		await _.loadImports();
 		_.setup();
 	})();
-
-
 }
 else {
 	// If Inspire has already been loaded, export that and discard this one
 	_ = window.Inspire;
 }
+
+_.util = {};
+Object.assign(_.util, util, Bliss);
 
 export default _;
 

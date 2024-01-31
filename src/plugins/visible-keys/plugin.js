@@ -1,5 +1,8 @@
 // Display certain keys pressed
 import Inspire from "../../../inspire.mjs";
+import { create } from "../../bliss.js";
+import transition from "../../../../bliss/src/dom/transition.js";
+import { timeout } from "../../util.js";
 
 export const symbols = {
 	Tab: "⇥",
@@ -23,10 +26,10 @@ Inspire.hooks.add("slidechange", env => {
 	}
 
 	if (env.slide.matches("[data-visible-keys]")) {
-		var keys = new Set(env.slide.dataset.visibleKeys.split(/\s+/));
-		var delay = +env.slide.dataset.visibleKeysDelay || 600;
+		let keys = new Set(env.slide.dataset.visibleKeys.split(/\s+/));
+		let delay = +env.slide.dataset.visibleKeysDelay || 600;
 
-		document.addEventListener("keyup", listener = function(evt) {
+		document.addEventListener("keyup", listener = async evt => {
 			if (keys.has(evt.key) && evt.target.nodeName != "TEXTAREA") {
 				label = evt.key;
 
@@ -39,15 +42,15 @@ Inspire.hooks.add("slidechange", env => {
 				      + (evt.metaKey? symbols.Meta : "")
 				      + (evt.altKey? symbols.Alt : "") + label;
 
-				var key = $.create("kbd", {
+				let key = create("kbd", {
 					textContent: label,
 					inside: env.slide,
 					className: "visible-key"
 				});
 
-				setTimeout(() => {
-					$.transition(key, {opacity: 0}).then($.remove);
-				}, delay);
+				await timeout(delay);
+				await transition(key, {opacity: 0});
+				key.remove();
 			}
 		});
 	}

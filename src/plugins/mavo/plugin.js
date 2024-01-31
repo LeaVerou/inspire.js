@@ -3,7 +3,10 @@ import Inspire from "../../../inspire.mjs";
 export const hasCSS = false;
 
 if (!window.Mavo) {
-	await Promise.all(["js", "css"].map(ext => $.load(`https://dev.mavo.io/dist/mavo.${ext}`)));
+	document.head.insertAdjacentHTML("beforeend", `
+		<link rel=stylesheet href="https://get.mavo.io/mavo.css" />
+		<script src="https://get.mavo.io/mavo.js"></script>
+	`);
 	// Nothing more needs to be done, Mavo will automatically run after any imports
 }
 else if (Inspire.imports.length) {

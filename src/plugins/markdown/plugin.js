@@ -1,3 +1,5 @@
+import { $$ } from "../../bliss.js";
+
 export const hasCSS = false;
 
 let selectors = $$("[data-markdown-elements]").map(e => e.getAttribute("data-markdown-elements"));

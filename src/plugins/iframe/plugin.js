@@ -2,13 +2,15 @@ import Inspire from "../../../inspire.mjs";
 
 export const hasCSS = true;
 
+import { $$, create } from "../../bliss.js";
+
 Inspire.hooks.add({
 	"slidechange": function(env) {
 		var slide = env.slide;
 
 		if (slide.matches(".slide[data-src]:empty")) {
 			// Uninitialized iframe slide
-			var iframe = $.create("iframe", {
+			var iframe = create("iframe", {
 				"data-src": slide.getAttribute("data-src"),
 				inside: slide,
 				loading: "lazy"
@@ -31,7 +33,7 @@ Inspire.hooks.add({
 					title = url.hostname + url.pathname.replace(/\/$/, "");
 				}
 
-				$.create("h1", {
+				create("h1", {
 					contents: {
 						tag: "a",
 						href: src,

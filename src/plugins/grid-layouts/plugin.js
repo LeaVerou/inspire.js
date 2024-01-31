@@ -1,5 +1,7 @@
 export const hasCSS = true;
 
+import { $$ } from "../../bliss.js";
+
 $$('[class*="heading-"]').forEach(el => {
 	let [, m, n] = el.className.match(/\bheading-(\d)x(\d)/) || [];
 
