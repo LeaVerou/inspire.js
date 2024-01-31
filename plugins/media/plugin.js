@@ -8,7 +8,7 @@
 
 export const hasCSS = true;
 
-import { $$, create } from "../../bliss.js";
+import { $$, create } from "../../src/bliss.js";
 
 $$(".slide[data-video]").forEach(slide => slide.classList.add("dont-resize"));
 

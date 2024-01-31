@@ -12,7 +12,7 @@ export function load (id, def = {}) {
 		return loaded[id];
 	}
 
-	let path = def.path || "plugins";
+	let path = def.path || "../plugins";
 	let pluginURL = new URL(`${path}/${id}/plugin.js`, import.meta.url);
 	let noCSS = document.querySelector(`.no-css-${id}, .no-${id}-css, .${id}-no-css`);
 
