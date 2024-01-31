@@ -1,8 +1,8 @@
 // Display certain keys pressed
-import Inspire from "../../../inspire.mjs";
-import { create } from "../../bliss.js";
-import transition from "../../../../bliss/src/dom/transition.js";
-import { timeout } from "../../util.js";
+import Inspire from "../../src/../inspire.mjs";
+import { create } from "../../src/bliss.js";
+import transition from "../../src/../../bliss/src/dom/transition.js";
+import { timeout } from "../../src/util.js";
 
 export const symbols = {
 	Tab: "⇥",

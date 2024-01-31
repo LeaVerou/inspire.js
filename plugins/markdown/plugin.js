@@ -1,4 +1,4 @@
-import { $$ } from "../../bliss.js";
+import { $$ } from "../../src/bliss.js";
 
 export const hasCSS = false;
 
@@ -19,7 +19,7 @@ let md = new markdownit("commonmark", {
 	// breaks: true
 }).enable([ "table" ]).disable("code");
 
-const Inspire = (await import("../../../inspire.mjs")).default;
+const Inspire = (await import("../../src/../inspire.mjs")).default;
 for (let e of elements) {
 	let changed = render(e);
 

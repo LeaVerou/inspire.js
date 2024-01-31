@@ -1,5 +1,5 @@
 
-import * as util from "../../util.js";
+import * as util from "../../src/util.js";
 
 export let PRISM_ROOT = util.getAttribute("data-prism-root");
 

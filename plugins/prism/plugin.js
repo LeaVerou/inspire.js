@@ -2,9 +2,9 @@
  * Autoload Prism and Prism plugins as needed
  */
 
-import Inspire from "../../../inspire.mjs";
-import { $$ } from "../../bliss.js";
-import * as util from "../../util.js";
+import Inspire from "../../inspire.mjs";
+import { $$ } from "../../src/bliss.js";
+import * as util from "../../src/util.js";
 import * as meta from "./meta.js";
 
 let PRISM_ROOT = meta.PRISM_ROOT;

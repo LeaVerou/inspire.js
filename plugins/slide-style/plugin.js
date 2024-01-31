@@ -1,4 +1,4 @@
-import Inspire from "../../../inspire.mjs";
+import Inspire from "../../src/../inspire.mjs";
 
 Inspire.hooks.add("slidechange", env => {
 	$$(".slide:not(:target) style[data-slide]").forEach(style => style.disabled = true);

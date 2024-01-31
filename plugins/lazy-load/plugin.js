@@ -1,4 +1,4 @@
-import Inspire from "../../../inspire.mjs";
+import Inspire from "../../src/../inspire.mjs";
 
 export const hasCSS = false;
 

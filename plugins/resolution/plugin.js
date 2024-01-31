@@ -1,4 +1,4 @@
-import Inspire from "../../../inspire.mjs";
+import Inspire from "../../src/../inspire.mjs";
 
 $$("[data-resolution]").forEach(element => {
 	let [width, height] = element.closest("[data-resolution]").dataset.resolution.split(/\s+/);

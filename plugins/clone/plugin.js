@@ -1,4 +1,4 @@
-import { deduplicateId } from "../../util.js";
+import { deduplicateId } from "../../src/util.js";
 
 /*
 	TODO:

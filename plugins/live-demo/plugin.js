@@ -1,6 +1,6 @@
-import Inspire from "../../../inspire.mjs";
+import Inspire from "../../src/../inspire.mjs";
 import * as prism from "../prism/plugin.js";
-import { $, $$, create, load, ready } from "../../bliss.js";
+import { $, $$, create, load, ready } from "../../src/bliss.js";
 import LiveDemo from "./live-demo.js";
 
 export const hasCSS = true;
