@@ -2,7 +2,8 @@ import Inspire from "../../src/../inspire.mjs";
 
 export const hasCSS = true;
 
-import { $, $$, create } from "../../src/bliss.js";
+import create from "../../src/create.js";
+import { $, $$ } from "../../src/bliss.js";
 
 $$("details.notes").forEach(details => {
 	let div = document.createElement("div");
@@ -17,10 +18,8 @@ $$("details.notes").forEach(details => {
 	let summary = $("summary", details);
 
 	if (!summary) {
-		summary = create("summary", {textContent: "Notes"});
+		create.start(details, `<summary>Notes</summary>`);
 	}
-
-	details.prepend(summary);
 
 	if (Inspire.projector) {
 		// Speaker view, let's have the notes open by default

@@ -1,6 +1,7 @@
 import Inspire from "../../src/../inspire.mjs";
 import * as prism from "../prism/plugin.js";
-import { $, $$, create, load, ready } from "../../src/bliss.js";
+import create from "../../src/create.js";
+import { $, $$, load, ready } from "../../src/bliss.js";
 import LiveDemo from "./live-demo.js";
 
 export const hasCSS = true;
@@ -38,20 +39,17 @@ input[type="number"] {
 LiveDemo.hooks.add("after-init", function() {
 	if (this.isolated) {
 		// Next & previous slide buttons
-		create("button", {
-			className: "prev",
-			textContent: "◂",
-			title: "Previous slide",
+		create.in({
+			html: `<button class="prev" title="Previous slide">◂</button>`,
 			start: this.controls,
 			events: {
 				click: Inspire.previous
 			}
 		});
 
-		create("button", {
-			className: "next",
-			textContent: "Next ▸",
-			inside: this.controls,
+		create.in({
+			html: `<button class="next" title="Next slide">▸</button>`,
+			start: this.controls,
 			events: {
 				click: Inspire.next
 			}
@@ -63,13 +61,7 @@ LiveDemo.hooks.add("after-init", function() {
 
 		// Trigger play automatically when you hit next
 		for (let i = 0; i < pauses + 1; i++) {
-			create("inspire-action", {
-				attributes: {
-					"target": "button.replay",
-					"once": ""
-				},
-				inside: this.controls
-			});
+			this.controls.insertAdjacentHTML("beforeend", `<inspire-action target="button.replay" once>▸</inspire-action>`);
 		}
 
 		if (this.container === Inspire.currentSlide) {

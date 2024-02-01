@@ -2,7 +2,7 @@ import Inspire from "../../src/../inspire.mjs";
 
 export const hasCSS = true;
 
-import { $$, create } from "../../src/bliss.js";
+import { $$ } from "../../src/bliss.js";
 
 Inspire.hooks.add({
 	"slidechange": function(env) {
@@ -10,11 +10,8 @@ Inspire.hooks.add({
 
 		if (slide.matches(".slide[data-src]:empty")) {
 			// Uninitialized iframe slide
-			var iframe = create("iframe", {
-				"data-src": slide.getAttribute("data-src"),
-				inside: slide,
-				loading: "lazy"
-			});
+
+			let iframe = slide.insertAdjacentHTML("beforeend", `<iframe src="${ slide.dataset.src }" frameborder="0" allowfullscreen></iframe>`);
 
 			slide.removeAttribute("data-src");
 
@@ -33,15 +30,7 @@ Inspire.hooks.add({
 					title = url.hostname + url.pathname.replace(/\/$/, "");
 				}
 
-				create("h1", {
-					contents: {
-						tag: "a",
-						href: src,
-						target: "_blank",
-						textContent: title
-					},
-					inside: slide
-				});
+				slide.insertAdjacentHTML("beforeend", `<h1><a href="${ src }" target="_blank">${ title }</a></h1>`);
 			}
 
 			slide.classList.add("onscreen-nav");

@@ -1,6 +1,7 @@
 import * as prismMeta from "../prism/meta.js";
 import Hooks from "https://v2.blissfuljs.com/src/Hooks.js";
-import {$, $$, create, load} as $ from "../../bliss.js";
+import create from "../../src/create.js";
+import { $, $$, load } from "../../src/bliss.js";
 /*
 	Requirements:
 	- HTML, CSS, or both
@@ -55,10 +56,7 @@ export default class LiveDemo {
 			}
 		}
 
-		this.editorContainer = create({
-			className: "editor-container",
-			inside: this.container
-		});
+		this.editorContainer = create.in(this.container, `<div class="editor-container"></div>`);
 
 		let textareas = $$("textarea", this.container);
 
@@ -92,13 +90,16 @@ export default class LiveDemo {
 		});
 
 		this.controls = create({
-			className: "demo-controls",
-			contents: this.minimal? [] : $("details.notes", this.container),
-			after: this.editorContainer
+			after: this.editorContainer,
+			html: `<div class="demo-controls"></div>`,
 		});
 
+		if (this.minimal) {
+			this.controls.append($("details.notes", this.container));
+		}
+
 		if (!this.isolated) {
-			this.element = $(".demo-target", this.container) || create({inside: this.container, className: "demo-target"});
+			this.element = $(".demo-target", this.container) || create.in(this.container, `<div class="demo-target"></div>`);
 
 			if (!this.editors.markup) {
 				let exclude = [".editor-container", "style", ".demo-controls", ".demo-target", ".demo-exclude", ".notes"].map(s => `:not(${s})`)
@@ -108,18 +109,12 @@ export default class LiveDemo {
 
 		if (this.editors.css) {
 			if (!this.isolated) {
-				this.style = create("style", {
-					"data-slide": "",
-					start: this.container
-				});
+				this.style = create.start(this.container, `<style data-slide></style>`);
 			}
 		}
 
 		if (this.isolated) {
-			this.iframe = $("iframe.demo-target", this.container) || create("iframe", {
-				className: "demo-target",
-				inside: this.container
-			});
+			this.iframe = $("iframe.demo-target", this.container) || create.in(this.container, `<iframe class="demo-target"></iframe>`);
 
 			this.iframe.name = this.iframe.name || "iframe-" + this.container.id;
 
@@ -134,11 +129,9 @@ export default class LiveDemo {
 			var title = (this.container.title || this.container.dataset.title || "") + " Demo";
 
 			// Open in new Tab button
-			var a = create("a", {
-				className: "button new-tab",
-				textContent: "↗️ New Tab",
+			let a = create({
 				inside: this.controls,
-				target: "_blank",
+				html: `<a class="button new-tab" target="_blank" href="">↗️ New Tab</a>`,
 				events: {
 					"click mouseenter": evt => {
 						a.href = LiveDemo.createURL(this.getHTMLPage({inline: false, noBase: this.noBase}), self.safari);
@@ -147,23 +140,13 @@ export default class LiveDemo {
 			});
 
 			// Open in codepen button
-			create("form", {
-				action: "https://codepen.io/pen/define",
-				method: "POST",
-				target: "_blank",
-				contents: [
-					{
-						tag: "input",
-						type: "hidden",
-						name: "data",
-					},
-					{
-						tag: "button",
-						textContent: "↗️ CodePen",
-						className: "play"
-					}
-				],
+			create({
 				inside: this.controls,
+				html: `
+					<form action="https://codepen.io/pen/define" method="POST" target="_blank">
+						<input type="hidden" name="data">
+						<button class="play">↗️ CodePen</button>
+					</form>`,
 				onsubmit: async evt => {
 					// Since this can be async, we need more time
 					// We will cancel this submit event, then submit via code when we're ready
@@ -247,9 +230,8 @@ export default class LiveDemo {
 			const PLAY_LABEL = "▶️ Play";
 			const PAUSE_LABEL = "⏸️ Pause";
 
-			let playButton = create("button", {
-				className: "replay",
-				textContent: PLAY_LABEL,
+			let playButton = create({
+				html: `<button class="replay">${PLAY_LABEL}</button>`,
 				inside: this.controls,
 				onclick: async evt => {
 					let isPlay = playButton.textContent === PLAY_LABEL;
@@ -306,10 +288,8 @@ export default class LiveDemo {
 				}
 			})
 
-			let skipButton = create("button", {
-				className: "skip",
-				textContent: "⏭️",
-				title: "Skip (Ctrl/Cmd + click to skip to end)",
+			let skipButton = create({
+				html: `<button class="skip">⏭️</button>`,
 				inside: this.controls,
 				onclick: async evt => {
 					if (this.replayer) {
@@ -331,12 +311,10 @@ export default class LiveDemo {
 			editorKeys.forEach((id, i) => {
 				var editor = this.editors[id];
 
-				var label = create("label", {
-					htmlFor: editor.textarea.id,
+				let label = create({
+					html: `<label for="${editor.textarea.id}" tabindex="0">${editor.lang}</label>`,
 					inside: editor.wrapper,
-					textContent: editor.lang,
-					tabIndex: "0",
-					onclick: evt => this.openEditor(id)
+					onclick: evt => this.openEditor(id),
 				});
 
 				editor.textarea.addEventListener("focus", evt => this.openEditor(id));
@@ -510,11 +488,8 @@ export default class LiveDemo {
 
 	static createEditor(container, label, o = {}) {
 		var lang = o.lang || label;
-
-		var textarea = create("textarea", {
-			id: `${container.id}-${label}-editor`,
-			className: `language-${lang} editor`,
-			"data-lang": lang,
+		let textarea = create({
+			html: `<textarea id="${container.id}-${label}-editor" class="language-${lang} editor" data-lang="${lang}">${o.fromSource()}</textarea>`,
 			inside: o.container || container,
 			value: o.fromSource(),
 			events: {

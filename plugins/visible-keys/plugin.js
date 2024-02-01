@@ -1,6 +1,5 @@
 // Display certain keys pressed
 import Inspire from "../../src/../inspire.mjs";
-import { create } from "../../src/bliss.js";
 import transition from "../../src/../../bliss/src/dom/transition.js";
 import { timeout } from "../../src/util.js";
 
@@ -42,11 +41,7 @@ Inspire.hooks.add("slidechange", env => {
 				      + (evt.metaKey? symbols.Meta : "")
 				      + (evt.altKey? symbols.Alt : "") + label;
 
-				let key = create("kbd", {
-					textContent: label,
-					inside: env.slide,
-					className: "visible-key"
-				});
+				env.slide.insertAdjacentHTML("beforeend", `<kbd class="visible-key">${ label }</kbd>`);
 
 				await timeout(delay);
 				await transition(key, {opacity: 0});

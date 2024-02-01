@@ -3,7 +3,8 @@ import Inspire from "../../src/../inspire.mjs";
 
 export const hasCSS = true;
 
-import { $, $$, create } from "../../src/bliss.js";
+import create from "../../src/create.js";
+import { $$ } from "../../src/bliss.js";
 
 let processDocsLinks = (root = document) => {
 
@@ -44,12 +45,7 @@ let processDocsLinks = (root = document) => {
 			code.textContent += "()";
 		}
 
-		create("a", {
-			className: "docs-link",
-			href: `https://developer.mozilla.org/en-US/docs/Web/${path}/${text}`,
-			around: code,
-			target: "_blank"
-		});
+		create.around(code, `<a class="docs-link" href="https://developer.mozilla.org/en-US/docs/Web/${path}/${text}" target="_blank"></a>`);
 	});
 };
 

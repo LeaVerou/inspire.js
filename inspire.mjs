@@ -8,8 +8,9 @@
 import * as plugins from "./src/plugins.js";
 import * as util from "./src/util.js";
 import * as Bliss from "./src/bliss.js";
+import create from "./src/create.js"
 
-const { $, $$, create, ready, bind, Hooks } = Bliss;
+const { $, $$, ready, bind, Hooks } = Bliss;
 
 let _ = {
 	// Plugin ids and selectors
@@ -54,37 +55,16 @@ let _ = {
 		_.hooks.run("init-start");
 
 		// Create slide indicator
-		_.indicator = create({
-			id: "indicator",
-			inside: document.body
-		});
+		_.indicator = create.in(document.body, `<div id=indicator></div>`);
 
 		// Add on screen navigation
-		let onscreen = create("nav", {
-			id: "onscreen-nav",
-			className: "hidden",
-			inside: document.body,
-			contents: [
-				{
-					tag: "button",
-					className: "onscreen-nav prev",
-					textContent: "◂",
-					type: "button",
-					events: {
-						click: evt => _.previous()
-					}
-				},
-				{
-					tag: "button",
-					className: "onscreen-nav next",
-					textContent: "Next ▸",
-					type: "button",
-					events: {
-						click: evt => _.next()
-					}
-				}
-			]
-		});
+		let onscreen = create.in(document.body, `<div id=onscreen-nav class="hidden">
+			<button class="onscreen-nav prev" type=button>◂</button>
+			<button class="onscreen-nav next" type=button>Next ▸</button>
+		</div>`);
+
+		onscreen.children[0].addEventListener("click", evt => _.previous());
+		onscreen.children[1].addEventListener("click", evt => _.next());
 
 		// Get the slide elements into an array
 		_.slides = $$(".slide", document.body);
@@ -187,18 +167,14 @@ let _ = {
 				element.removeAttribute("data-step");
 
 				for (let i=0; i<steps; i++) {
-					let dummy = document.createElement("span");
-					dummy.style.display = "none";
-					dummy.className = "delayed dummy";
-					dummy.dummyFor = element;
-					dummy.dummyIndex = i+1;
 
-					if (element === slide) {
-						slide.appendChild(dummy);
-					}
-					else {
-						element.parentNode.insertBefore(dummy, element);
-					}
+					create({
+						html: `<span class="delayed dummy" style="display: none"></span>`,
+						element,
+						position: element === slide ? "in" : "before",
+						dummyFor: element,
+						dummyIndex: i+1
+					});
 				}
 			});
 		} // end slide loop
@@ -648,7 +624,7 @@ let _ = {
 			let doc = info.doc;
 
 			// Make sure local links in the import resolve correctly
-			doc.head.append(create(doc.createElement("base"), {href: link.href}));
+			doc.head.insertAdjacentHTML("beforeend", `<base href="${link.href}">`);
 
 			// Go through all linked resources and absolutize their URLs
 			let attributes = ["src", "data-src", "href"];
@@ -693,10 +669,7 @@ let _ = {
 					import(script.src);
 				}
 				else {
-					create("script", {
-						src: script.src,
-						inside: document.head
-					});
+					create.in(document.head, `<script src="${script.src}"></script>`);
 				}
 
 			}
