@@ -1,7 +1,6 @@
 import * as prismMeta from "../prism/meta.js";
-import Hooks from "https://v2.blissfuljs.com/src/Hooks.js";
 import create from "../../src/create.js";
-import { $, $$, load } from "../../src/bliss.js";
+import { $, $$, load, Hooks } from "../../src/bliss.js";
 /*
 	Requirements:
 	- HTML, CSS, or both
