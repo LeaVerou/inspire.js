@@ -1,46 +1,68 @@
-
-	.live-demo:not(.minimal) {
+.live-demo {
+	&:not(.minimal) {
 		background: hsl(220,10%,95%);
 		color: black;
-		font-size: 200%
-	}
-.live-demo:not(.minimal) div.prism-live {
+		font-size: 200%;
+
+		& div.prism-live {
 			background: hsl(200, 10%, 15%);
 		}
-.live-demo:not(.minimal) pre.prism-live {
+
+		& pre.prism-live {
 			background: hsl(200, 10%, 20%) linear-gradient(rgba(0,0,0,.1) 50%, transparent 0);
 			background-origin: content-box;
 			background-size: auto 3em;
 			background-attachment: local;
 			color: white;
 		}
-.live-demo:not(.minimal):not(.horizontal) textarea.prism-live {
+
+		&:not(.horizontal) {
+			& textarea.prism-live {
 				box-shadow: -.1em 0 .2em rgba(0,0,0,.3) inset;
 			}
-.live-demo.horizontal:not(.minimal) textarea.prism-live {
+		}
+
+		&.horizontal {
+			& textarea.prism-live {
 				box-shadow: 0 .1em .2em rgba(0,0,0,.3) inset;
 			}
-.live-demo div.prism-live ::-webkit-scrollbar {
+		}
+	}
+
+	& div.prism-live {
+		& ::-webkit-scrollbar {
 			width: 10px;
 			height: 10px;
 		}
-.live-demo div.prism-live ::-webkit-scrollbar-track {
+
+		& ::-webkit-scrollbar-track {
 			background: hsl(200, 10%, 30%);
 		}
-.live-demo div.prism-live ::-webkit-scrollbar-corner {
+
+		& ::-webkit-scrollbar-corner {
 			background: hsl(200, 10%, 25%);
 		}
-.live-demo div.prism-live ::-webkit-scrollbar-thumb {
+
+		& ::-webkit-scrollbar-thumb {
 			border-radius: 10px;
 			background: hsla(0,0%,100%,.05);
 			box-shadow: 0 0 .2em black;
 		}
-.live-demo div.prism-live ::-webkit-scrollbar-thumb:vertical {
+
+		& ::-webkit-scrollbar-thumb:vertical {
 			background: hsla(0,0%,100%,.2);
 		}
-.live-demo div.prism-live ::-webkit-scrollbar-thumb:hover {
+
+		& ::-webkit-scrollbar-thumb:hover {
 			background: hsla(0,0%,100%,.3);
 		}
-.live-demo div.prism-live.collapsed pre {
+
+
+		&.collapsed {
+			& pre {
 				opacity: .7;
 			}
+		}
+
+	}
+}

@@ -4,14 +4,13 @@ details.notes {
 	font-weight: 400;
 	text-align: left;
 	--notes-background-d: var(--notes-background, hsl(220, 10%, 95%));
-	font-size: 60%
-}
+	font-size: 60%;
 
-details.notes div > ul {
+	& div > ul {
 		padding-left: 1em;
 	}
 
-details.notes > summary {
+	& > summary {
 		padding: 0 .4em;
 		box-shadow: 0 0 1px;
 		border-radius: .3em;
@@ -19,24 +18,24 @@ details.notes > summary {
 		white-space: nowrap;
 		font-weight: bold;
 		letter-spacing: -.03em;
-		display: block /* remove marker */
-	}
+		display: block; /* remove marker */
 
-details.notes > summary::-webkit-details-marker {
+		&::-webkit-details-marker {
 			display: none;
 		}
 
-details.notes > summary::before {
+		&::before {
 			content: "📋 ";
 			filter: grayscale(100%);
 			mix-blend-mode: multiply;
 		}
 
-details.notes > summary:hover::before {
+		&:hover::before {
 			filter: contrast(200%);
 		}
+	}
 
-details.notes > div {
+	& > div {
 		position: absolute;
 		width: 50vw;
 		min-width: 280px;
@@ -48,24 +47,24 @@ details.notes > div {
 		border-radius: .5em;
 		box-shadow: .05em .1em .4em rgba(0,0,0,.3);
 		color: black;
-		text-shadow: 0 .1em .1em white
-	}
+		text-shadow: 0 .1em .1em white;
 
-details.notes > div > * {
+		& > * {
 			margin: 0;
 		}
 
-details.notes > div > p:where(:not(:first-of-type)) {
+		& > p:where(:not(:first-of-type)) {
 			margin-top: .5em;
 		}
 
-details.notes > div a {
+		& a {
 			--link-color-d: var(--link-color, 200, 50%, 40%);
 			color: hsl(var(--link-color-d));
 			text-decoration-color: hsla(var(--link-color-d), .5);
 		}
+	}
 
-details.notes[open]::before {
+	&[open]::before {
 		content: '';
 		position: absolute;
 		bottom: 1.6em;
@@ -76,69 +75,70 @@ details.notes[open]::before {
 		transform: rotate(45deg);
 	}
 
-details.notes > div,
-	details.notes[open]::before {
+	& > div,
+	&[open]::before {
 		background: var(--notes-background-d);
 		border: 1px solid rgba(0,0,0,.3);
 	}
 
-details.notes a,
-	details.notes code {
+	& a,
+	& code {
 		font-weight: bold;
 	}
 
-details.notes.top-right,
-	details.notes.top-left {
-		top: 1em
-	}
+	&.top-right,
+	&.top-left {
+		top: 1em;
 
-details.notes.top-right[open]::before, details.notes.top-left[open]::before {
+		&[open]::before {
 			bottom: auto;
 			top: calc(1.6em - 2px);
 			border-bottom: none;
 			border-right: none;
 		}
 
-details.notes.top-right > div, details.notes.top-left > div {
+		& > div {
 			top: 1.86em;
 		}
-
-details.notes.bottom-right,
-	details.notes.bottom-left {
-		bottom: 1em
 	}
 
-details.notes.bottom-right[open]::before, details.notes.bottom-left[open]::before {
+	&.bottom-right,
+	&.bottom-left {
+		bottom: 1em;
+
+		&[open]::before {
 			border-top: none;
 			border-left: none;
 		}
 
-details.notes.bottom-right > div, details.notes.bottom-left > div {
+		& > div {
 			bottom: 1.86em;
 		}
-
-details.notes.top-right,
-	details.notes.bottom-right {
-		right: 1em
 	}
 
-details.notes.top-right[open]::before, details.notes.bottom-right[open]::before {
+	&.top-right,
+	&.bottom-right {
+		right: 1em;
+
+		&[open]::before {
 			left: auto;
 			right: 40%;
 		}
 
-details.notes.top-right > div, details.notes.bottom-right > div {
+		& > div {
 			right: 0;
 		}
-
-details.notes.top-left,
-	details.notes.bottom-left {
-		left: 1em
 	}
 
-details.notes.top-left > div, details.notes.bottom-left > div {
+	&.top-left,
+	&.bottom-left {
+		left: 1em;
+
+		& > div {
 			left: 0;
 		}
+	}
+}
 
 .slide:not(.demo) details.notes:not([open]):not(:hover) > summary {
 	opacity: .6;

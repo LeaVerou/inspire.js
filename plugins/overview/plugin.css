@@ -11,23 +11,18 @@
 	--gap-v: calc(100vh * var(--gap));
 	grid-template-columns: repeat(auto-fill, minmax(calc(100vw / var(--cols) - var(--gap-h)), 1fr));
 	grid-template-rows: repeat(var(--rows), calc(100vh / var(--cols) - var(--gap-v)));
-	grid-gap: var(--gap-v) var(--gap-h)
-}
+	grid-gap: var(--gap-v) var(--gap-h);
 
-.show-thumbnails .slide-container {
+	& .slide-container {
 		display: contents;
 	}
 
-.show-thumbnails.headers-only .slide:not(header):not(:target) {
+	&.headers-only .slide:not(header):not(:target) {
 		display: none !important;
 	}
 
-.show-thumbnails {
-
 	/* Display titles */
-}
-
-.show-thumbnails .slide[data-title]:not(header):after {
+	& .slide[data-title]:not(header):after {
 		content: attr(data-title);
 		position: absolute;
 		left: 0;
@@ -41,6 +36,7 @@
 		text-shadow: .05em .05em .1em black;
 		transform: none;
 	}
+}
 
 .show-thumbnails .slide,
 .show-next .slide.next {
