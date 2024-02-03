@@ -64,3 +64,5 @@ export function deduplicateId (element) {
 		}
 	}
 }
+
+export { default as create } from "./create.js";
