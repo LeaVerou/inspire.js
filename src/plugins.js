@@ -17,33 +17,28 @@ export function load (id, def = {}) {
 	let noCSS = document.querySelector(`.no-css-${id}, .no-${id}-css, .${id}-no-css`);
 
 	let plugin = loaded[id] = {};
-	plugin.loaded = util.defer();
 	plugin.loading = pluginURL;
 	plugin.loadedJS = import(pluginURL).then(module => plugin.module = module);
-	plugin.loadedCSS = plugin.loadedJS.then(module => {
+	plugin.loaded = plugin.loadedJS.then(module => {
 		if (!noCSS && module.hasCSS) {
 			let pluginCSS = new URL(`${path}/${id}/plugin.css`, import.meta.url);
 			plugin.loading = pluginCSS;
-			document.head.insertAdjacentHTML("beforeend", `<link rel="stylesheet" href="${pluginCSS}">`);
-			let link = document.head.lastElementChild;
+			let link = util.create.in(document.head, `<link rel="stylesheet" href="${pluginCSS}">`);
 			return new Promise((res, rej) => {
-				link.onload = res;
+				link.onload = e => res(module);
 				link.onerror = rej;
 			});
 		}
+
+		return module;
 	});
-	plugin.loaded = Promise.race([
-		plugin.loadedCSS,
-		// util.timeout(TIMEOUT, {
-		// 	reject: true,
-		// 	value: `Timed out while loading ${plugin.loading} (timeout: ${TIMEOUT} ms)`
-		// })
-	]);
+	// Resolves to the JS module, but only after CSS has also loaded
+	plugin.module = plugin.loaded;
 	plugin.done = plugin.loaded.finally(_ => {
 		plugin.loading = "";
 	});
 
-	return loaded[id];
+	return plugin;
 }
 
 export function loadAll (plugins = registry) {
