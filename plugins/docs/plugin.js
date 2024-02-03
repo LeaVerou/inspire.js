@@ -1,6 +1,6 @@
 // Links to documentation
 import Inspire from "../../src/../inspire.mjs";
-import { create, $$ } from "../../src/bliss.js";
+import { create, $$ } from "../../src/util.js";
 
 export const hasCSS = true;
 

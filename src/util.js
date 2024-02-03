@@ -65,9 +65,16 @@ export function deduplicateId (element) {
 	}
 }
 
+export function bind (element, events) {
+	for (let names in events) {
+		for (let name of names.split(/\s+/)) {
+			element.addEventListener(name, events[name]);
+		}
+	}
+}
+
 export { default as create } from "./create.js";
 
 export { default as $ } from "../../bliss/src/$.js";
 export { default as $$ } from "../../bliss/src/$$.js";
-export { default as bind } from "../../bliss/src/events/bind.js";
 export { default as Hooks } from "../../bliss/src/Hooks.js";

@@ -1,6 +1,6 @@
 // Display certain keys pressed
 import Inspire from "../../src/../inspire.mjs";
-import transition from "../../src/../../bliss/src/dom/transition.js";
+import transition from "../../bliss/src/dom/transition.js";
 import { timeout } from "../../src/util.js";
 
 export const symbols = {

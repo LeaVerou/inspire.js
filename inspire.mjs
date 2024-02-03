@@ -7,10 +7,8 @@
 
 import * as plugins from "./src/plugins.js";
 import * as util from "./src/util.js";
-import * as Bliss from "./src/bliss.js";
-import create from "./src/create.js"
 
-const { $, $$, bind, Hooks } = Bliss;
+const { $, $$, bind, Hooks, create } = util;
 
 let _ = {
 	// Plugin ids and selectors
@@ -754,7 +752,7 @@ else {
 }
 
 _.util = {};
-Object.assign(_.util, util, Bliss);
+Object.assign(_.util, util);
 
 export default _;
 

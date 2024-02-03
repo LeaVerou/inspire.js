@@ -1,5 +1,5 @@
 import * as prismMeta from "../prism/meta.js";
-import { $, $$, create, Hooks } from "../../src/util.js";
+import { $, $$, create, Hooks, timeout as sleep } from "../../src/util.js";
 /*
 	Requirements:
 	- HTML, CSS, or both
@@ -9,10 +9,6 @@ import { $, $$, create, Hooks } from "../../src/util.js";
 	- CSS fixup (selector scoping, selector adding, custom fixup?)
 	- HTML fixup
  */
-
-function sleep(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 const PAUSE_THRESHOLD = 3000;
 

@@ -1,10 +1,4 @@
-function $ (el) {
-	if (typeof el === "string") {
-		return document.querySelector(el);
-	}
-
-	return el;
-}
+import { $, bind } from "./util.js";
 
 let positions = {
 	before: { pos: "beforebegin", prop: "previousElementSibling" },
@@ -55,11 +49,7 @@ export default function create (o) {
 			ret.append(...o.contents);
 		}
 		else if (property === "events") {
-			for (let events in o.events) {
-				for (let event of events.split(/\s+/)) {
-					ret.addEventListener(event, o.events[event]);
-				}
-			}
+			bind(ret, o.events);
 		}
 		else if (property === "attributes") {
 			for (let attribute in o.attributes) {
