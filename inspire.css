@@ -186,3 +186,8 @@ body {
 		display: none;
 	}
 }
+
+/* Hide slide content that is to only be shown after the first visit */
+.slide[data-visit="1"] [data-visit]:not([data-visit~="1"]) {
+	display: none;
+}
