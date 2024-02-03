@@ -1,8 +1,6 @@
 export const hasCSS = true;
 
-import { $$ } from "../../src/src/bliss.js";
-
-$$('[class*="heading-"]').forEach(el => {
+for (let el of document.querySelectorAll(('[class*="heading-"]'))) {
 	let [, m, n] = el.className.match(/\bheading-(\d)x(\d)/) || [];
 
 	if (m && n) {
@@ -16,4 +14,4 @@ $$('[class*="heading-"]').forEach(el => {
 			el.style.setProperty("--rows", n);
 		}
 	}
-});
+}
