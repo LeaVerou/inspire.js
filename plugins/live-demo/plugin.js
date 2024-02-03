@@ -39,7 +39,7 @@ input[type="number"] {
 LiveDemo.hooks.add("after-init", function() {
 	if (this.isolated) {
 		// Next & previous slide buttons
-		create.in({
+		create({
 			html: `<button class="prev" title="Previous slide">◂</button>`,
 			start: this.controls,
 			events: {
@@ -47,9 +47,9 @@ LiveDemo.hooks.add("after-init", function() {
 			}
 		});
 
-		create.in({
-			html: `<button class="next" title="Next slide">▸</button>`,
-			start: this.controls,
+		create({
+			html: `<button class="next" title="Next slide">Next ▸</button>`,
+			in: this.controls,
 			events: {
 				click: Inspire.next
 			}
