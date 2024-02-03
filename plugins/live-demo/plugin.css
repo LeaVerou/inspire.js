@@ -63,6 +63,11 @@
 				opacity: .7;
 			}
 		}
+	}
 
+	@container demo_controls (inline-size < 32em) {
+		.demo-controls button:is(.next, .prev) {
+			display: none;
+		}
 	}
 }
