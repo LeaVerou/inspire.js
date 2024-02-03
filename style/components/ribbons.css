@@ -1,0 +1,27 @@
+/* Ribbon */
+.slide[data-type],
+.slide:has(> .ribbon) {
+	overflow: clip;
+}
+
+[data-type].slide::after,
+.slide .ribbon {
+	content: attr(data-type);
+	position: fixed;
+	top: 0;
+	right: 0;
+	z-index: 1;
+	padding: .3em 0;
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: bold;
+	background: var(--ribbon-color, var(--color-accent-2));
+	background-image: linear-gradient(rgba(255, 255, 255, .3), rgba(255, 255, 255, 0));
+	color: white;
+	font-size: 80%;
+	line-height: 1.1;
+	white-space: pre-line;
+	min-width: 20em;
+	box-shadow: 0 10px 5px -5px rgb(0 0 0 / .3);
+	transform: rotate(45deg) translate(6em, var(--ribbon-offset, -2em));
+}

@@ -1,0 +1,32 @@
+@import url("ribbons.css");
+@import url("image-slides.css");
+
+/* Mark slides as incomplete to spot them easier */
+.incomplete.slide::after {
+	content: 'INCOMPLETE';
+	font-weight: bold;
+	position: absolute;
+	top: 40%;
+	left: 30%;
+	padding: .1em .4em 0;
+	border: .1em solid;
+	color: rgba(255, 0, 0, .8);
+	font-size: 140%;
+	border-radius: .2em;
+	transform: rotate(30deg);
+}
+
+/* Media credits */
+.slide[data-credits]:after {
+	content: "Media credits: " attr(data-credits);
+	position: absolute;
+	bottom: .5rem;
+	right: 1rem;
+	z-index: 100;
+	color: canvastext;
+	font-size: .8rem;
+	font-weight: 300;
+	text-shadow: 0 0 .1em canvas;
+	text-shadow: 0 0 .1em .1em canvas;
+}
+

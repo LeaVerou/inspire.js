@@ -1,135 +1,27 @@
-@import url("extras.css");
+@import url("style/base.css");
+@import url("style/components/index.css");
 
 :root {
 	--font-mono: Consolas, Monaco, 'Andale Mono', monospace;
 	--font-body: 'Helvetica Neue', Helvetica, Segoe UI, sans-serif;
 	--font-heading: var(--font-body);
-	--color-yellow: hsl(50, 100%, 50%);
-	--color-green: hsl(100, 60%, 50%);
-	--color-aqua: hsl(190, 100%, 40%);
-	--color-magenta: hsl(336, 100%, 55%);
-	--color-gray-medium: hsl(200 15% 50%);
 
-	--color-accent-1: var(--color-aqua);
-	--color-accent-2: var(--color-green);
-	--color-accent-3: var(--color-yellow);
-	--color-accent-4: var(--color-magenta);
 	--light1: hsl(200, 40%, 80%);
 }
 
 html {
-	font: 300 100%/1.5 var(--font-body);
-	font-family: var(--font-body);
-	--checkerboard: repeating-conic-gradient(rgb(0 0 0 / .12) 0 25%, transparent 0 50%) 0 0 / 40px 40px;
-	background: var(--checkerboard) hsl(220, 10%, 97%);
-	font-synthesis: none;
 	color-scheme: dark;
 }
 
-h1, h2, h3, h4, h5, h6 {
-	line-height: 1.2;
-	text-align: center;
-	text-wrap: balance;
-}
-
-a {
-	color: inherit;
-	text-decoration-color: hsla(0,0%,100%,.4);
-}
-
-strong, b {
-	font-weight: bold; /* FF is weird */
-}
-
-:focus:not(:focus-visible) {
-	outline: none;
-}
-
-input:not([type=file]),
-button,
-select {
-	font: inherit;
-	color: inherit;
-}
-
-input {
-	&:not([type]),
-	&[type="text"],
-	&[type="email"],
-	&[type="tel"],
-	&[type="url"] {
-		padding: 0 .3em;
-	}
-}
-
-code, textarea, pre {
-	margin: 0;
-	font: 100%/1.5em var(--font-mono);
-	font-family: var(--font-mono);
-	tab-size: 4;
-	color: inherit;
-}
-
-	pre > code {
-		font-size: inherit;
-	}
-
-	code mark {
-		--color: hsla(190, 20%, 50%, .5);
-		background: var(--color);
-		box-shadow: 0 -.05em 0 .1em var(--color);
-		color: inherit;
-		border-radius: 1px;
-		text-shadow: .01em .05em .2em rgba(0,0,0,.6);
-		transition: .6s;
-	}
-
-pre + pre {
-	margin-top: 1.5em;
-}
-
-img {
-	max-width: 100%;
-	max-height: 100%;
-	object-fit: contain;
-}
-
-::selection {
-	background: canvas;
-	color: canvastext;
-	text-shadow: none;
-}
-
 .slide {
-	display: flex;
-	flex-flow: column;
-	align-items: center;
-	justify-content: center;
-	padding: 2.5rem;
 	--background-color-overlay: hsl(200 20% 50% / .3);
-	background: radial-gradient(transparent, rgba(0,0,0,.7)), linear-gradient(var(--background-color-overlay), var(--background-color-overlay)) canvas;
+	background: radial-gradient(transparent, rgba(0,0,0,.7)), linear-gradient(var(--background-color-overlay) 0 100%) canvas;
 	color: canvastext;
-
-	@media (max-width: 1024px) {
-		padding: 3vmin;
-	}
 
 	&.light {
 		background: var(--light1);
 		color: black;
 	}
-
-	> h1,
-	> header > h1 {
-		text-align: center;
-		margin: 0 0 .6em;
-		font-size: 200%;
-	}
-
-		> header > h1 + h2,
-		> header > h1 + p {
-			margin-top: 0;
-		}
 
 	h2 {
 		color: var(--color-accent-2);
@@ -137,169 +29,22 @@ img {
 	}
 }
 
-/* Header slides */
-header.slide {
-	:where(section) > & {
-		background: linear-gradient(to bottom right, var(--color-accent-3), var(--color-accent-2), var(--color-accent-1), var(--color-accent-2), var(--color-accent-3));
-
-		> h1 {
-			margin: auto;
-			padding: .5em .7em;
-			background: black;
-			color: white;
-			text-align: center;
-			font-size: 250%;
-			line-height: 1.2;
-			font-weight: 300;
-		}
-
-		:where(section) > & {
-			background: linear-gradient(to bottom right, var(--color-accent-4), var(--color-accent-3), var(--color-accent-1), var(--color-accent-3), var(--color-accent-4));
-		}
-	}
-}
-
-#indicator {
-	color: canvastext;
-}
-
-/* Quotes */
-blockquote {
-	position: relative;
-	font-style: italic;
-	max-width: calc(80vw - 4.5em);
-
-	&::before {
-		content: "❝";
-		position: absolute;
-		right: 100%;
-		top: -.3em;
-		margin-right: .2em;
-		font-size: 300%;
-		color: var(--color-accent-1);
-		font-style: normal;
-	}
-
-	.cite {
-		text-align: right;
-		font-style: normal;
-		font-size: 60%;
-		font-weight: bold;
-		color: var(--color-accent-1);
-
-		&::before {
-			content: "— "
-		}
-
-		a:not(:hover) {
-			text-decoration: none;
-		}
-	}
-}
-
 /* Tables */
 .slide > table {
-	border-spacing: 0;
-	margin: 1em;
-
 	caption {
-		font-weight: bold;
 		letter-spacing: -.05em;
 		color: var(--color-orange);
 	}
 
-	th,
-	td {
-		vertical-align: middle;
-		text-align: left;
-		padding: .5em;
-	}
-
-	th {
-		border: 0;
-	}
-
-	tbody th {
-		text-align: right;
-		padding-left: 0;
-	}
-
 	thead th {
-		vertical-align: top;
-		font-size: 75%;
 		background: var(--color-accent-1);
-		padding: .3em .5em;
 	}
 
 	tbody tr > * {
-		border-top: 1px solid hsla(0, 0%, 100%, .15);
+		border-top-color: hsla(0, 0%, 100%, .15);
 	}
 
 	td:first-child {
 		font-weight: 300;
 	}
-
-	td:first-child,
-	th:first-child {
-		text-align: left;
-	}
-}
-
-/* Syntax highlighting */
-.token.comment,
-.token.prolog,
-.token.doctype,
-.token.cdata {
-	color: hsla(220, 10%, 90%, .5);
-}
-
-.token.punctuation {
-	color: #999;
-}
-
-.namespace {
-	opacity: .7;
-}
-
-.token.property,
-.token.tag,
-.token.boolean,
-.token.number,
-.token.constant,
-.token.symbol {
-	color: var(--color-accent-2);
-}
-
-.token.selector,
-.token.attr-name,
-.token.string,
-.token.char,
-.token.builtin {
-	color: var(--color-accent-1);
-}
-
-.token.operator,
-.token.entity,
-.token.url,
-.language-css > .token.string,
-.token.inserted,
-.token.function {
-	color: var(--color-accent-4); /* deep pink */
-}
-
-.token.attr-value,
-.token.keyword,
-.token.variable {
-	color: var(--color-accent-3);
-}
-
-.token.atrule,
-.token.regex,
-.token.important {
-	color: orange;
-}
-
-.token.important,
-.token.bold {
-	font-weight: bold;
 }
