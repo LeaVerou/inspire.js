@@ -13,7 +13,7 @@ let positions = {
 	start: { pos: "afterbegin", prop: "firstChild" },
 	around: function around (element, html) {
 		element = $(element);
-		let newElement = before(element, html);
+		let newElement = create.before(element, html);
 		newElement.append(element);
 		return newElement;
 	}
