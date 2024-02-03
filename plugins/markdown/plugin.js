@@ -1,4 +1,4 @@
-import { $$ } from "../../src/bliss.js";
+import { $$ } from "../../src/util.js";
 
 export const hasCSS = false;
 

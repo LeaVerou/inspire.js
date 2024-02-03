@@ -1,10 +1,8 @@
 // Links to documentation
 import Inspire from "../../src/../inspire.mjs";
+import { create, $$ } from "../../src/bliss.js";
 
 export const hasCSS = true;
-
-import create from "../../src/create.js";
-import { $$ } from "../../src/bliss.js";
 
 let processDocsLinks = (root = document) => {
 

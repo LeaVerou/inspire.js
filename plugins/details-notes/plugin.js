@@ -1,9 +1,7 @@
 import Inspire from "../../src/../inspire.mjs";
+import { create, $, $$ } from "../../src/util.js";
 
 export const hasCSS = true;
-
-import create from "../../src/create.js";
-import { $, $$ } from "../../src/bliss.js";
 
 $$("details.notes").forEach(details => {
 	let div = document.createElement("div");

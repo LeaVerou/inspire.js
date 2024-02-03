@@ -1,9 +1,7 @@
 import Inspire from "../../src/../inspire.mjs";
+import { $$, create } from "../../src/util.js";
 
 export const hasCSS = true;
-
-import { $$ } from "../../src/bliss.js";
-import create from "../../src/create.js";
 
 Inspire.hooks.add({
 	"slidechange": function(env) {

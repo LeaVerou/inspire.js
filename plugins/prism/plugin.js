@@ -3,8 +3,7 @@
  */
 
 import Inspire from "../../inspire.mjs";
-import { $$ } from "../../src/bliss.js";
-import * as util from "../../src/util.js";
+import { $$, getAttribute, toArray, defer } from "../../src/util.js";
 import * as meta from "./meta.js";
 
 let PRISM_ROOT = meta.PRISM_ROOT;
@@ -18,7 +17,7 @@ var ids = $$("[class*='lang-'], [class*='language-']").map(e => {
 ids = new Set(ids);
 
 // Which plugins to load?
-let plugins = util.getAttribute("data-prism-plugins");
+let plugins = getAttribute("data-prism-plugins");
 plugins = plugins? plugins.split(/\s*,\s*/) : [];
 
 if (ids.size) {
@@ -76,8 +75,8 @@ var loadLanguage = async id => {
 		return;
 	}
 
-	var deps = util.toArray(languages[id].require);
-	ok[id] = util.defer();
+	var deps = toArray(languages[id].require);
+	ok[id] = defer();
 
 	await Promise.all(deps.map(loadLanguage));
 

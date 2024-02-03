@@ -1,6 +1,5 @@
 import * as prismMeta from "../prism/meta.js";
-import create from "../../src/create.js";
-import { $, $$, load, Hooks } from "../../src/bliss.js";
+import { $, $$, create, Hooks } from "../../src/util.js";
 /*
 	Requirements:
 	- HTML, CSS, or both
@@ -629,4 +628,4 @@ if (baseCSSTemplate) {
 	LiveDemo.baseCSS = baseCSSTemplate.textContent || baseCSSTemplate.innerHTML;
 }
 
-load(new URL("./live-demo.css", import.meta.url));
+create.in(document.head, `<link rel="stylesheet" href="${new URL("./live-demo.css", import.meta.url)}">`);
