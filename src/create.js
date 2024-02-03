@@ -7,10 +7,10 @@ function $ (el) {
 }
 
 let positions = {
-	before: { pos: "beforebegin", prop: "previousSibling" },
-	after: { pos: "afterend", prop: "nextSibling" },
-	in: { pos: "beforeend", prop: "lastChild" },
-	start: { pos: "afterbegin", prop: "firstChild" },
+	before: { pos: "beforebegin", prop: "previousElementSibling" },
+	after: { pos: "afterend", prop: "nextElementSibling" },
+	in: { pos: "beforeend", prop: "lastElementChild" },
+	start: { pos: "afterbegin", prop: "firstElementChild" },
 	around: function around (element, html) {
 		element = $(element);
 		let newElement = create.before(element, html);
@@ -19,8 +19,8 @@ let positions = {
 	}
 }
 
-const POSITION_SETTINGS = new Set([
-	"element", "position", "contents",
+const CORE_SETTINGS = new Set([
+	"element", "position", "contents", "html",
 	...Object.keys(positions),
 ]);
 
@@ -43,18 +43,30 @@ export default function create (o) {
 		}
 	}
 
+	if (!ret) {
+		// No position specified, create it and return it
+		let dummy = document.createElement("div");
+		dummy.innerHTML = html;
+		ret = dummy.firstElementChild;
+	}
+
 	for (let property in o) {
 		if (property === "contents") {
 			ret.append(...o.contents);
 		}
 		else if (property === "events") {
 			for (let events in o.events) {
-				for (let event in events.split(/\s+/)) {
+				for (let event of events.split(/\s+/)) {
 					ret.addEventListener(event, o.events[event]);
 				}
 			}
 		}
-		else if (!POSITION_SETTINGS.has(property)) {
+		else if (property === "attributes") {
+			for (let attribute in o.attributes) {
+				ret.setAttribute(attribute, o.attributes[attribute]);
+			}
+		}
+		else if (!CORE_SETTINGS.has(property)) {
 			ret[property] = o[property];
 		}
 	}
@@ -69,8 +81,29 @@ for (let position in positions) {
 		let { pos, prop } = fn;
 		fn = function (element, html) {
 			element = $(element);
+			let target = element;
+
+			if (element.nodeType === Node.TEXT_NODE) {
+				if (pos === "afterbegin" || pos === "beforeend") {
+					throw new Error("Text nodes cannot have children. Text node was:", element);
+				}
+
+				element = element.parentElement;
+			}
+
 			element.insertAdjacentHTML(pos, html);
-			return element[prop];
+			let newElement = element[prop];
+
+			if (target !== element) {
+				if (pos === "beforebegin") {
+					target.before(newElement);
+				}
+				else if (pos === "afterend") {
+					target.after(newElement);
+				}
+			}
+
+			return newElement;
 		};
 	}
 
