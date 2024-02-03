@@ -1,7 +1,8 @@
 import Inspire from "../../src/../inspire.mjs";
 import * as prism from "../prism/plugin.js";
 import create from "../../src/create.js";
-import { $, $$, load } from "../../src/bliss.js";
+import { timeout } from "../../src/util.js";
+import { $, $$ } from "../../src/bliss.js";
 import LiveDemo from "./live-demo.js";
 
 export const hasCSS = true;
@@ -89,7 +90,13 @@ if (!Prism.Live) {
 		}
 	}
 
-	await load(`https://live.prismjs.com/src/prism-live.js?load=${languages.join(",")}`);
+	let loaded = await import(`https://live.prismjs.com/src/prism-live.js?load=${languages.join(",")}`);
+	for (let delay=100; delay < 1000; delay += 100) {
+		if (Prism.Live) {
+			break;
+		}
+		await timeout(delay);
+	}
 	await Prism.Live.ready;
 
 	// Move Prism Live CSS before ours
