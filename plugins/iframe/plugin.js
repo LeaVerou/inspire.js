@@ -3,6 +3,7 @@ import Inspire from "../../src/../inspire.mjs";
 export const hasCSS = true;
 
 import { $$ } from "../../src/bliss.js";
+import create from "../../src/create.js";
 
 Inspire.hooks.add({
 	"slidechange": function(env) {
@@ -11,7 +12,7 @@ Inspire.hooks.add({
 		if (slide.matches(".slide[data-src]:empty")) {
 			// Uninitialized iframe slide
 
-			let iframe = slide.insertAdjacentHTML("beforeend", `<iframe src="${ slide.dataset.src }" frameborder="0" allowfullscreen></iframe>`);
+			let iframe = create.in(slide, `<iframe src="${ slide.dataset.src }" frameborder="0" allowfullscreen></iframe>`);
 
 			slide.removeAttribute("data-src");
 
