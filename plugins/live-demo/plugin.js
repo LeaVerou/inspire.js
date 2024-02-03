@@ -1,7 +1,7 @@
 import Inspire from "../../src/../inspire.mjs";
 import * as prism from "../prism/plugin.js";
 import create from "../../src/create.js";
-import { $, $$, load, ready } from "../../src/bliss.js";
+import { $, $$, load } from "../../src/bliss.js";
 import LiveDemo from "./live-demo.js";
 
 export const hasCSS = true;
@@ -117,20 +117,18 @@ document.addEventListener("slidechange", evt => {
 	}
 });
 
-ready().then(async _ => {
-	await Inspire.slideshowCreated;
+await Inspire.slideshowCreated;
 
-	if (Inspire.currentSlide?.classList.contains("demo")){
-		LiveDemo.init(Inspire.currentSlide);
-	}
+if (Inspire.currentSlide?.classList.contains("demo")){
+	LiveDemo.init(Inspire.currentSlide);
+}
 
-	// var io = new IntersectionObserver(entries => {
-	// 	entries.forEach(entry => LiveDemo.init(entry.target));
-	// });
+// var io = new IntersectionObserver(entries => {
+// 	entries.forEach(entry => LiveDemo.init(entry.target));
+// });
 
-	// $$(".demo.slide").forEach(demo => {
-	// 	io.observe(demo);
-	// });
-});
+// $$(".demo.slide").forEach(demo => {
+// 	io.observe(demo);
+// });
 
 export {LiveDemo};

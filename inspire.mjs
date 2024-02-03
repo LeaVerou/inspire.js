@@ -10,7 +10,7 @@ import * as util from "./src/util.js";
 import * as Bliss from "./src/bliss.js";
 import create from "./src/create.js"
 
-const { $, $$, ready, bind, Hooks } = Bliss;
+const { $, $$, bind, Hooks } = Bliss;
 
 let _ = {
 	// Plugin ids and selectors
@@ -739,8 +739,6 @@ if (!window.Inspire || !window.Inspire.loaded) {
 			_.profile = profile;
 			document.documentElement.dataset.profile = profile;
 		}
-
-		await ready();
 
 		// Commenting slides out works sometimes, but fails if the slides you're commenting also have comments.
 		// These classes work with nesting too
