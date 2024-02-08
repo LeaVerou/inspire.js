@@ -1,0 +1,77 @@
+/* Syntax highlighting */
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: var(--color-neutral-50a);
+}
+
+.token.punctuation {
+	color: var(--color-neutral-80a);
+}
+
+.namespace {
+	opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol {
+	color: var(--color-accent-2);
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin {
+	color: var(--color-accent-1);
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css > .token.string,
+.token.inserted,
+.token.function {
+	color: var(--color-accent-4); /* deep pink */
+}
+
+.token.attr-value,
+.token.keyword,
+.token.variable {
+	color: var(--color-accent-3);
+}
+
+.token.atrule,
+.token.regex,
+.token.important {
+	color: orange;
+}
+
+.token.important,
+.token.bold {
+	font-weight: bold;
+}
+
+.token {
+	&.tag {
+		mix-blend-mode: multiply;
+	}
+
+	&.comment,
+	&.prolog,
+	&.doctype,
+	&.cdata {
+		--comment-color: color-mix(in oklch, var(--color) 0%, oklch(60% .01 none));
+		color: var(--comment-color, var(--color-neutral-50a));
+	}
+
+	&.punctuation {
+		mix-blend-mode: normal;
+	}
+}

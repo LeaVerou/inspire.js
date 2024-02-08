@@ -1,0 +1,26 @@
+/* Header slides, not whole deck cover */
+header.slide:where(section > header) {
+	--overlay-color: var(--color-accent-1);
+	--background: radial-gradient(transparent, var(--overlay-color) 30%), var(--cover-image) center / cover;
+	--fallback-background: linear-gradient(to bottom right, var(--color-accent-3), var(--color-accent-2), var(--color-accent-1), var(--color-accent-2), var(--color-accent-3));
+	background: var(--background, var(--fallback-background));
+	background-blend-mode: hue;
+
+	> h1 {
+		margin: auto;
+		padding: .5em .7em;
+		color-scheme: dark;
+		background: canvas;
+		color: canvastext;
+		text-align: center;
+		font-size: 250%;
+		line-height: 1.2;
+		font-weight: 300;
+	}
+
+	/* Nested sections */
+	&:where(section section *) {
+		--fallback-background: linear-gradient(to bottom right, var(--color-accent-4), var(--color-accent-3), var(--color-accent-1), var(--color-accent-3), var(--color-accent-4));
+		--overlay-color: var(--color-accent-2);
+	}
+}

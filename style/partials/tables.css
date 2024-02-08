@@ -1,0 +1,56 @@
+/* Tables */
+table {
+	border-spacing: 0;
+	margin-block: 1em;
+
+	caption {
+		font-weight: bold;
+		letter-spacing: -.05em;
+		color: var(--color-accent-1);
+	}
+
+	th,
+	td {
+		vertical-align: middle;
+		text-align: inline-start;
+		padding: .3em .5em;
+
+		&:first-child {
+			text-align: inline-start;
+		}
+	}
+
+	th {
+		border: 0;
+	}
+
+	thead th {
+		vertical-align: bottom;
+		padding: .3em .5em;
+		font-size: 75%;
+		background: var(--color-accent-1);
+		color: white;
+	}
+
+	& tbody {
+		& th,
+		& td {
+			border-bottom: 1px solid var(--color-neutral-80);
+		}
+
+		& th {
+			text-align: inline-end;
+			padding-left: 0;
+		}
+
+		& td {
+			&:first-child {
+				font-weight: 300;
+			}
+		}
+
+		& tr > * {
+			border-top: 1px solid hsla(0, 0%, 100%, .15);
+		}
+	}
+}

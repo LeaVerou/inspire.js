@@ -1,4 +1,7 @@
 @import url("https://live-colors.verou.me/dist/index.css");
+@import url("partials/header.css");
+@import url("partials/code.css");
+@import url("partials/tables.css");
 
 :root {
 	--font-sans: Inter, "Helvetica Neue", Helvetica, system-ui, sans-serif;
@@ -10,15 +13,6 @@
 	--font-body: var(--font-sans);
 	--font-heading: var(--font-body);
 
-	/* Core accent colors */
-	--color-red: oklch(55% 0.2 30);
-	--color-orange: oklch(70% 0.185 60);
-	--color-yellow: oklch(88% 0.2 100);
-	--color-green: oklch(70% 0.21 135);
-	--color-aqua: oklch(65% 0.15 210);
-	--color-blue: oklch(65% 0.15 260);
-	--color-magenta: oklch(65% 0.25 6);
-
 	/*
 	 * Colors by visual appearance
 	 */
@@ -28,37 +22,6 @@
 	--color-green-pale: color-mix(in oklab, var(--color-green) var(--percentage-pale), canvas);
 	--color-red-pale: color-mix(in oklab, var(--color-red) var(--percentage-pale), canvas);
 	--color-aqua-pale: color-mix(in oklab, var(--color-aqua) var(--percentage-pale), canvas);
-
-	/* A neutral color (typically gray or very desaturated) with an OKLCH lightness of 50% */
-	--color-neutral: oklch(50% 0.03 230);
-
-	/* Tints and shades that automatically adapt to the color-scheme used */
-	--color-neutral-5:  color-mix(in oklab, var(--color-neutral) calc(2 *  5%), canvastext);
-	--color-neutral-10: color-mix(in oklab, var(--color-neutral) calc(2 * 10%), canvastext);
-	--color-neutral-15: color-mix(in oklab, var(--color-neutral) calc(2 * 15%), canvastext);
-	--color-neutral-20: color-mix(in oklab, var(--color-neutral) calc(2 * 20%), canvastext);
-	--color-neutral-25: color-mix(in oklab, var(--color-neutral) calc(2 * 25%), canvastext);
-	--color-neutral-30: color-mix(in oklab, var(--color-neutral) calc(2 * 30%), canvastext);
-	--color-neutral-35: color-mix(in oklab, var(--color-neutral) calc(2 * 35%), canvastext);
-	--color-neutral-40: color-mix(in oklab, var(--color-neutral) calc(2 * 40%), canvastext);
-	--color-neutral-45: color-mix(in oklab, var(--color-neutral) calc(2 * 45%), canvastext);
-	--color-neutral-50: var(--color-neutral);
-	--color-neutral-55: color-mix(in oklab, var(--color-neutral) calc(2 * (100% - 55%)), canvas);
-	--color-neutral-60: color-mix(in oklab, var(--color-neutral) calc(2 * (100% - 60%)), canvas);
-	--color-neutral-65: color-mix(in oklab, var(--color-neutral) calc(2 * (100% - 65%)), canvas);
-	--color-neutral-70: color-mix(in oklab, var(--color-neutral) calc(2 * (100% - 70%)), canvas);
-	--color-neutral-75: color-mix(in oklab, var(--color-neutral) calc(2 * (100% - 75%)), canvas);
-	--color-neutral-80: color-mix(in oklab, var(--color-neutral) calc(2 * (100% - 80%)), canvas);
-	--color-neutral-85: color-mix(in oklab, var(--color-neutral) calc(2 * (100% - 85%)), canvas);
-	--color-neutral-90: color-mix(in oklab, var(--color-neutral) calc(2 * (100% - 90%)), canvas);
-	--color-neutral-95: color-mix(in oklab, var(--color-neutral) calc(2 * (100% - 95%)), canvas);
-
-	/* Semi-transparent versions of neutrals */
-	--color-neutral-10a: color-mix(in oklch, var(--color-neutral) 0%, oklch(none none none / 10%));
-	--color-neutral-20a: color-mix(in oklch, var(--color-neutral) 0%, oklch(none none none / 20%));
-	--color-neutral-50a: color-mix(in oklch, var(--color-neutral) 0%, oklch(none none none / 50%));
-	--color-neutral-80a: color-mix(in oklch, var(--color-neutral) 0%, oklch(none none none / 80%));
-	--color-neutral-90a: color-mix(in oklch, var(--color-neutral) 0%, oklch(none none none / 90%));
 
 	/*
 	 * Colors by semantic purpose
@@ -94,14 +57,19 @@ li {
 }
 
 a {
+	color: var(--color-blue-30);
 	--text-decoration-opacity: 30%;
 	text-decoration-color: color-mix(in lab, currentColor, transparent calc(100% - var(--text-decoration-opacity)));
+
+	&:visited {
+		color: var(--color-purple-30);
+	}
 
 	&:not(:has(*)) {
 		/* PLain text link */
 	}
 
-	&:has(:not(em, strong)) {
+	&:not(:has(em, strong)) {
 		/* Not a plain text link */
 		color: inherit;
 		text-decoration: none;
@@ -123,13 +91,14 @@ select {
 	color: inherit;
 }
 
-input {
-	&:not([type]),
-	&[type="text"],
-	&[type="email"],
-	&[type="tel"],
-	&[type="url"] {
-		padding: 0 .3em;
+input:is(:not([type]), [type="text"], [type="email"], [type="tel"], [type="url"]),
+textarea {
+	padding: 0 .3em;
+	border: 1px solid var(--color-neutral-70);
+
+	&:invalid {
+		border-color: var(--color-red);
+		background: var(--color-red-pale);
 	}
 }
 
@@ -176,6 +145,7 @@ img {
 	align-items: center;
 	justify-content: center;
 	padding: 2.5rem;
+	background: canvas;
 	color: canvastext;
 
 	@media (max-width: 1024px) {
@@ -199,33 +169,6 @@ img {
 
 	h2 {
 		font-size: 120%;
-	}
-}
-
-/* Header slides, not whole deck cover */
-header.slide:where(section > header) {
-	--overlay-color: var(--color-accent-1);
-	--background: radial-gradient(transparent, var(--overlay-color) 30%), var(--cover-image) center / cover;
-	--fallback-background: linear-gradient(to bottom right, var(--color-accent-3), var(--color-accent-2), var(--color-accent-1), var(--color-accent-2), var(--color-accent-3));
-	background: var(--background, var(--fallback-background));
-	background-blend-mode: hue;
-
-	> h1 {
-		margin: auto;
-		padding: .5em .7em;
-		color-scheme: dark;
-		background: canvas;
-		color: canvastext;
-		text-align: center;
-		font-size: 250%;
-		line-height: 1.2;
-		font-weight: 300;
-	}
-
-	/* Nested sections */
-	&:where(section section *) {
-		--fallback-background: linear-gradient(to bottom right, var(--color-accent-4), var(--color-accent-3), var(--color-accent-1), var(--color-accent-3), var(--color-accent-4));
-		--overlay-color: var(--color-accent-2);
 	}
 }
 
@@ -263,47 +206,6 @@ blockquote {
 	}
 }
 
-/* Tables */
-.slide > table {
-	border-spacing: 0;
-	margin: 1em;
-
-	caption {
-		font-weight: bold;
-	}
-
-	th,
-	td {
-		vertical-align: middle;
-		text-align: left;
-		padding: .5em;
-	}
-
-	th {
-		border: 0;
-	}
-
-	tbody th {
-		text-align: right;
-		padding-left: 0;
-	}
-
-	thead th {
-		vertical-align: top;
-		font-size: 75%;
-		padding: .3em .5em;
-	}
-
-	tbody tr > * {
-		border-top: 1px solid var(--color-neutral-10a);
-	}
-
-	td:first-child,
-	th:first-child {
-		text-align: left;
-	}
-}
-
 /* Keystrokes */
 kbd {
 	display: inline-block;
@@ -322,61 +224,14 @@ kbd {
 	}
 }
 
-/* Syntax highlighting */
-.token.comment,
-.token.prolog,
-.token.doctype,
-.token.cdata {
-	color: var(--color-neutral-50a);
+.dark {
+	color-scheme: dark;
 }
 
-.token.punctuation {
-	color: var(--color-neutral-80a);
+.light {
+	color-scheme: light;
 }
 
-.namespace {
-	opacity: .7;
-}
-
-.token.property,
-.token.tag,
-.token.boolean,
-.token.number,
-.token.constant,
-.token.symbol {
-	color: var(--color-accent-2);
-}
-
-.token.selector,
-.token.attr-name,
-.token.string,
-.token.char,
-.token.builtin {
-	color: var(--color-accent-1);
-}
-
-.token.operator,
-.token.entity,
-.token.url,
-.language-css > .token.string,
-.token.inserted,
-.token.function {
-	color: var(--color-accent-4); /* deep pink */
-}
-
-.token.attr-value,
-.token.keyword,
-.token.variable {
-	color: var(--color-accent-3);
-}
-
-.token.atrule,
-.token.regex,
-.token.important {
-	color: orange;
-}
-
-.token.important,
-.token.bold {
-	font-weight: bold;
+#indicator {
+	opacity: .5;
 }
