@@ -1,3 +1,5 @@
+@import url("https://live-colors.verou.me/dist/index.css");
+
 :root {
 	--font-sans: Inter, "Helvetica Neue", Helvetica, system-ui, sans-serif;
 	--font-serif: Vollkorn, "Hoefler Text", Garamond, serif;
@@ -8,27 +10,67 @@
 	--font-body: var(--font-sans);
 	--font-heading: var(--font-body);
 
-	--color-yellow: oklch(88% 0.2 100);
-	--color-orange: oklch(70% 0.185 60);
-	--color-green: oklch(73% 0.21 135);
-	--color-aqua: oklch(69% 0.15 215);
-	--color-magenta: oklch(65% 0.25 6);
+	/* Core accent colors */
 	--color-red: oklch(55% 0.2 30);
+	--color-orange: oklch(70% 0.185 60);
+	--color-yellow: oklch(88% 0.2 100);
+	--color-green: oklch(70% 0.21 135);
+	--color-aqua: oklch(65% 0.15 210);
+	--color-blue: oklch(65% 0.15 260);
+	--color-magenta: oklch(65% 0.25 6);
 
-	--color-neutral-50: oklch(50% 0.02 230);
-	--color-neutral-95: color-mix(in oklch, var(--color-neutral-50) 0%, oklch(95% none none));
+	/*
+	 * Colors by visual appearance
+	 */
 
-	--color-neutral-10a: color-mix(in oklch, var(--color-neutral-50) 0%, oklch(none none none / 10%));
-	--color-neutral-20a: color-mix(in oklch, var(--color-neutral-50) 0%, oklch(none none none / 20%));
-	--color-neutral-50a: color-mix(in oklch, var(--color-neutral-50) 0%, oklch(none none none / 50%));
-	--color-neutral-80a: color-mix(in oklch, var(--color-neutral-50) 0%, oklch(none none none / 80%));
-	--color-neutral-90a: color-mix(in oklch, var(--color-neutral-50) 0%, oklch(none none none / 90%));
+	/* Pale versions of core colors */
+	--percentage-pale: 20%;
+	--color-green-pale: color-mix(in oklab, var(--color-green) var(--percentage-pale), canvas);
+	--color-red-pale: color-mix(in oklab, var(--color-red) var(--percentage-pale), canvas);
+	--color-aqua-pale: color-mix(in oklab, var(--color-aqua) var(--percentage-pale), canvas);
 
+	/* A neutral color (typically gray or very desaturated) with an OKLCH lightness of 50% */
+	--color-neutral: oklch(50% 0.03 230);
+
+	/* Tints and shades that automatically adapt to the color-scheme used */
+	--color-neutral-5:  color-mix(in oklab, var(--color-neutral) calc(2 *  5%), canvastext);
+	--color-neutral-10: color-mix(in oklab, var(--color-neutral) calc(2 * 10%), canvastext);
+	--color-neutral-15: color-mix(in oklab, var(--color-neutral) calc(2 * 15%), canvastext);
+	--color-neutral-20: color-mix(in oklab, var(--color-neutral) calc(2 * 20%), canvastext);
+	--color-neutral-25: color-mix(in oklab, var(--color-neutral) calc(2 * 25%), canvastext);
+	--color-neutral-30: color-mix(in oklab, var(--color-neutral) calc(2 * 30%), canvastext);
+	--color-neutral-35: color-mix(in oklab, var(--color-neutral) calc(2 * 35%), canvastext);
+	--color-neutral-40: color-mix(in oklab, var(--color-neutral) calc(2 * 40%), canvastext);
+	--color-neutral-45: color-mix(in oklab, var(--color-neutral) calc(2 * 45%), canvastext);
+	--color-neutral-50: var(--color-neutral);
+	--color-neutral-55: color-mix(in oklab, var(--color-neutral) calc(2 * (100% - 55%)), canvas);
+	--color-neutral-60: color-mix(in oklab, var(--color-neutral) calc(2 * (100% - 60%)), canvas);
+	--color-neutral-65: color-mix(in oklab, var(--color-neutral) calc(2 * (100% - 65%)), canvas);
+	--color-neutral-70: color-mix(in oklab, var(--color-neutral) calc(2 * (100% - 70%)), canvas);
+	--color-neutral-75: color-mix(in oklab, var(--color-neutral) calc(2 * (100% - 75%)), canvas);
+	--color-neutral-80: color-mix(in oklab, var(--color-neutral) calc(2 * (100% - 80%)), canvas);
+	--color-neutral-85: color-mix(in oklab, var(--color-neutral) calc(2 * (100% - 85%)), canvas);
+	--color-neutral-90: color-mix(in oklab, var(--color-neutral) calc(2 * (100% - 90%)), canvas);
+	--color-neutral-95: color-mix(in oklab, var(--color-neutral) calc(2 * (100% - 95%)), canvas);
+
+	/* Semi-transparent versions of neutrals */
+	--color-neutral-10a: color-mix(in oklch, var(--color-neutral) 0%, oklch(none none none / 10%));
+	--color-neutral-20a: color-mix(in oklch, var(--color-neutral) 0%, oklch(none none none / 20%));
+	--color-neutral-50a: color-mix(in oklch, var(--color-neutral) 0%, oklch(none none none / 50%));
+	--color-neutral-80a: color-mix(in oklch, var(--color-neutral) 0%, oklch(none none none / 80%));
+	--color-neutral-90a: color-mix(in oklch, var(--color-neutral) 0%, oklch(none none none / 90%));
+
+	/*
+	 * Colors by semantic purpose
+	 */
 	--color-accent-1: var(--color-aqua);
 	--color-accent-2: var(--color-green);
 	--color-accent-3: var(--color-yellow);
 	--color-accent-4: var(--color-magenta);
 
+	/*
+	* Images
+	*/
 	--background-checkerboard: repeating-conic-gradient(rgb(0 0 0 / .12) 0 25%, transparent 0 50%) 0 0 / 40px 40px;
 }
 
@@ -59,8 +101,7 @@ a {
 		/* PLain text link */
 	}
 
-	&:has(*),
-	&:only-child {
+	&:has(:not(em, strong)) {
 		/* Not a plain text link */
 		color: inherit;
 		text-decoration: none;
@@ -135,8 +176,6 @@ img {
 	align-items: center;
 	justify-content: center;
 	padding: 2.5rem;
-	--background-color-overlay: hsl(200 20% 50% / .3);
-	background: radial-gradient(transparent, rgba(0,0,0,.7)), linear-gradient(var(--background-color-overlay), var(--background-color-overlay)) canvas;
 	color: canvastext;
 
 	@media (max-width: 1024px) {
@@ -161,12 +200,6 @@ img {
 	h2 {
 		font-size: 120%;
 	}
-}
-
-@property --cover-image {
-	syntax: "<url> | none";
-	initial-value: none;
-	inherits: true;
 }
 
 /* Header slides, not whole deck cover */

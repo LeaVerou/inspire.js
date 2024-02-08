@@ -1,0 +1,15 @@
+@import url("base.css");
+
+html {
+	color-scheme: dark;
+}
+
+.light {
+	color-scheme: light;
+}
+
+.slide {
+	&.light {
+		background: color-mix(in oklab, var(--color-accent-1) 15%, canvas);
+	}
+}

@@ -1,27 +1,14 @@
-@import url("style/base.css");
+@import url("style/dark.css");
 @import url("style/components/index.css");
 
 :root {
 	--font-mono: Consolas, Monaco, 'Andale Mono', monospace;
-	--font-body: 'Helvetica Neue', Helvetica, Segoe UI, sans-serif;
-	--font-heading: var(--font-body);
-
-	--light1: hsl(200, 40%, 80%);
-}
-
-html {
-	color-scheme: dark;
+	--font-sans: 'Helvetica Neue', Helvetica, Segoe UI, sans-serif;
 }
 
 .slide {
-	--background-color-overlay: hsl(200 20% 50% / .3);
+	--background-color-overlay: hsl(200 20% 50% / 30%);
 	background: radial-gradient(transparent, rgba(0,0,0,.7)), linear-gradient(var(--background-color-overlay) 0 100%) canvas;
-	color: canvastext;
-
-	&.light {
-		background: var(--light1);
-		color: black;
-	}
 
 	h2 {
 		color: var(--color-accent-2);
@@ -41,7 +28,7 @@ html {
 	}
 
 	tbody tr > * {
-		border-top-color: hsla(0, 0%, 100%, .15);
+		border-top-color: hsla(0 0% 100% / 15%);
 	}
 
 	td:first-child {
