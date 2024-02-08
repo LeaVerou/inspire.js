@@ -40,7 +40,6 @@
 html {
 	background: var(--background-checkerboard) var(--color-neutral-95);
 	font: 300 100%/1.5 var(--font-body);
-	font-family: var(--font-body);
 	font-synthesis: none;
 	font-kerning: normal;
 	accent-color: var(--color-accent-1);
@@ -57,26 +56,25 @@ li {
 }
 
 a {
-	color: var(--color-blue-30);
+	color: inherit;
 	--text-decoration-opacity: 30%;
 	text-decoration-color: color-mix(in lab, currentColor, transparent calc(100% - var(--text-decoration-opacity)));
 
-	&:visited {
-		color: var(--color-purple-30);
-	}
-
-	&:not(:has(*)) {
-		/* PLain text link */
-	}
-
-	&:not(:has(em, strong)) {
-		/* Not a plain text link */
-		color: inherit;
+	&:where(:not(:hover, :focus)) {
 		text-decoration: none;
 	}
 
 	&:hover {
 		--text-decoration-opacity: 50%;
+	}
+
+	&:where(:not(:has(:not(em, strong)))) {
+		/* PLain text link */
+		color: var(--color-blue-30);
+
+		&:where(:visited) {
+			color: var(--color-purple-30);
+		}
 	}
 }
 
@@ -100,31 +98,6 @@ textarea {
 		border-color: var(--color-red);
 		background: var(--color-red-pale);
 	}
-}
-
-code, textarea, pre {
-	margin: 0;
-	font: 100%/1.5em var(--font-mono);
-	tab-size: 4;
-	color: inherit;
-}
-
-	pre > code {
-		font-size: inherit;
-	}
-
-	code mark {
-		--_color: var(--color, var(--color-neutral-50a));
-		background: var(--_color);
-		box-shadow: 0 -.05em 0 .1em var(--_color);
-		color: inherit;
-		border-radius: 1px;
-		text-shadow: .01em .05em .2em rgb(0 0 0 / 60%);
-		transition: .6s;
-	}
-
-pre + pre {
-	margin-top: 1.5em;
 }
 
 img {

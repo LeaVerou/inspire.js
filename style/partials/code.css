@@ -1,3 +1,28 @@
+code, textarea, pre {
+	margin: 0;
+	font: 100%/1.5em var(--font-mono);
+	tab-size: 4;
+	color: inherit;
+}
+
+	pre > code {
+		font-size: inherit;
+	}
+
+	code mark {
+		--_color: var(--color, var(--color-neutral-50a));
+		background: var(--_color);
+		box-shadow: 0 -.05em 0 .1em var(--_color);
+		color: inherit;
+		border-radius: 1px;
+		text-shadow: .01em .05em .2em rgb(0 0 0 / 60%);
+		transition: .6s;
+	}
+
+pre + pre {
+	margin-top: 1.5em;
+}
+
 /* Syntax highlighting */
 
 .token.comment,
