@@ -65,6 +65,16 @@ export function deduplicateId (element) {
 	}
 }
 
+export function slideWidthUpdated (slide) {
+	if (slide.offsetWidth < innerWidth) {
+		let width = parseFloat(getComputedStyle(slide).width);
+		slide.style.setProperty("--width", Math.ceil(width));
+	}
+	else {
+		slide.style.removeProperty("--width");
+	}
+}
+
 export function bind (element, events) {
 	for (let names in events) {
 		for (let name of names.split(/\s+/)) {

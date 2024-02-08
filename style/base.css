@@ -113,16 +113,19 @@ img {
 }
 
 .slide {
+	--slide-padding: 2.5rem;
+	--width-px: calc(var(--width) * 1px);
+
 	display: flex;
 	flex-flow: column;
 	align-items: center;
 	justify-content: center;
-	padding: 2.5rem;
+	padding: var(--slide-padding);
 	background: canvas;
 	color: canvastext;
 
 	@media (max-width: 1024px) {
-		padding: 3vmin;
+		--slide-padding: 3vmin;
 	}
 
 	> h1,
@@ -142,6 +145,25 @@ img {
 
 	h2 {
 		font-size: 120%;
+	}
+
+	/* Plain slides, just a heading + a list */
+	&.plain,
+	&.dbpp, /* Death By PowerPoint :) */
+	&:not(.not-plain, :has(> :not(h1, h2, h3, h4, h5, h6, p, ul, ol, details.notes, .delayed.dummy))) {
+		/* Size of content cannot exceed size of heading */
+		width: fit-content;
+		contain: none;
+		/* What does the 22px mean? I have no idea, it's a fudge factor to make it stop scrolling */
+		padding-inline: calc(50vw - var(--width-px, var(--slide-padding) - 100vw) / 2 - 22px);
+		box-sizing: content-box;
+		overflow: clip;
+
+		> :where(p, ul, ol) {
+			contain: inline-size;
+			width: 100%;
+			font-size: 120%;
+		}
 	}
 }
 

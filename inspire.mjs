@@ -8,7 +8,13 @@
 import * as plugins from "./src/plugins.js";
 import * as util from "./src/util.js";
 
-const { $, $$, bind, Hooks, create } = util;
+const { $, $$, bind, Hooks, create, slideWidthUpdated } = util;
+
+const slideResizeObserver = new ResizeObserver(entries => {
+	for (let { target: slide} of entries) {
+		slideWidthUpdated(slide);
+	}
+});
 
 let _ = {
 	// Plugin ids and selectors
@@ -403,7 +409,14 @@ let _ = {
 
 			localStorage.Inspire_currentSlide = _.index;
 
+			// Adjust font size to prevent scrolling
 			_.adjustFontSize();
+
+			// Set slide width as a CSS variable, if smaller than viewport
+			if (slide.offsetWidth < innerWidth) {
+				slideWidthUpdated(slide);
+				// slideResizeObserver.observe(slide);
+			}
 
 			// Show or hide onscreen navigation
 			$("#onscreen-nav").classList.toggle("hidden", !slide.matches(".onscreen-nav"));
