@@ -155,7 +155,7 @@ img {
 		width: fit-content;
 		contain: none;
 		/* What does the 22px mean? I have no idea, it's a fudge factor to make it stop scrolling */
-		padding-inline: calc(50vw - var(--width-px, var(--slide-padding) - 100vw) / 2 - 22px);
+		padding-inline: calc(50vw - var(--width-px, var(--slide-padding) - 100vw) / 2);
 		box-sizing: content-box;
 		overflow: clip;
 
