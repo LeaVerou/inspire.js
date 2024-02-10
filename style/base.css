@@ -150,7 +150,7 @@ img {
 	/* Plain slides, just a heading + a list */
 	&.plain,
 	&.dbpp, /* Death By PowerPoint :) */
-	&:not(.not-plain, :has(> :not(h1, h2, h3, h4, h5, h6, p, ul, ol, details.notes, .delayed.dummy))) {
+	&:not(header, .not-plain, :has(> :not(h1, h2, h3, h4, h5, h6, p, ul, ol, details.notes, .delayed.dummy))) {
 		/* Size of content cannot exceed size of heading */
 		width: fit-content;
 		contain: none;
