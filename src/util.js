@@ -66,9 +66,10 @@ export function deduplicateId (element) {
 }
 
 export function slideWidthUpdated (slide) {
-	if (slide.offsetWidth < innerWidth) {
+	let delta = 30;
+	if (slide.offsetWidth + delta < innerWidth) {
 		let width = parseFloat(getComputedStyle(slide).width);
-		slide.style.setProperty("--width", Math.ceil(width));
+		slide.style.setProperty("--width", Math.ceil(width) + delta);
 	}
 	else {
 		slide.style.removeProperty("--width");
