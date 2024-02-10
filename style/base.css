@@ -144,7 +144,12 @@ img {
 	}
 
 	h2 {
-		font-size: 120%;
+		font-size: 150%;
+	}
+
+	h3 {
+		font-size: 100%;
+		color: var(--color-neutral-50);
 	}
 
 	/* Plain slides, just a heading + a list */
