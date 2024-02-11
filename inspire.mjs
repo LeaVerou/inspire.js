@@ -16,6 +16,10 @@ const slideResizeObserver = new ResizeObserver(entries => {
 	}
 });
 
+if ($(".additive-steps")) {
+	console.warn(".additive-steps is not used anymore. Simply use data-step-all instead of data-step for additive steps.");
+}
+
 let _ = {
 	// Plugin ids and selectors
 	// If selector matches anything, plugin is loaded
@@ -171,13 +175,11 @@ let _ = {
 				element.removeAttribute("data-step");
 
 				for (let i=0; i<steps; i++) {
-
 					create({
-						html: `<span class="delayed dummy" style="display: none"></span>`,
+						html: `<span class="delayed dummy" style="display: none" data-for-step="${i + 1}"></span>`,
 						element,
 						position: element === slide ? "in" : "before",
 						dummyFor: element,
-						dummyIndex: i+1
 					});
 				}
 			}
@@ -542,14 +544,10 @@ let _ = {
 			}
 
 			if (item.classList.contains("dummy") && item.dummyFor) {
-				let dummyStep = item.dummyIndex;
-
-				if (item.closest(".additive-steps")) {
-					let numbers = [...Array(item.dummyIndex).keys()].map(n => n + 1);
-					dummyStep = numbers.join(" ");
-				}
-
-				item.dummyFor.setAttribute("data-step", dummyStep);
+				let step = +item.getAttribute("data-for-step");
+				let element = item.dummyFor;
+				element.setAttribute("data-step", step);
+				element.setAttribute("data-step-all", Array(step).fill().map((_, i) => i + 1).join(" "));
 			}
 		}
 
