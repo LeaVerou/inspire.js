@@ -1,4 +1,4 @@
-import { $, bind } from "./util.js";
+import { $, bind } from "../util.js";
 
 let positions = {
 	before: { pos: "beforebegin", prop: "previousElementSibling" },

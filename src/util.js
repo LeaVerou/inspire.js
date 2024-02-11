@@ -84,7 +84,7 @@ export function bind (element, events) {
 	}
 }
 
-export { default as create } from "./create.js";
+export { default as create } from "./util/create.js";
 
 export { default as $ } from "../../bliss/src/$.js";
 export { default as $$ } from "../../bliss/src/$$.js";
