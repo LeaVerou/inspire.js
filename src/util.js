@@ -84,6 +84,7 @@ export function bind (element, events) {
 	}
 }
 
+export { default as inView } from "./util/inview.js";
 export { default as create } from "./util/create.js";
 
 export { default as $ } from "../../bliss/src/$.js";
