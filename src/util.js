@@ -16,10 +16,13 @@ export function defer (source) {
 
 
 export function timeout (ms, {reject, value} = {}) {
-	return new Promise((res, rej) => setTimeout(_ => {
-		(reject? rej : res)(value)
-	}, ms));
+	return new Promise((res, rej) => {
+		let fn = reject? rej : res;
+		return ms > 0 ? setTimeout(_ => fn(value), ms) : requestAnimationFrame(fn);
+	});
 }
+
+export const wait = timeout;
 
 // Get attribute value, from the first element it's defined on
 // Useful for things like global settings where we don't care where the attribute is on
