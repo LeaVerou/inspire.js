@@ -563,7 +563,7 @@ let _ = {
 
 		let cs = getComputedStyle(slide);
 
-		if (cs.getPropertyValue("--dont-resize") || cs.overflow === "hidden" || cs.overflow === "clip") {
+		if (cs.getPropertyValue("--dont-resize") || cs.getPropertyValue("--font-sizing")?.trim() === "fixed" || cs.overflow === "hidden" || cs.overflow === "clip") {
 			return;
 		}
 
