@@ -164,6 +164,22 @@ body {
 	}
 }
 
+.slide[data-steps] {
+	[data-step] {
+		opacity: 0;
+		transition-property: var(--transition-properties);
+		transition-duration: var(--transition-duration);
+	}
+
+	&[data-step-all~="1"] [data-step="1"],
+	&[data-step-all~="2"] [data-step="2"],
+	&[data-step-all~="3"] [data-step="3"],
+	&[data-step-all~="4"] [data-step="4"],
+	&[data-step-all~="5"] [data-step="5"] {
+		opacity: 1;
+	}
+}
+
 @media print {
 	@page {
 		size: landscape;
