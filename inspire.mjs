@@ -166,7 +166,7 @@ let _ = {
 				stepped.push(slide);
 			}
 
-			stepped.forEach(function(element) {
+			for (let element of stepped) {
 				let steps = +element.getAttribute("data-steps");
 				element.removeAttribute("data-step");
 
@@ -180,7 +180,7 @@ let _ = {
 						dummyIndex: i+1
 					});
 				}
-			});
+			}
 		} // end slide loop
 
 		slideContainers.delete(document.body);
