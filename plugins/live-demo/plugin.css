@@ -1,69 +1,72 @@
-.live-demo {
-	&:not(.minimal) {
-		background: hsl(220,10%,95%);
-		color: black;
+:where(.live-demo) {
+	&:where(:not(.minimal)) {
+		background: var(--color-neutral-95);
+		color: canvastext;
 		font-size: 200%;
 
-		& div.prism-live {
-			background: hsl(200, 10%, 15%);
+		div.prism-live {
+			background: var(--color-neutral-20);
 		}
 
-		& pre.prism-live {
-			background: hsl(200, 10%, 20%) linear-gradient(rgba(0,0,0,.1) 50%, transparent 0);
+		:where(pre.prism-live) {
+			background: var(--color-neutral-20);
+			color: canvas;
+		}
+
+		pre.prism-live {
+			background-image: linear-gradient(rgb(0 0 0 / 2%) 50%, transparent 0);
 			background-origin: content-box;
 			background-size: auto 3em;
+			background-size: auto 2lh;
 			background-attachment: local;
-			color: white;
 		}
 
-		&:not(.horizontal) {
-			& textarea.prism-live {
-				box-shadow: -.1em 0 .2em rgba(0,0,0,.3) inset;
+		& textarea.prism-live {
+			box-shadow: var(--box-shadow-offset, -.1em 0) .2em rgb(0 0 0 / 30%) inset;
+
+			&:is(.horizontal *) {
+				--box-shadow-offset: 0 .1em;
 			}
 		}
 
-		&.horizontal {
-			& textarea.prism-live {
-				box-shadow: 0 .1em .2em rgba(0,0,0,.3) inset;
+		div.prism-live {
+			::-webkit-scrollbar {
+				width: 10px;
+				height: 10px;
 			}
-		}
-	}
 
-	& div.prism-live {
-		& ::-webkit-scrollbar {
-			width: 10px;
-			height: 10px;
-		}
+			::-webkit-scrollbar-track {
+				background: hsl(200, 10%, 30%);
+			}
 
-		& ::-webkit-scrollbar-track {
-			background: hsl(200, 10%, 30%);
-		}
+			& ::-webkit-scrollbar-corner {
+				background: hsl(200, 10%, 25%);
+			}
 
-		& ::-webkit-scrollbar-corner {
-			background: hsl(200, 10%, 25%);
-		}
+			& ::-webkit-scrollbar-thumb {
+				border-radius: 10px;
+				background: hsla(0,0%,100%,.05);
+				box-shadow: 0 0 .2em black;
+			}
 
-		& ::-webkit-scrollbar-thumb {
-			border-radius: 10px;
-			background: hsla(0,0%,100%,.05);
-			box-shadow: 0 0 .2em black;
-		}
+			& ::-webkit-scrollbar-thumb:vertical {
+				background: hsla(0,0%,100%,.2);
+			}
 
-		& ::-webkit-scrollbar-thumb:vertical {
-			background: hsla(0,0%,100%,.2);
-		}
-
-		& ::-webkit-scrollbar-thumb:hover {
-			background: hsla(0,0%,100%,.3);
-		}
+			& ::-webkit-scrollbar-thumb:hover {
+				background: hsla(0,0%,100%,.3);
+			}
 
 
-		&.collapsed {
-			& pre {
-				opacity: .7;
+			&.collapsed {
+				& pre {
+					opacity: .7;
+				}
 			}
 		}
 	}
+
+
 
 	@container demo_controls (inline-size < 32em) {
 		.demo-controls button:is(.next, .prev) {

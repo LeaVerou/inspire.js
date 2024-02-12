@@ -172,6 +172,32 @@
 					}
 				}
 		}
+
+		div.prism-live {
+			color: inherit;
+			font-size: calc(var(--font-size-multiplier, 1) * 100%);
+			line-height: 1.5em;
+			max-height: var(--_height);
+			max-height: -webkit-fill-available;
+			transition: .2s;
+			transition-property: max-height, flex;
+
+			&.collapsed {
+				min-height: var(--collapsed-height, var(--min-height));
+
+				overflow: hidden;
+				flex: none;
+
+				pre {
+					opacity: .2;
+				}
+
+				textarea,
+				pre {
+					overflow: hidden;
+				}
+			}
+		}
 	}
 
 	&.isolated {
@@ -193,32 +219,6 @@
 		&:not(.horizontal) {
 			div.editor-container {
 				margin-right: 1em;
-			}
-		}
-	}
-
-	div.prism-live {
-		color: inherit;
-		font-size: calc(var(--font-size-multiplier, 1) * 100%);
-		line-height: 1.5em;
-		max-height: var(--_height);
-		max-height: -webkit-fill-available;
-		transition: .2s;
-		transition-property: max-height, flex;
-
-		&.collapsed {
-			min-height: var(--collapsed-height, var(--min-height));
-
-			overflow: hidden;
-			flex: none;
-
-			pre {
-				opacity: .2;
-			}
-
-			textarea,
-			pre {
-				overflow: hidden;
 			}
 		}
 	}
