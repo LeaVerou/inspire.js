@@ -12,11 +12,11 @@ table {
 	th,
 	td {
 		vertical-align: middle;
-		text-align: inline-start;
+		text-align: start;
 		padding: .3em .5em;
 
 		&:first-child {
-			text-align: inline-start;
+			text-align: start;
 		}
 	}
 
@@ -39,7 +39,7 @@ table {
 		}
 
 		& th {
-			text-align: inline-end;
+			text-align: end;
 			padding-left: 0;
 		}
 

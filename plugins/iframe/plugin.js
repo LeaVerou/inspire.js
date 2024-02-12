@@ -7,7 +7,7 @@ Inspire.hooks.add({
 	"slidechange": function(env) {
 		var slide = env.slide;
 
-		if (slide.matches(".slide[data-src]:empty")) {
+		if (slide.matches(".slide[data-src]:empty, .slide[data-src]:has(> details.notes:only-child")) {
 			// Uninitialized iframe slide
 
 			let iframe = create.in(slide, `<iframe src="${ slide.dataset.src }" frameborder="0" allowfullscreen></iframe>`);

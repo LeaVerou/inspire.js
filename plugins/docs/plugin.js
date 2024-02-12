@@ -13,7 +13,7 @@ let processDocsLinks = (root = document) => {
 		let svg = cs.getPropertyValue("--docs-markup").trim() === "svg";
 		let type = cs.getPropertyValue("--docs-type").trim();
 
-		if (!code.nextSibling && !code.previousSibling && code.parentNode.matches("a")) {
+		if (code.matches("a > :only-child")) {
 			// Already linked
 			return;
 		}
