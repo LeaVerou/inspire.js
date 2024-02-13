@@ -8,6 +8,7 @@ let processDocsLinks = (root = document) => {
 
 	$$(Inspire.plugins.registry.docs, root).forEach(code => {
 		let text = code.dataset.mdn && !/\/$/.test(code.dataset.mdn)? "" : code.textContent;
+		let id = text;
 		let path;
 		let cs = getComputedStyle(code);
 		let svg = cs.getPropertyValue("--docs-markup").trim() === "svg";
@@ -24,6 +25,10 @@ let processDocsLinks = (root = document) => {
 		}
 		else if (["function", "property", "css"].includes(type)) {
 			path = "CSS";
+
+			if (type === "css" && text.startsWith(":")) {
+				id = id.replace(/\(\)$/, "");
+			}
 		}
 		else if (type === "attribute") {
 			if (svg) {
@@ -43,7 +48,7 @@ let processDocsLinks = (root = document) => {
 			code.textContent += "()";
 		}
 
-		create.around(code, `<a class="docs-link" href="https://developer.mozilla.org/en-US/docs/Web/${path}/${text}" target="_blank"></a>`);
+		create.around(code, `<a class="docs-link" href="https://developer.mozilla.org/en-US/docs/Web/${path}/${id}" target="_blank"></a>`);
 	});
 };
 
