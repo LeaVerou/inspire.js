@@ -1,6 +1,6 @@
 /* Ribbon */
-.slide[data-type],
-.slide:has(> .ribbon) {
+.slide.slide[data-type],
+.slide.slide:has(> .ribbon) {
 	overflow: clip;
 }
 
