@@ -510,7 +510,7 @@ let _ = {
 	gotoItem(which) {
 		_.item = which;
 
-		if (_.items.length > 0 && !_.items[0].closest(".slide")) {
+		if (_.items.length > 0 && !_.items[which - 1]?.isConnected) {
 			// Items are floating in DOM hyperspace, re-fetch
 			_.updateItems();
 		}
