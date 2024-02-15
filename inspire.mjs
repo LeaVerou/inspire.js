@@ -517,6 +517,26 @@ let _ = {
 		});
 	},
 
+	/**
+	 * Run code for specific elements, once, only when the slide they appear in becomes active
+	 * @param {string} selector
+	 * @param {function} callback
+	 * @returns {HTMLElement[]} The slides that contain elements matching the selector
+	 */
+	for (selector, callback) {
+		let slides = $$(`.slide:has(${ selector})`);
+
+		for (let slide of slides) {
+			_.on(slide).then(slide => {
+				for (let element of $$(selector, slide)) {
+					callback(element);
+				}
+			});
+		}
+
+		return slides;
+	},
+
 	updateItems() {
 		_.items = $$(".delayed, .delayed-children > *", _.currentSlide);
 		_.items = _.items.sort((a, b) => {
