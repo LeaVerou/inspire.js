@@ -616,7 +616,7 @@ let _ = {
 
 	// Get current slide as an element
 	get currentSlide() {
-		return _.slides[_.slide];
+		return _.slides?.[_.slide];
 	},
 
 	getSlideById(id) {
