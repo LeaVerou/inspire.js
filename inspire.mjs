@@ -490,13 +490,30 @@ let _ = {
 		setTimeout(() => addEventListener("hashchange", _.hashchange), 200);
 	},
 
-	on(slideId) {
+	/**
+	 * Run code once on a slide when the slide is active
+	 * @param {String | HTMLElement} ref CSS selector or slide element
+	 * @returns {Promise<HTMLElement>} The slide that was activated
+	 */
+	async on (ref) {
+		if (/^[\w-]+$/.test(ref)) {
+			console.warn("Inspire.on() expects a selector now, not an id");
+			ref = "#" + ref;
+		}
+
+		if (_.currentSlide === ref || _.currentSlide?.matches(ref)) {
+			return _.currentSlide;
+		}
+
 		return new Promise(resolve => {
-			_.hooks.add("slidechange", env => {
-				if (_.currentSlide.id === slideId) {
-					resolve(_.currentSlide);
+			let callback = evt => {
+				if (ref === evt.target || typeof ref === "string" && evt.target.matches(ref)) {
+					resolve(evt.target);
+					evt.target.removeEventListener("slidechange", callback);
 				}
-			});
+			};
+
+			document.body.addEventListener("slidechange", callback);
 		});
 	},
 
