@@ -4,7 +4,7 @@ details.notes {
 	font-weight: 400;
 	text-align: left;
 	--notes-background-d: var(--notes-background, hsl(220, 10%, 95%));
-	font-size: 60%;
+	font-size: calc(.6 * var(--slide-base-font-size, .6rem));
 
 	& div > ul {
 		padding-left: 1em;
