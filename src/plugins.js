@@ -48,7 +48,10 @@ export function loadAll (plugins = registry) {
 		let def = plugins[id];
 		let test = def.test || def;
 
-		if ((document.querySelector(test) || document.body.matches(`[data-load-plugins~="${id}"]`)) && !document.body.matches(`.no-${id}`)) {
+		let doLoad = document.querySelector(test) || document.body.matches(`[data-load-plugins~="${id}"]`);
+		let dontLoad = document.body.matches(`.no-${id}, .no-plugins`);
+
+		if (doLoad && !dontLoad) {
 			let plugin = load(id, def);
 			// plugin.loaded.then(_ => ret.push(plugin));
 			plugin.loaded.then(
