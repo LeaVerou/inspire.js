@@ -88,7 +88,7 @@ if (!Prism.Live) {
 		}
 	}
 
-	console.info("Prism Live not loaded. Loading from live.prismjs.com, with languages " + languages.join(", "));
+	console.info("Prism Live not loaded. Loading from live.prismjs.com, with language(s) " + languages.join(", "));
 	let loaded = await import(`https://live.prismjs.com/src/prism-live.js?load=${languages.join(",")}`);
 	for (let delay=100; delay < 1000; delay += 100) {
 		if (Prism.Live) {
