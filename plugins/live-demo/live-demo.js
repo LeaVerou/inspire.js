@@ -88,7 +88,7 @@ export default class LiveDemo {
 			html: `<div class="demo-controls"></div>`,
 		});
 
-		if (this.minimal) {
+		if (!this.minimal) {
 			this.controls.append($("details.notes", this.container));
 		}
 
