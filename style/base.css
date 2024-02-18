@@ -114,7 +114,6 @@ img {
 
 .slide {
 	--slide-padding: 2.5rem;
-	--width-px: calc(var(--width) * 1px);
 
 	display: flex;
 	flex-flow: column;
@@ -158,8 +157,7 @@ img {
 		/* Size of content cannot exceed size of heading */
 		width: fit-content;
 		contain: none;
-		/* What does the 22px mean? I have no idea, it's a fudge factor to make it stop scrolling */
-		padding-inline: calc(50vw - var(--width-px, var(--slide-padding) - 100vw) / 2);
+		padding-inline: 3vmin;
 		box-sizing: content-box;
 		overflow: clip;
 

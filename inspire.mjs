@@ -414,12 +414,6 @@ let _ = {
 			// Adjust font size to prevent scrolling
 			_.adjustFontSize();
 
-			// Set slide width as a CSS variable, if smaller than viewport
-			if (slide.offsetWidth < innerWidth) {
-				slideWidthUpdated(slide);
-				// slideResizeObserver.observe(slide);
-			}
-
 			// Show or hide onscreen navigation
 			$("#onscreen-nav").classList.toggle("hidden", !slide.matches(".onscreen-nav"));
 
