@@ -548,6 +548,7 @@ let _ = {
 
 		for (let item of _.items) {
 			item.classList.remove("current", "displayed");
+			item.classList.add("future");
 
 			if (item.classList.contains("dummy") && item.dummyFor) {
 				item.dummyFor.removeAttribute("data-step");
@@ -556,19 +557,21 @@ let _ = {
 
 		for (let i = _.item - 1; i-- > 0;) {
 			_.items[i].classList.add("displayed");
+			_.items[i].classList.remove("future");
 		}
 
 		if (_.item > 0) { // _.item can be zero, at which point no items are current
 			let item = _.items[_.item - 1];
 
 			item.classList.add("current");
+			_.items[i].classList.remove("future");
 			item.dispatchEvent(new CustomEvent("itemcurrent", {bubbles: true}));
 
 			// support for nested lists
 			for (let i = _.item - 1, cur = _.items[i], j; i > 0; i--) {
 				j = _.items[i - 1];
 				if (j.contains(cur)) {
-					j.classList.remove("displayed");
+					j.classList.remove("displayed", "future");
 					j.classList.add("current");
 					j.dispatchEvent(new CustomEvent("itemcurrent", {bubbles: true}));
 				}
