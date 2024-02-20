@@ -564,7 +564,7 @@ let _ = {
 			let item = _.items[_.item - 1];
 
 			item.classList.add("current");
-			_.items[i].classList.remove("future");
+			item.classList.remove("future");
 			item.dispatchEvent(new CustomEvent("itemcurrent", {bubbles: true}));
 
 			// support for nested lists
