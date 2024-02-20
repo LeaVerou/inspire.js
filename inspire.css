@@ -146,20 +146,29 @@ body {
 
 
 /* Delayed items that are shown incrementally after the slide is */
-@media screen {
-	.delayed,
-	.delayed-children > * {
+.delayed,
+.delayed-children > * {
+	@media screen {
 		opacity: 0;
 		transition-property: var(--transition-properties);
 
 		&.displayed {
-			opacity: .3;
+			&:where(.transient, .transient > *, .delayed-transient *) {
+				opacity: .3;
+			}
 		}
 
 		&.current,
-		&.displayed:is(.persistent, .persistent *) {
+		&.displayed {
 			opacity: 1;
 			transition-duration: var(--transition-duration);
+		}
+	}
+
+	&.future,
+	&.displayed {
+		&:where(.collapse, .collapse > *, .delayed-collapse *) {
+			display: none;
 		}
 	}
 }
