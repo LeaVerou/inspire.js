@@ -21,6 +21,10 @@ code, textarea, pre {
 
 pre + pre {
 	margin-top: 1.5em;
+
+	table & {
+		margin-top: .6em;
+	}
 }
 
 /* Syntax highlighting */
@@ -92,7 +96,7 @@ pre + pre {
 	&.prolog,
 	&.doctype,
 	&.cdata {
-		--comment-color: color-mix(in oklch, var(--color) 0%, oklch(60% .01 none));
+		--comment-color: color-mix(in oklch, var(--color) 0%, oklch(50% .01 none / 60%));
 		color: var(--comment-color, var(--color-neutral-50a));
 	}
 

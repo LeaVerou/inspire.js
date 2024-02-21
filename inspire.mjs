@@ -299,10 +299,13 @@ let _ = {
 	},
 
 	nextItem() {
-		if (_.item < _.items.length) {
+		this.delayedLast = this.currentSlide.matches(".delayed-last, .delayed-last *");
+
+		if (_.item < _.items.length || this.delayedLast && _.item === _.items.length) {
 			_.gotoItem(++_.item);
 		}
 		else {
+			// Finished all slide items, go to next slide
 			_.item = 0;
 			_.next(true);
 		}
@@ -538,6 +541,10 @@ let _ = {
 		});
 	},
 
+	/**
+	 * Go to a specific item in the current slide
+	 * @param {number} which 1-based index of the item to go to (0 means no items are current, just the slide itself)
+	 */
 	gotoItem(which) {
 		_.item = which;
 
@@ -546,43 +553,40 @@ let _ = {
 			_.updateItems();
 		}
 
-		for (let item of _.items) {
-			item.classList.remove("current", "displayed");
-			item.classList.add("future");
+		let index = which - 1;
+
+		for (let i=0; i<_.items.length; i++) {
+			let item = _.items[i];
+			let [future, current, displayed] = [i > index, i === index, i < index];
+			item.classList.toggle("future", future);
+			item.classList.toggle("current", current);
+			item.classList.toggle("displayed", displayed);
 
 			if (item.classList.contains("dummy") && item.dummyFor) {
 				item.dummyFor.removeAttribute("data-step");
 			}
-		}
 
-		for (let i = _.item - 1; i-- > 0;) {
-			_.items[i].classList.add("displayed");
-			_.items[i].classList.remove("future");
-		}
+			if (current) {
+				item.dispatchEvent(new CustomEvent("itemcurrent", {bubbles: true}));
 
-		if (_.item > 0) { // _.item can be zero, at which point no items are current
-			let item = _.items[_.item - 1];
+				// support for nested lists
+				for (let i = _.item - 1, cur = _.items[i], j; i > 0; i--) {
+					j = _.items[i - 1];
+					if (j.contains(cur)) {
+						j.classList.remove("displayed", "future");
+						j.classList.add("current");
+						j.dispatchEvent(new CustomEvent("itemcurrent", {bubbles: true}));
+					}
+				}
 
-			item.classList.add("current");
-			item.classList.remove("future");
-			item.dispatchEvent(new CustomEvent("itemcurrent", {bubbles: true}));
-
-			// support for nested lists
-			for (let i = _.item - 1, cur = _.items[i], j; i > 0; i--) {
-				j = _.items[i - 1];
-				if (j.contains(cur)) {
-					j.classList.remove("displayed", "future");
-					j.classList.add("current");
-					j.dispatchEvent(new CustomEvent("itemcurrent", {bubbles: true}));
+				if (item.classList.contains("dummy") && item.dummyFor) {
+					let step = +item.getAttribute("data-for-step");
+					let element = item.dummyFor;
+					element.setAttribute("data-step", step);
+					element.setAttribute("data-step-all", Array(step).fill().map((_, i) => i + 1).join(" "));
 				}
 			}
 
-			if (item.classList.contains("dummy") && item.dummyFor) {
-				let step = +item.getAttribute("data-for-step");
-				let element = item.dummyFor;
-				element.setAttribute("data-step", step);
-				element.setAttribute("data-step-all", Array(step).fill().map((_, i) => i + 1).join(" "));
-			}
 		}
 
 		_.hooks.run("gotoitem-end", {which, context: this});
