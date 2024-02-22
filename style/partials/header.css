@@ -1,8 +1,19 @@
+:root {
+	@supports (background: linear-gradient(in oklch, red, tan)) {
+		--in-oklch: in oklch;
+	}
+}
+
 /* Header slides, not whole deck cover */
 header.slide:where(section > header) {
 	--overlay-color: var(--color-accent-1);
 	--background: radial-gradient(transparent, var(--overlay-color) 30%), var(--cover-image) center / cover;
-	--fallback-background: linear-gradient(to bottom right, var(--color-accent-3), var(--color-accent-2), var(--color-accent-1), var(--color-accent-2), var(--color-accent-3));
+	--fallback-background: linear-gradient(to bottom right var(--in-oklch,),
+			var(--color-magenta),
+				var(--color-aqua),
+					var(--color-green),
+				var(--color-aqua),
+			var(--color-magenta));
 	background: var(--background, var(--fallback-background));
 	background-blend-mode: hue;
 
@@ -20,7 +31,12 @@ header.slide:where(section > header) {
 
 	/* Nested sections */
 	&:where(section section *) {
-		--fallback-background: linear-gradient(to bottom right, var(--color-accent-4), var(--color-accent-3), var(--color-accent-1), var(--color-accent-3), var(--color-accent-4));
+		--fallback-background: linear-gradient(to bottom right var(--in-oklch,),
+			var(--color-green),
+				var(--color-aqua),
+					var(--color-yellow),
+				var(--color-aqua),
+			var(--color-green));
 		--overlay-color: var(--color-accent-2);
 	}
 }

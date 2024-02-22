@@ -100,7 +100,7 @@ textarea {
 	}
 }
 
-img {
+img, video {
 	max-width: 100%;
 	max-height: 100%;
 	object-fit: contain;
@@ -155,15 +155,11 @@ img {
 	&.plain,
 	&.dbpp /* Death By PowerPoint :) */ {
 		/* Size of content cannot exceed size of heading */
-		width: fit-content;
-		contain: none;
-		padding-inline: 3vmin;
+		padding-inline: 3vw;
 		box-sizing: content-box;
 		overflow: clip;
 
 		> :where(p, ul, ol) {
-			contain: inline-size;
-			width: 100%;
 			font-size: 120%;
 		}
 	}
