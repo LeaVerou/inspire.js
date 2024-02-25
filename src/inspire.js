@@ -29,6 +29,11 @@ let _ = {
 	// This is useful for plugins to delay initialization until they've fetched stuff
 	delayInit: [],
 
+	// Elements to ignore (works with nesting too)
+	// This works better than commenting, which cannot be
+	ignore: ".inspire-remove, .inspire-comment",
+
+	ready: util.defer(),
 	slideshowCreated: util.defer(),
 	importsLoaded: imports.loaded,
 	loadImports: imports.load,
@@ -36,39 +41,43 @@ let _ = {
 	hooks: new Hooks(),
 
 	async setup() {
-		_.loaded.resolve(true);
+		this.loaded.resolve(true);
 
-		await _.loadImports();
+		$$(this.ignore).forEach(el => el.remove());
 
-		_.dependencies = [];
+		await this.loadImports();
 
-		_.dependencies.push(...plugins.loadAll());
+		this.dependencies = plugins.loadAll();
 
-		_.ready = Promise.allSettled(_.dependencies).then(() => {
-			let loaded = Object.keys(plugins.loaded);
-			console.log("Inspire.js plugins loaded:", loaded.length? loaded.join(", ") : "none");
+		this.domSetup();
 
-			Promise.all(_.delayInit).then(_.init);
-		});
+		await Promise.allSettled(this.dependencies);
 
-		_.domSetup();
+		let loaded = Object.keys(plugins.loaded);
+		console.info("Inspire.js plugins loaded:", loaded.length? loaded.join(", ") : "none");
+
+		this.ready.resolve();
+
+		await Promise.allSettled(this.delayInit);
+		this.init();
 	},
 
-	domSetup() {
+	domSetup () {
 		// Make all external links open in a new window
 		$$('a[href^="http"]:not([target])').forEach(a => a.target = "_blank");
 
-		// Set profile from URL
+		// Set <html> attributes from query string
 		const url = new URL(location);
-		const profile = url.searchParams?.get("profile");
+		const params = url.searchParams;
 
-		if (profile) {
-			_.profile = profile;
-			document.documentElement.dataset.profile = profile;
+		for (let [key, value] of params) {
+			document.documentElement.setAttribute("data-" + key, value);
+		}
+
+		if (params.get("profile")) {
+			this.profile = params.get("profile");
 		}
 	},
-
-	ignoreSlides: ".inspire-remove, .inspire-comment",
 
 	init() {
 		// Current slide
