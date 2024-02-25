@@ -88,10 +88,6 @@ pre + pre {
 }
 
 .token {
-	&.tag {
-		mix-blend-mode: multiply;
-	}
-
 	&.comment,
 	&.prolog,
 	&.doctype,

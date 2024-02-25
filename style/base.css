@@ -70,10 +70,10 @@ a {
 
 	&:where(:not(:has(:not(em, strong)))) {
 		/* PLain text link */
-		color: var(--color-blue-30);
+		color: var(--color-blue-0);
 
 		&:where(:visited) {
-			color: var(--color-purple-30);
+			color: var(--color-purple-0);
 		}
 	}
 }

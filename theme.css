@@ -7,6 +7,7 @@
 }
 
 .slide {
+	color-scheme: dark;
 	--background-color-overlay: hsl(200 20% 50% / 30%);
 	background: radial-gradient(transparent, rgb(0 0 0 / .7)), linear-gradient(var(--background-color-overlay) 0 100%) canvas;
 
