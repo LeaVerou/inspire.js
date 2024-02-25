@@ -10,8 +10,8 @@
 	--gap-h: calc(100vw * var(--gap));
 	--gap-v: calc(100vh * var(--gap));
 	grid-template-columns: repeat(auto-fill, minmax(calc(100vw / var(--cols) - var(--gap-h)), 1fr));
-	grid-template-rows: repeat(var(--rows), calc(100vh / var(--cols) - var(--gap-v)));
-	grid-gap: var(--gap-v) var(--gap-h);
+	grid-template-rows: repeat(auto-fill, calc(100vh / var(--cols) - var(--gap-v)));
+	gap: var(--gap-v) var(--gap-h);
 
 	& .slide-container {
 		display: contents;
@@ -55,26 +55,31 @@
 	transition-property: transform, transform-origin, margin;
 }
 
-.show-next .slide {
-	transition: 0s;
+.show-next {
+	.slide {
+		transition: 0s;
+	}
+
+	.slide.next {
+		transform: scale(.05, .05);
+		transform-origin: bottom right;
+		margin: 15px 15px;
+		position: fixed;
+		top: auto;
+		right: 0;
+		bottom: 0;
+		left: auto;
+		z-index: 100;
+	}
+
+	.slide.next:not(:hover) {
+		opacity: .5;
+	}
 }
 
-.show-next .slide.next {
-	transform: scale(.05, .05);
-	transform-origin: bottom right;
-	margin: 15px 15px;
-	position: fixed;
-	top: auto;
-	right: 0;
-	bottom: 0;
-	left: auto;
-	z-index: 100;
-}
-
-.show-next .slide.next:not(:hover) {
-	opacity: .5;
-}
-
+/* Show all delayed items */
+/* FIXME not all delayed items work with opacity,
+ldeally you want to add .delayed and .current to them */
 .show-thumbnails .slide .delayed,
 .show-next .slide:target + .slide .delayed {
 	opacity: 1 !important;
@@ -83,17 +88,17 @@
 .show-thumbnails .slide:hover,
 .show-thumbnails .slide:target,
 .show-next .slide:target + .slide {
-	--outline-color: rgba(255, 255, 255, .6);
+	--outline-color: hsl(0 0 100 / 60%);
 	--outline: 40px var(--outline-color, transparent);
-	box-shadow: 5px 5px 40px rgba(0,0,0,.5), 0 0 0 var(--outline);
+	box-shadow: 5px 5px 40px hsl(0 0 0 / 50%), 0 0 0 var(--outline);
 }
 
 .show-thumbnails .slide:target {
-	--outline-color: hsla(0, 100%, 40%, .5);
+	--outline-color: hsl(0 100% 40% / .5);
 }
 
 .show-thumbnails .slide:target:hover {
-	--outline-color: hsla(0, 100%, 40%, .9);
+	--outline-color: hsla(0 100% 40% / .9);
 }
 
 
