@@ -1,12 +1,13 @@
 code, textarea, pre {
 	margin: 0;
-	font: 100%/1.5em var(--font-mono);
+	font: 100%/1.5 var(--font-mono);
 	tab-size: 4;
 	color: inherit;
 }
 
 	pre > code {
 		font-size: inherit;
+		line-height: inherit;
 	}
 
 	code mark {

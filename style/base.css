@@ -100,7 +100,7 @@ textarea {
 	}
 }
 
-img, video {
+img, video, object {
 	max-width: 100%;
 	max-height: 100%;
 	object-fit: contain;
@@ -167,27 +167,33 @@ img, video {
 
 /* Quotes */
 blockquote {
+	--_accent-color: var(--accent-color, var(--color-accent-1));
 	position: relative;
 	font-style: italic;
 	max-width: calc(80vw - 4.5em);
+	margin-inline-start: 3em;
+	line-height: 1.3;
+	text-wrap: balance;
+	hanging-punctuation: first allow-end last;
 
 	&::before {
 		content: "❝";
 		position: absolute;
 		right: 100%;
-		top: -.3em;
-		margin-right: .2em;
+		top: -.25em;
+		margin-right: .7rem;
 		font-size: 300%;
-		color: var(--color-accent-1);
+		color: var(--_accent-color);
 		font-style: normal;
 	}
 
 	.cite {
+		margin-block-start: 1rem;
 		text-align: right;
 		font-style: normal;
 		font-size: 60%;
 		font-weight: bold;
-		color: var(--color-accent-1);
+		color: var(--_accent-color);
 
 		&::before {
 			content: "— "
