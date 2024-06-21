@@ -22,12 +22,11 @@ plugins = plugins? plugins.split(/\s*,\s*/) : [];
 
 if (ids.size) {
 	// Prism is used in the current slide deck!
-
-	if (window.Prism) {
+	if (globalThis.Prism) {
 		var prismAlreadyLoaded = true;
 		// Drop languages already loaded
 		for (let id of ids) {
-			if (Prism.languages[id]) {
+			if (globalThis.Prism.languages[id]) {
 				ids.delete(id);
 			}
 		}
@@ -36,6 +35,8 @@ if (ids.size) {
 		await import(`${PRISM_ROOT}/components/prism-core.js`);
 	}
 }
+
+export const Prism = globalThis.Prism;
 
 // Support prism-ignore to opt out of highlighting
 Prism.hooks.add("before-all-elements-highlight", function(env) {
