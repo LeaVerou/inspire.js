@@ -89,7 +89,10 @@ export default class LiveDemo {
 		});
 
 		if (!this.minimal) {
-			this.controls.append($("details.notes", this.container));
+			let notes = $("details.notes", this.container);
+			if (notes) {
+				this.controls.append(notes);
+			}
 		}
 
 		if (!this.isolated) {
