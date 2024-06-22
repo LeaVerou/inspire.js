@@ -54,11 +54,8 @@ export function loadAll (plugins = registry) {
 		if (doLoad && !dontLoad) {
 			let plugin = load(id, def);
 			// plugin.loaded.then(_ => ret.push(plugin));
-			plugin.loaded.then(
-				plugin => ret.push(plugin),
-
-			).catch(e => console.error(`Plugin ${id} error:`, e))
-			;
+			plugin.loaded.catch(e => console.error(`Plugin ${id} error:`, e));
+			ret.push(plugin.loaded);
 		}
 	}
 
