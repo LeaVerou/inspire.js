@@ -201,15 +201,18 @@ let _ = {
 
 			for (let element of stepped) {
 				let steps = +element.getAttribute("data-steps");
+				element.setAttribute("data-step-all", "0");
 				element.removeAttribute("data-step");
+				element.dummies = [];
 
 				for (let i=0; i<steps; i++) {
-					create({
+					let dummy = create({
 						html: `<span class="delayed dummy" style="display: none" data-for-step="${i + 1}"></span>`,
 						element,
 						position: element === slide ? "in" : "before",
 						dummyFor: element,
 					});
+					element.dummies.push(dummy);
 				}
 			}
 		} // end slide loop
@@ -591,9 +594,7 @@ let _ = {
 			item.classList.toggle("current", current);
 			item.classList.toggle("displayed", displayed);
 
-			if (item.classList.contains("dummy") && item.dummyFor) {
-				item.dummyFor.removeAttribute("data-step");
-			}
+			let stepElement = item.classList.contains("dummy") && item.dummyFor;
 
 			if (current) {
 				item.dispatchEvent(new CustomEvent("itemcurrent", {bubbles: true}));
@@ -607,12 +608,31 @@ let _ = {
 						j.dispatchEvent(new CustomEvent("itemcurrent", {bubbles: true}));
 					}
 				}
+			}
 
-				if (item.classList.contains("dummy") && item.dummyFor) {
-					let step = +item.getAttribute("data-for-step");
-					let element = item.dummyFor;
-					element.setAttribute("data-step", step);
-					element.setAttribute("data-step-all", Array(step).fill().map((_, i) => i + 1).join(" "));
+			// Deal with data-steps
+			if (stepElement) {
+				let step;
+
+				if (item.classList.contains("current")) {
+					step = +item.getAttribute("data-for-step");
+				}
+				else {
+					// Maybe some other item is current?
+					let current = stepElement.dummies.find(dummy => dummy.classList.contains("current"));
+					if (!current) {
+						step = 0;
+					}
+					// We don’t need to deal with the current dummy, it will be dealt with when its turn comes
+				}
+
+				if (step > 0) {
+					stepElement.setAttribute("data-step", step);
+					stepElement.setAttribute("data-step-all", Array(step + 1).fill().map((_, i) => i).join(" "));
+				}
+				else if (step === 0) {
+					stepElement.removeAttribute("data-step");
+					stepElement.setAttribute("data-step-all", "0");
 				}
 			}
 
