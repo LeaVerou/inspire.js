@@ -199,8 +199,12 @@ blockquote {
 			content: "— "
 		}
 
-		a:not(:hover) {
-			text-decoration: none;
+		a {
+			color: inherit;
+
+			&:not(:hover) {
+				text-decoration: none;
+			}
 		}
 	}
 }
