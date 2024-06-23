@@ -123,18 +123,18 @@ document.addEventListener("slidechange", evt => {
 	}
 });
 
-await Inspire.slideshowCreated;
+Inspire.slideshowCreated.then(() => {
+	if (Inspire.currentSlide?.classList.contains("demo")){
+		LiveDemo.init(Inspire.currentSlide);
+	}
 
-if (Inspire.currentSlide?.classList.contains("demo")){
-	LiveDemo.init(Inspire.currentSlide);
-}
+	// var io = new IntersectionObserver(entries => {
+	// 	entries.forEach(entry => LiveDemo.init(entry.target));
+	// });
 
-// var io = new IntersectionObserver(entries => {
-// 	entries.forEach(entry => LiveDemo.init(entry.target));
-// });
-
-// $$(".demo.slide").forEach(demo => {
-// 	io.observe(demo);
-// });
+	// $$(".demo.slide").forEach(demo => {
+	// 	io.observe(demo);
+	// });
+});
 
 export {LiveDemo};
