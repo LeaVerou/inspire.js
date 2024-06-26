@@ -33,6 +33,9 @@ let _ = {
 	// This works better than commenting, which cannot be
 	ignore: ".inspire-remove, .inspire-comment",
 
+	// Arrow keys inside these elements will not trigger navigation
+	editableElements: "input, textarea, select, button, [contenteditable]",
+
 	ready: util.defer(),
 	slideshowCreated: util.defer(),
 	importsLoaded: imports.loaded,
@@ -238,7 +241,7 @@ let _ = {
 				(Shift instead of Ctrl works too)
 			*/
 			"keyup": evt => {
-				if (!document.activeElement.matches("input, textarea, select, button")) {
+				if (!document.activeElement.matches(_.editableElements)) {
 					let letter = evt.key.toUpperCase();
 
 					if (letter === "G" && (evt.ctrlKey || evt.shiftKey) && !evt.altKey) {
@@ -261,7 +264,7 @@ let _ = {
 				(Shift instead of Ctrl works too)
 			*/
 			"keydown": evt => {
-				if (evt.altKey || evt.target.contains(_.currentSlide)) {
+				if (evt.altKey || evt.target.contains(_.currentSlide) || !evt.target.matches(_.editableElements)) {
 					if (evt.keyCode >= 32 && evt.keyCode <= 40) {
 						evt.preventDefault();
 					}
@@ -343,7 +346,7 @@ let _ = {
 		}
 	},
 
-	previous(hard) {
+	previous (hard) {
 		if (!hard && _.item > 0) {
 			_.previousItem();
 		}
