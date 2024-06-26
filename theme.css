@@ -36,3 +36,10 @@
 		font-weight: 300;
 	}
 }
+
+.slide figure {
+	figcaption {
+		margin-top: .5em;
+		text-align: center;
+	}
+}
