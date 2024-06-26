@@ -575,13 +575,22 @@ let _ = {
 		_.items = _.items.sort((a, b) => {
 			return (a.getAttribute("data-index") || 0) - (b.getAttribute("data-index") || 0);
 		});
+		document.documentElement.style.setProperty("--total-items", _.items.length);
+		document.documentElement.classList.toggle("has-items", _.items.length > 0);
+
+		if (_.items.length > 0) {
+			document.documentElement.style.setProperty("--items-done", 0);
+		}
+		else {
+			document.documentElement.style.removeProperty("--items-done");
+		}
 	},
 
 	/**
 	 * Go to a specific item in the current slide
 	 * @param {number} which 1-based index of the item to go to (0 means no items are current, just the slide itself)
 	 */
-	gotoItem(which) {
+	gotoItem (which) {
 		_.item = which;
 
 		if (_.items.length > 0 && !_.items[which - 1]?.isConnected) {
@@ -614,6 +623,10 @@ let _ = {
 				}
 			}
 
+			// Update item index
+			let done = _.items.length - _.items.filter(item => item.matches(":not(.current, .displayed)")).length;
+			document.documentElement.style.setProperty("--items-done", done);
+
 			// Deal with data-steps
 			if (stepElement) {
 				let step;
@@ -639,7 +652,6 @@ let _ = {
 					stepElement.setAttribute("data-step-all", "0");
 				}
 			}
-
 		}
 
 		_.hooks.run("gotoitem-end", {which, context: this});

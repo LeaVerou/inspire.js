@@ -80,6 +80,25 @@ body {
 	text-align: center;
 	font-weight: bold;
 
+	&:is(.has-items *)::before {
+		--size: .5em;
+		--on-size: 60%;
+		--off-size: 40%;
+		--on-color: canvastext;
+		--off-color: color-mix(in oklab, canvas, canvastext);
+		--circles: radial-gradient(circle closest-side, canvastext 40%, transparent 0) top / var(--size) var(--size) repeat-y;
+		content: "";
+		position: absolute;
+		top: calc(100% + .3em);
+		left: calc(50% - var(--size) / 2);
+		aspect-ratio: 1 / var(--total-items);
+		width: var(--size);
+		background:
+			linear-gradient(var(--on-color) calc(100% * var(--items-done) / var(--total-items)), transparent 0),
+			radial-gradient(circle closest-side, var(--off-color) var(--off-size), transparent 0) top / var(--size) var(--size) repeat-y;
+		-webkit-mask: radial-gradient(circle closest-side, white var(--on-size), transparent 0) top / var(--size) var(--size) repeat-y;
+	}
+
 	&:not(:empty)::after {
 		counter-reset: total var(--total-slides);
 		content: counter(total);
