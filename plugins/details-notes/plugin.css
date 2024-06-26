@@ -88,7 +88,7 @@ details.notes {
 
 	&.top-right,
 	&.top-left {
-		top: 1em;
+		top: .8em;
 
 		&[open]::before {
 			bottom: auto;
@@ -118,7 +118,7 @@ details.notes {
 
 	&.top-right,
 	&.bottom-right {
-		right: 1em;
+		right: 1.5em;
 
 		&[open]::before {
 			left: auto;
