@@ -449,6 +449,10 @@ let _ = {
 			// Adjust font size to prevent scrolling
 			_.adjustFontSize();
 
+			// Adjust color-scheme of Inspire chrome
+			document.documentElement.style.setProperty("color-scheme", "");
+			document.documentElement.style.setProperty("color-scheme", getComputedStyle(slide).getPropertyValue("color-scheme"));
+
 			// Show or hide onscreen navigation
 			$("#onscreen-nav").classList.toggle("hidden", !slide.matches(".onscreen-nav"));
 
