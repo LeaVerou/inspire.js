@@ -165,8 +165,7 @@ body {
 		}
 	}
 
-	&.future,
-	&.displayed {
+	&:not(.current) {
 		&:where(.collapse, .collapse > *, .delayed-collapse *) {
 			display: none;
 		}
