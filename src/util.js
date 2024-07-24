@@ -70,8 +70,9 @@ export function deduplicateId (element) {
 
 export function bind (element, events) {
 	for (let names in events) {
+		let listener = events[names];
 		for (let name of names.split(/\s+/)) {
-			element.addEventListener(name, events[name]);
+			element.addEventListener(name, listener);
 		}
 	}
 }
