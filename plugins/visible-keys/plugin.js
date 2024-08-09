@@ -1,7 +1,5 @@
 // Display certain keys pressed
-import Inspire from "../../src/../inspire.mjs";
-import transition from "../../bliss/src/dom/transition.js";
-import { timeout } from "../../src/util.js";
+import Inspire from "../../inspire.mjs";
 
 export const symbols = {
 	Tab: "⇥",
@@ -43,8 +41,7 @@ Inspire.hooks.add("slidechange", env => {
 
 				env.slide.insertAdjacentHTML("beforeend", `<kbd class="visible-key">${ label }</kbd>`);
 
-				await timeout(delay);
-				await transition(key, {opacity: 0});
+				await key.animate([{opacity: 0}], {duration: 400, delay}).finished;
 				key.remove();
 			}
 		});

@@ -1,7 +1,9 @@
-export function defer (source) {
-	var res, rej;
+import Hooks from "../node_modules/blissful-hooks/src/Hooks.js";
 
-	var promise = new Promise((resolve, reject) => {
+export function defer (source) {
+	let res, rej;
+
+	let promise = new Promise((resolve, reject) => {
 		res = resolve;
 		rej = reject;
 
@@ -77,9 +79,19 @@ export function bind (element, events) {
 	}
 }
 
+export function $$ (selector, root = document) {
+	return Array.from(root.querySelectorAll(selector));
+}
+
+export function $ (selector, root = document) {
+	if (typeof selector != "string") {
+		return selector;
+	}
+
+	return root.querySelector(selector);
+}
+
 export { default as inView } from "./util/inview.js";
 export { default as create } from "./util/create.js";
 
-export { default as $ } from "../../bliss/src/$.js";
-export { default as $$ } from "../../bliss/src/$$.js";
-export { default as Hooks } from "../../bliss/src/Hooks.js";
+export { Hooks };

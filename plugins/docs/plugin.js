@@ -1,12 +1,11 @@
 // Links to documentation
 import Inspire from "../../src/../inspire.mjs";
-import { create, $$ } from "../../src/util.js";
+import create from "../../src/util/create.js";
 
 export const hasCSS = true;
 
 let processDocsLinks = (root = document) => {
-
-	$$(Inspire.plugins.registry.docs, root).forEach(code => {
+	for (let code of document.querySelectorAll(Inspire.plugins.registry.docs)) {
 		let text = code.dataset.mdn && !/\/$/.test(code.dataset.mdn)? "" : code.textContent;
 		let id = text;
 		let path;
@@ -49,7 +48,7 @@ let processDocsLinks = (root = document) => {
 		}
 
 		create.around(code, `<a class="docs-link" href="https://developer.mozilla.org/en-US/docs/Web/${path}/${id}" target="_blank"></a>`);
-	});
+	}
 };
 
 Inspire.plugins.loaded.docs.loaded.then(() => {

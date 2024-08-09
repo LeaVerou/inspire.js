@@ -33,6 +33,7 @@ export function load (id, def = {}) {
 		return module;
 	});
 	// Resolves to the JS module, but only after CSS has also loaded
+	plugin.loaded = util.defer(plugin.loaded);
 	plugin.module = plugin.loaded;
 	plugin.done = plugin.loaded.finally(_ => {
 		plugin.loading = "";
@@ -55,6 +56,7 @@ export function loadAll (plugins = registry) {
 			let plugin = load(id, def);
 			// plugin.loaded.then(_ => ret.push(plugin));
 			plugin.loaded.catch(e => console.error(`Plugin ${id} error:`, e));
+			setTimeout(_ => plugin.loaded.reject("Timed out"), TIMEOUT);
 			ret.push(plugin.loaded);
 		}
 	}

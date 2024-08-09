@@ -4,6 +4,46 @@
 
 ## Getting started
 
+### CDN
+
+```html
+<script src="https://inspirejs.org/inspire.js"></script>
+```
+
+or
+
+```js
+import Inspire from "https://inspirejs.org/inspire.mjs";
+```
+
+### NPM
+
+```sh
+npm install inspirejs
+```
+
+then
+
+
+```html
+<script src="node_modules/inspirejs.org/inspire.js"></script>
+```
+
+or
+
+```js
+import Inspire from "node_modules/inspirejs.org/inspire.mjs";
+```
+
+or if you use a bundler:
+
+```js
+import Inspire from "inspirejs.org";
+```
+
+
+### Quick start
+
 - Copy (and rename) blank.html somewhere
 - Also copy talk.css, theme.css
 - Add Your Own Content
@@ -13,7 +53,9 @@
 
 If you were using CSSS and would rather stay at it, run `git checkout v1.0.0` and stay there.
 
-## Migrating from CSSS
+<details>
+
+<summary>Migrating from CSSS</summary>
 
 - Almost all HTML syntax is the same! The same JS events are still fired. So, very little should break.
 - `slideshow.css` is now `inspire.css`
@@ -27,6 +69,8 @@ If you were using CSSS and would rather stay at it, run `git checkout v1.0.0` an
 - Incrementable is no longer a plugin. Use the separate script from https://github.com/leaverou/incrementable.
 - `reusable.css` has now been merged into the default theme, `theme.css`.
 - `data-import` is now `data-insert`
+
+</details>
 
 ## API FAQ
 

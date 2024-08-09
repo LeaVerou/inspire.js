@@ -1,9 +1,9 @@
 import Inspire from "../../src/../inspire.mjs";
-import { create, $, $$ } from "../../src/util.js";
+import create from "../../src/util/create.js";
 
 export const hasCSS = true;
 
-$$("details.notes").forEach(details => {
+for (let details of document.querySelectorAll("details.notes")) {
 	let div = document.createElement("div");
 	div.append(...details.childNodes);
 	details.append(div);
@@ -13,7 +13,7 @@ $$("details.notes").forEach(details => {
 		details.classList.add("top-right");
 	}
 
-	let summary = $("summary", details);
+	let summary = details.querySelector("summary");
 
 	if (!summary) {
 		create.start(details, `<summary>Notes</summary>`);
@@ -23,4 +23,4 @@ $$("details.notes").forEach(details => {
 		// Speaker view, let's have the notes open by default
 		details.open = true;
 	}
-});
+}

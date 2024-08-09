@@ -1,10 +1,3 @@
-	/**
-	 * Inspire.js
-	 * https://inspirejs.org
-	 * MIT Licensed
-	 * Copyright (C) 2010-2018 Lea Verou, http://lea.verou.me
-	 */
-
 import * as plugins from "./plugins.js";
 import * as util from "./util.js";
 import * as imports from "./imports.js"

@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/LeaVerou/inspire.js/issues"
   },
-  "homepage": "https://inspirejs.org"
+  "homepage": "https://inspirejs.org",
+  "dependencies": {
+    "blissful-hooks": "^0.0"
+  }
 }
