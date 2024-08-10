@@ -7,7 +7,7 @@ let elements = $$(selectors.join(", "));
 
 if (elements.length === 0) {
 	// Basically return;
-	await new Promise(r => {});
+	await new Promise((res, rej) => {rej("No markdown elements")});
 }
 
 await import("https://cdn.jsdelivr.net/npm/markdown-it@12.0.6/dist/markdown-it.js");
