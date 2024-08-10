@@ -566,7 +566,7 @@ let _ = {
 		return slides;
 	},
 
-	updateItems() {
+	updateItems () {
 		_.items = $$(".delayed, .delayed-children > *", _.currentSlide);
 		_.items = _.items.sort((a, b) => {
 			return (a.getAttribute("data-index") || 0) - (b.getAttribute("data-index") || 0);
@@ -579,6 +579,12 @@ let _ = {
 		}
 		else {
 			document.documentElement.style.removeProperty("--items-done");
+		}
+
+		for (let element of _.items) {
+			if (!element.matches(".current, .displayed")) {
+				element.classList.add("future");
+			}
 		}
 	},
 
