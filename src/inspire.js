@@ -456,19 +456,7 @@ let _ = {
 			_.indicator.textContent = env.slide.classList.contains("no-slide-number")? "" : _.index + 1;
 
 			// Are there any autoplay videos?
-			for (let video of $$("video[autoplay]", env.slide)) {
-				if (video.currentTime > 0) {
-					video.currentTime = 0;
-				}
-
-				if (video.paused) {
-					video.play().catch(() => {
-						video.addEventListener("click", evt => {
-							video.play();
-						}, {once: true});
-					});
-				}
-			}
+			processAutoplayVideos(env.slide);
 
 			// Make videos without visible controls play/pause on click
 			for (let video of $$("video:not([controls])", env.slide)) {
@@ -614,6 +602,9 @@ let _ = {
 			if (current) {
 				item.dispatchEvent(new Event("itemcurrent", {bubbles: true}));
 
+				// Are there any autoplay videos?
+				processAutoplayVideos(item);
+
 				// support for nested lists
 				for (let i = _.item - 1, cur = _.items[i], j; i > 0; i--) {
 					j = _.items[i - 1];
@@ -728,3 +719,29 @@ _.util = {};
 Object.assign(_.util, util);
 
 export default _;
+
+function processAutoplayVideos (root) {
+	// Are there any autoplay videos?
+	let videos = root.matches("video[autoplay]") ? [root] : $$("video[autoplay]", root);
+	for (let video of videos) {
+		let delayed = video.closest(".delayed, .delayed-children > *");
+
+		if (delayed?.classList.contains("future")) {
+			// Video is in a future item, don't autoplay
+			continue;
+		}
+
+		if (video.currentTime > 0) {
+			video.currentTime = 0;
+		}
+
+		if (video.paused) {
+			video.play().catch(() => {
+				video.addEventListener("click", evt => {
+					video.play();
+				}, {once: true});
+			});
+		}
+	}
+	return videos;
+}
