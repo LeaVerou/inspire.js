@@ -1,4 +1,4 @@
-import Inspire from "../../src/../inspire.mjs";
+import Inspire from "../../inspire.mjs";
 import * as prism from "../prism/plugin.js";
 import { timeout, create, $, $$ } from "../../src/util.js";
 import LiveDemo from "./live-demo.js";
