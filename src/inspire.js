@@ -506,7 +506,7 @@ let _ = {
 
 			// Run the slidechange event and hook
 			requestAnimationFrame(() => {
-				let evt = new CustomEvent("slidechange", {"bubbles": true});
+				let evt = new Event("slidechange", {"bubbles": true});
 				Object.assign(evt, {prevSlide, firstTime});
 				slide.dispatchEvent(evt);
 
@@ -612,7 +612,7 @@ let _ = {
 			let stepElement = item.classList.contains("dummy") && item.dummyFor;
 
 			if (current) {
-				item.dispatchEvent(new CustomEvent("itemcurrent", {bubbles: true}));
+				item.dispatchEvent(new Event("itemcurrent", {bubbles: true}));
 
 				// support for nested lists
 				for (let i = _.item - 1, cur = _.items[i], j; i > 0; i--) {
@@ -620,7 +620,7 @@ let _ = {
 					if (j.contains(cur)) {
 						j.classList.remove("displayed", "future");
 						j.classList.add("current");
-						j.dispatchEvent(new CustomEvent("itemcurrent", {bubbles: true}));
+						j.dispatchEvent(new Event("itemcurrent", {bubbles: true}));
 					}
 				}
 			}
@@ -719,7 +719,7 @@ let _ = {
 
 	// Plugins can call this to signify to other plugins that the DOM changed
 	domchanged: element => {
-		let evt = new CustomEvent("inspire-domchanged", {bubbles: true});
+		let evt = new Event("inspire-domchanged", {bubbles: true});
 		element.dispatchEvent(evt);
 	},
 };
