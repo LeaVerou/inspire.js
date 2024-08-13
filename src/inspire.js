@@ -351,6 +351,7 @@ let _ = {
 			// Mark all items as displayed, if there are any
 			if (_.items.length) {
 				_.items.forEach(item => item.classList.add("displayed"));
+				_.items.forEach(item => item.classList.remove("future"));
 
 				// Mark the last one as current
 				let lastItem = _.items[_.items.length - 1];
