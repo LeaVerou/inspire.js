@@ -27,15 +27,15 @@ Inspire.hooks.add({
 			exitOverview();
 		}
 		else if (env.letter === "H" && (evt.ctrlKey || evt.altKey)) {
-			let defaultSelector = enteredSelector || (headersOnly? ".slide:not(header):not(:target)" : "");
-			let selector = prompt("Which slides to filter out? Enter a compound selector, or leave empty to show all slides.", defaultSelector);
+			let defaultSelector = enteredSelector || (headersOnly? "header, :target" : "");
+			let selector = prompt("Which slides to include? Enter a CSS selector, or leave empty to show all slides.", defaultSelector);
 
 			document.querySelector("style#inspire-overview-filter")?.remove();
 
 			if (selector) {
 				let style = document.createElement("style");
 				style.id = "inspire-overview-filter";
-				style.textContent = `.show-thumbnails ${selector} {
+				style.textContent = `.show-thumbnails .slide:not(${selector}) {
 					display: none !important;
 				}`;
 				document.head.append(style);
