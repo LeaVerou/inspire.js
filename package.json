@@ -23,5 +23,8 @@
   "homepage": "https://inspirejs.org",
   "dependencies": {
     "blissful-hooks": "^0.0"
+  },
+  "devDependencies": {
+    "release-it": "^17.6.0"
   }
 }
