@@ -127,7 +127,7 @@ export default class LiveDemo {
 
 			// Open in new Tab button
 			let a = create({
-				inside: this.controls,
+				in: this.controls,
 				html: `<a class="button new-tab" target="_blank" href="">↗️ New Tab</a>`,
 				events: {
 					"click mouseenter": evt => {
@@ -138,7 +138,7 @@ export default class LiveDemo {
 
 			// Open in codepen button
 			create({
-				inside: this.controls,
+				in: this.controls,
 				html: `
 					<form action="https://codepen.io/pen/define" method="POST" target="_blank">
 						<input type="hidden" name="data">
@@ -229,7 +229,7 @@ export default class LiveDemo {
 
 			let playButton = create({
 				html: `<button class="replay">${PLAY_LABEL}</button>`,
-				inside: this.controls,
+				in: this.controls,
 				onclick: async evt => {
 					let isPlay = playButton.textContent === PLAY_LABEL;
 					playButton.textContent = isPlay? PAUSE_LABEL : PLAY_LABEL;
@@ -287,7 +287,7 @@ export default class LiveDemo {
 
 			let skipButton = create({
 				html: `<button class="skip">⏭️</button>`,
-				inside: this.controls,
+				in: this.controls,
 				onclick: async evt => {
 					if (this.replayer) {
 						if (this.replayer.paused) {
@@ -310,7 +310,7 @@ export default class LiveDemo {
 
 				let label = create({
 					html: `<label for="${editor.textarea.id}" tabindex="0">${editor.lang}</label>`,
-					inside: editor.wrapper,
+					in: editor.wrapper,
 					onclick: evt => this.openEditor(id),
 				});
 
@@ -487,7 +487,7 @@ export default class LiveDemo {
 		var lang = o.lang || label;
 		let textarea = create({
 			html: `<textarea id="${container.id}-${label}-editor" class="language-${lang} editor" data-lang="${lang}">${o.fromSource()}</textarea>`,
-			inside: o.container || container,
+			in: o.container || container,
 			value: o.fromSource(),
 			events: {
 				input: o.toSource

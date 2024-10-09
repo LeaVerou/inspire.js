@@ -23,7 +23,7 @@ document.addEventListener("slidechange", evt => {
 			let timedAnnotations = new Map();
 
 			let video = create({
-				inside: container,
+				in: container,
 				html: `<video src="${ slide.getAttribute("data-video") }"></video>`,
 				loop: slide.classList.contains("looping"),
 				events: {
