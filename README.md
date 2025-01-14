@@ -19,7 +19,7 @@ import Inspire from "https://inspirejs.org/inspire.mjs";
 ### NPM
 
 ```sh
-npm install inspirejs
+npm install inspirejs.org
 ```
 
 then
