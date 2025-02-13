@@ -1,4 +1,4 @@
-:where(.live-demo) {
+.live-demo {
 	&:where(:not(.minimal)) {
 		background: var(--color-neutral-95);
 		color: canvastext;
