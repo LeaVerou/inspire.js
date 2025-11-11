@@ -47,7 +47,8 @@ function renderCode(code) {
 		code = code.replace(new RegExp("^" + indent, "gm"), "");
 	}
 
-	return /\r?\n/.test(code.trim())? md.render(code) : md.renderInline(code);
+	// Text chunks with headings should be rendered as block markdown regardless
+	return /\r?\n|^\#/.test(code.trim())? md.render(code) : md.renderInline(code);
 }
 
 function render(e) {
