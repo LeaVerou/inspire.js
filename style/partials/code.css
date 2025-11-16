@@ -1,3 +1,5 @@
+
+
 code, textarea, pre {
 	margin: 0;
 	font: 100%/1.5 var(--font-mono);
@@ -19,16 +21,27 @@ pre + pre {
 }
 
 /* Syntax highlighting */
+:where(.token) {
+	--comment-color: color-mix(in oklch, var(--color) 0%, oklch(50% .01 none / 60%));
+	--_color-code-comment: var(--color-code-comment, var(--comment-color, var(--color-neutral-50a)));
+	--_color-code-punctuation: var(--color-code-punctuation, var(--color-neutral-80a));
+	--_color-code-1: var(--color-code-1, var(--color-accent-2));
+	--_color-code-2: var(--color-code-2, var(--color-accent-1));
+	--_color-code-3: var(--color-code-3, var(--color-accent-4));
+	--_color-code-4: var(--color-code-4, var(--color-accent-3));
+	--_color-code-5: var(--color-code-5, orange);
+}
 
 .token.comment,
 .token.prolog,
 .token.doctype,
 .token.cdata {
-	color: var(--color-neutral-50a);
+	color: var(--_color-code-comment);
 }
 
 .token.punctuation {
-	color: var(--color-neutral-80a);
+	color: var(--_color-code-punctuation);
+	mix-blend-mode: normal;
 }
 
 .namespace {
@@ -41,7 +54,7 @@ pre + pre {
 .token.number,
 .token.constant,
 .token.symbol {
-	color: var(--color-accent-2);
+	color: var(--_color-code-1);
 }
 
 .token.selector,
@@ -49,7 +62,7 @@ pre + pre {
 .token.string,
 .token.char,
 .token.builtin {
-	color: var(--color-accent-1);
+	color: var(--_color-code-2);
 }
 
 .token.operator,
@@ -58,36 +71,22 @@ pre + pre {
 .language-css > .token.string,
 .token.inserted,
 .token.function {
-	color: var(--color-accent-4); /* deep pink */
+	color: var(--_color-code-3);
 }
 
 .token.attr-value,
 .token.keyword,
 .token.variable {
-	color: var(--color-accent-3);
+	color: var(--_color-code-4);
 }
 
 .token.atrule,
 .token.regex,
 .token.important {
-	color: orange;
+	color: var(--_color-code-5);
 }
 
 .token.important,
 .token.bold {
 	font-weight: bold;
-}
-
-.token {
-	&.comment,
-	&.prolog,
-	&.doctype,
-	&.cdata {
-		--comment-color: color-mix(in oklch, var(--color) 0%, oklch(50% .01 none / 60%));
-		color: var(--comment-color, var(--color-neutral-50a));
-	}
-
-	&.punctuation {
-		mix-blend-mode: normal;
-	}
 }
