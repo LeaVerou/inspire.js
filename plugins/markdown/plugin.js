@@ -32,7 +32,7 @@ for (let name of pluginNames) {
 	md.use(module.default || module);
 }
 
-if (pluginNames.includes("markdown-it-attrs")) {
+if (pluginNames.has("markdown-it-attrs")) {
 	// Fix fenced code blocks
 	// Apply fenced attributes to <pre>, language class to <code>
 	md.renderer.rules.fence = function (tokens, idx, options, env, slf) {
