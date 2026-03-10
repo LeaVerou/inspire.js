@@ -2,7 +2,8 @@ import { $$ } from "../../src/util.js";
 
 export const hasCSS = false;
 
-let selectors = $$("[data-markdown-elements]").map(e => e.getAttribute("data-markdown-elements"));
+let configElements = $$("[data-markdown-elements]");
+let selectors = configElements.map(e => e.getAttribute("data-markdown-elements"));
 let elements = $$(selectors.join(", "));
 
 if (elements.length === 0) {
@@ -10,7 +11,7 @@ if (elements.length === 0) {
 	await new Promise((res, rej) => {rej("No markdown elements")});
 }
 
-await import("https://cdn.jsdelivr.net/npm/markdown-it@12.0.6/dist/markdown-it.js");
+let { default: markdownit } = await import("https://esm.sh/markdown-it@14");
 
 let md = new markdownit("commonmark", {
 	html: true,
@@ -18,6 +19,18 @@ let md = new markdownit("commonmark", {
 	linkify: true,
 	// breaks: true
 }).enable([ "table" ]).disable("code");
+
+// Load and apply plugins specified via data-markdown-plugins (comma-separated npm package names or URLs)
+let pluginNames = new Set(configElements.flatMap(e => {
+	let attr = e.getAttribute("data-markdown-plugins");
+	return attr ? attr.split(/\s*,\s*/).filter(Boolean) : [];
+}));
+
+for (let name of pluginNames) {
+	let url = name.includes("/") ? name : `https://esm.sh/${ name }`;
+	let module = await import(url);
+	md.use(module.default || module);
+}
 
 const Inspire = (await import("../../src/../inspire.mjs")).default;
 for (let e of elements) {
