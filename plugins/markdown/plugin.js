@@ -32,6 +32,20 @@ for (let name of pluginNames) {
 	md.use(module.default || module);
 }
 
+if (pluginNames.includes("markdown-it-attrs")) {
+	// Fix fenced code blocks
+	// Apply fenced attributes to <pre>, language class to <code>
+	md.renderer.rules.fence = function (tokens, idx, options, env, slf) {
+		const token = tokens[idx];
+		const info = token.info ? md.utils.unescapeAll(token.info).trim() : "";
+		const langName = info ? info.split(/(\s+)/g)[0] : "";
+		const content = md.utils.escapeHtml(token.content);
+		const codeClass = langName ? ` class="${options.langPrefix + langName}"` : "";
+
+		return `<pre${slf.renderAttrs(token)}>\n<code${codeClass}>${content}</code>\n</pre>\n`;
+	}
+}
+
 const Inspire = (await import("../../src/../inspire.mjs")).default;
 for (let e of elements) {
 	let changed = render(e);
