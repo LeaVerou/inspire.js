@@ -36,7 +36,8 @@ function getCommonPrefix(strings) {
 }
 
 function getIndent(code) {
-	let indents = code.match(/^[\t ]+/gm);
+	// Grab indent used on any non-empty line
+	let indents = code.match(/^[\t ]*(?=\S)/gm);
 	return indents? getCommonPrefix(indents) : "";
 }
 
