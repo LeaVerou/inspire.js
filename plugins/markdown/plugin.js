@@ -80,7 +80,8 @@ function renderCode(code) {
 }
 
 function render(e) {
-	if (e?.classList.contains("no-md")) {
+	// Skip elements whose content should not be markdown-processed
+	if (e?.classList.contains("no-md") || /^(PRE|CODE|SCRIPT|STYLE|SVG)$/.test(e?.tagName)) {
 		return;
 	}
 
