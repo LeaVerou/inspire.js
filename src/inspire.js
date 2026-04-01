@@ -632,7 +632,10 @@ let _ = {
 					// Maybe some other item is current?
 					let current = stepElement.dummies.find(dummy => dummy.classList.contains("current"));
 					if (!current) {
-						step = 0;
+						// All dummies displayed = past all steps, preserve max step
+						// All dummies future = before any step, reset to 0
+						let allDisplayed = stepElement.dummies.every(dummy => dummy.classList.contains("displayed"));
+						step = allDisplayed ? stepElement.dummies.length : 0;
 					}
 					// We don’t need to deal with the current dummy, it will be dealt with when its turn comes
 				}
