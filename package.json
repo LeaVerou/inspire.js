@@ -2,7 +2,16 @@
   "name": "inspirejs.org",
   "version": "2.1.0",
   "description": "Lean, hackable, extensible slide deck framework",
-  "main": "inspire.js",
+  "main": "inspire.mjs",
+  "exports": {
+    ".": "./inspire.mjs",
+    "./inspire.mjs": "./inspire.mjs",
+    "./inspire.js": "./inspire.js",
+    "./inspire.css": "./inspire.css",
+    "./theme.css": "./theme.css",
+    "./style/*": "./style/*",
+    "./plugins/*": "./plugins/*"
+  },
   "scripts": {
     "build": "echo \"No build process! 🤟🏼\" && exit 0",
     "watch": "echo \"No build process! 🤟🏼\" && exit 0",
