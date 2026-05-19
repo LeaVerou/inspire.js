@@ -15,7 +15,8 @@
   "scripts": {
     "build": "echo \"No build process! 🤟🏼\" && exit 0",
     "watch": "echo \"No build process! 🤟🏼\" && exit 0",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "npm login && npx release-it"
   },
   "repository": {
     "type": "git",
@@ -44,6 +45,6 @@
     "blissful-hooks": "^0.0"
   },
   "devDependencies": {
-    "release-it": "^17.6.0"
+    "release-it": "^20.0.1"
   }
 }
