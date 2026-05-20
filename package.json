@@ -2,11 +2,28 @@
   "name": "inspirejs.org",
   "version": "2.1.0",
   "description": "Lean, hackable, extensible slide deck framework",
-  "main": "inspire.js",
+  "main": "inspire.mjs",
+  "exports": {
+    ".": "./inspire.mjs",
+    "./inspire.css": {
+      "style": "./inspire.css",
+      "default": "./inspire.css"
+    },
+    "./theme.css": {
+      "style": "./theme.css",
+      "default": "./theme.css"
+    },
+    "./style/*": {
+      "style": "./style/*",
+      "default": "./style/*"
+    },
+    "./plugins/*": "./plugins/*/plugin.js"
+  },
   "scripts": {
     "build": "echo \"No build process! 🤟🏼\" && exit 0",
     "watch": "echo \"No build process! 🤟🏼\" && exit 0",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "npm login && npx release-it"
   },
   "repository": {
     "type": "git",
@@ -35,6 +52,6 @@
     "blissful-hooks": "^0.0"
   },
   "devDependencies": {
-    "release-it": "^17.6.0"
+    "release-it": "^20.0.1"
   }
 }

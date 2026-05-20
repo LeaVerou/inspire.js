@@ -1,0 +1,9 @@
+# Demo site (deployed to inspirejs.org, not part of the library)
+index.html
+CNAME
+_headers
+_redirects
+netlify.toml
+
+# Dev-only config (not used at runtime)
+postcss.config.js
