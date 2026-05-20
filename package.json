@@ -5,12 +5,19 @@
   "main": "inspire.mjs",
   "exports": {
     ".": "./inspire.mjs",
-    "./inspire.mjs": "./inspire.mjs",
-    "./inspire.js": "./inspire.js",
-    "./inspire.css": "./inspire.css",
-    "./theme.css": "./theme.css",
-    "./style/*": "./style/*",
-    "./plugins/*": "./plugins/*"
+    "./inspire.css": {
+      "style": "./inspire.css",
+      "default": "./inspire.css"
+    },
+    "./theme.css": {
+      "style": "./theme.css",
+      "default": "./theme.css"
+    },
+    "./style/*": {
+      "style": "./style/*",
+      "default": "./style/*"
+    },
+    "./plugins/*": "./plugins/*/plugin.js"
   },
   "scripts": {
     "build": "echo \"No build process! 🤟🏼\" && exit 0",
