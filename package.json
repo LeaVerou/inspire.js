@@ -1,6 +1,6 @@
 {
   "name": "inspirejs.org",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Lean, hackable, extensible slide deck framework",
   "main": "inspire.mjs",
   "exports": {
