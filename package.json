@@ -1,0 +1,32 @@
+{
+  "name": "inspirejs.org",
+  "version": "3.0.0",
+  "description": "Lean, hackable, extensible slide deck framework — bundles @inspirejs/core + @inspirejs/plugins",
+  "type": "module",
+  "main": "inspire.mjs",
+  "exports": {
+    ".": "./inspire.mjs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inspire-js/inspire.js.git"
+  },
+  "keywords": [
+    "slides",
+    "inspire.js",
+    "presentation"
+  ],
+  "author": "Lea Verou",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/inspire-js/inspire.js/issues"
+  },
+  "homepage": "https://inspirejs.org",
+  "dependencies": {
+    "@inspirejs/core": "^3",
+    "@inspirejs/plugins": "^1"
+  }
+}
