@@ -3,9 +3,12 @@
   "version": "3.0.0",
   "description": "Lean, hackable, extensible slide deck framework — bundles @inspirejs/core + @inspirejs/plugins",
   "type": "module",
-  "main": "inspire.mjs",
+  "main": "src/index.js",
   "exports": {
-    ".": "./inspire.mjs"
+    ".": "./src/index.js",
+    "./core": "./src/core.js",
+    "./util": "./src/util.js",
+    "./plugins": "./src/plugins.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
