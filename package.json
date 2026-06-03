@@ -31,7 +31,7 @@
   "homepage": "https://inspirejs.org",
   "dependencies": {
     "@inspirejs/core": "^3",
-    "@inspirejs/plugins": "^1"
+    "@inspirejs/plugins": "^3"
   },
   "devDependencies": {
     "release-it": "^20.2.0"
