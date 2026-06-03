@@ -8,7 +8,8 @@
     ".": "./inspire.mjs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "npm login && npx release-it"
   },
   "repository": {
     "type": "git",
@@ -28,5 +29,8 @@
   "dependencies": {
     "@inspirejs/core": "^3",
     "@inspirejs/plugins": "^1"
+  },
+  "devDependencies": {
+    "release-it": "^20.2.0"
   }
 }
