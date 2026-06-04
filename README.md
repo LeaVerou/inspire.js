@@ -15,7 +15,8 @@ Prefer this if you want everything in one go. For finer control (e.g. core witho
 npm install inspirejs.org
 ```
 
-This is native ESM using bare specifiers — resolve them however your project does (an import map, a bundler, or a no-build tool). Then include the stylesheet and import:
+This is native ESM using bare specifiers — resolve them however your project does (an import map, a bundler, or a no-build tool — we recommend [Nudeps](https://nudeps.dev)).
+Then include the stylesheet and import:
 
 ```html
 <link href="/path/to/@inspirejs/core/inspire.css" rel="stylesheet" />
@@ -27,6 +28,12 @@ This is native ESM using bare specifiers — resolve them however your project d
 
 `import Inspire from "inspirejs.org"` gives you the `Inspire` API (also the global `Inspire`).
 
-## License
+## Slide decks using Inspire.js
 
-MIT © Lea Verou and contributors
+- [Lea Verou’s talks](https://github.com/leaverou/talks)
+- [MIT "Design for the Web" course](https://designftw.mit.edu/schedule/)
+- [TC39 First-class protocols 2026 update](https://github.com/tc39/proposal-first-class-protocols/tree/main/slides/2026-03)
+- https://webplatform.design/talks/tpac2025/
+- https://webplatform.design/talks/image-animation/
+- https://webplatform.design/talks/mixins/
+- https://webplatform.design/talks/class-composition/
